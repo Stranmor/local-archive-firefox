@@ -17,15 +17,9 @@ All notable changes to Local Archive are documented here. Earlier entries retain
 - Firefox consumer proof now verifies recent, date-range, and entire-chat
   exports with zero visible scroll attempts and the exact native history source.
 
-- Release documentation now describes the complete v3 scope (Telegram Web and
-  Discord), automatic inactive-tab history traversal, rendered-source coverage
-  limits, and the exact support/security intake required before an AMO listing.
-- Removed the outdated Discord instruction to scroll the visible channel first;
-  date and all-history runs now document the background traversal and its
-  explicit oldest-edge/date-target receipt.
-- Discord receipts now expose the requested date target and whether the
-  rendered history reached it, keeping “oldest edge” distinct from date-target
-  coverage.
+- Release documentation now describes the Telegram Web scope, automatic
+  inactive-tab history traversal, rendered-source coverage limits, and the
+  exact support/security intake required before an AMO listing.
 - Added the canonical `docs/launch-checklist.md` release gate and a generated
   `RELEASE-MANIFEST.json` receipt for matching Firefox/source artifacts.
 - Terminal background-export receipts cancel throttled stale progress packets
@@ -38,11 +32,11 @@ All notable changes to Local Archive are documented here. Earlier entries retain
 - Release evidence binds each headless consumer proof to the exact package
   SHA-256, while the save boundary re-hashes the ZIP before Firefox downloads it.
 - CI now selects the release ZIP only through `RELEASE-MANIFEST.json` and
-  rejects Telegram or Discord consumer proofs whose filename or hash diverges.
+  rejects consumer proofs whose filename or hash diverges.
 - Archive verification requires the exact set of ZIP media paths referenced by
   the JSON/HTML outputs, rejecting unreferenced or missing attachment files.
-- Attachment limits are explicit per connector: Telegram photos 10 MB and
-  other files 100 MB; Discord attachments 10 MB per item.
+- Telegram attachment limits are explicit: photos 10 MB and other files 100 MB
+  per item.
 
 ## [3.0.0-rc.1] - 2026-08-16
 
@@ -81,7 +75,8 @@ All notable changes to Local Archive are documented here. Earlier entries retain
 - Made older-message loading automatic for every range mode and explained the boundary in the popup.
 - Fixed quick-export attachment limits at 10 MB for photos and 100 MB for other files; skipped items are reported instead of silently disappearing.
 - Exported spoiler text is readable immediately in the saved HTML rather than hidden behind another interaction.
-- Deferred Discord implementation until the Telegram 2.0 release is stable; the connector decision is preserved separately.
+- Kept the connector boundary explicit so additional sources are added only
+  after their own consumer-proven adapter and release contract exist.
 
 ### Fixed
 
