@@ -1,0 +1,2220 @@
+{
+  "extensionName": {
+    "message": "Local Archive — архив переписок"
+  },
+  "extensionDescription": {
+    "message": "Сохраняет переписки из поддерживаемых веб-приложений в локальный ZIP: удобная страница, данные и выбранные вложения."
+  },
+  "extensionActionTitle": {
+    "message": "Открыть Local Archive"
+  },
+  "popupEyebrow": {
+    "message": "ЛОКАЛЬНЫЙ АРХИВ"
+  },
+  "popupTitle": {
+    "message": "Сохраните переписку"
+  },
+  "popupReady": {
+    "message": "Источник Telegram готов"
+  },
+  "popupReadyDescription": {
+    "message": "Откройте нужную переписку и продолжайте."
+  },
+  "popupNotTelegram": {
+    "message": "Откройте поддерживаемую переписку"
+  },
+  "popupNotTelegramDescription": {
+    "message": "В этой версии подключён источник Telegram Web. Другие площадки смогут использовать тот же локальный сценарий архивации."
+  },
+  "popupOpenExporter": {
+    "message": "Открыть экспорт"
+  },
+  "popupOpenTelegram": {
+    "message": "Открыть Telegram Web"
+  },
+  "popupWorking": {
+    "message": "Открываю…"
+  },
+  "popupInjectionError": {
+    "message": "Firefox не смог открыть окно экспорта на этой вкладке. Перезагрузите Telegram Web и повторите попытку."
+  },
+  "popupPrivacyTitle": {
+    "message": "Всё остаётся на устройстве"
+  },
+  "popupPrivacyBody": {
+    "message": "Разрешённая вкладка-источник передаёт выбранные данные, а Local Archive создаёт ZIP на этом устройстве. Нет аналитики, отдельной учётной записи и внешнего сервера."
+  },
+  "popupSettings": {
+    "message": "Настройки и приватность"
+  },
+  "popupVersion": {
+    "message": "Версия $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "optionsEyebrow": {
+    "message": "НАСТРОЙКИ LOCAL ARCHIVE"
+  },
+  "optionsTitle": {
+    "message": "Один раз задайте удобные значения"
+  },
+  "optionsIntro": {
+    "message": "Эти параметры будут выбраны при следующем запуске. Для отдельного архива их всегда можно изменить."
+  },
+  "optionsOutputTitle": {
+    "message": "Форматы архива"
+  },
+  "optionsOutputDescription": {
+    "message": "HTML удобно читать, а JSON подходит для поиска, анализа и переноса данных."
+  },
+  "optionsDefaultSummary": {
+    "message": "Текущие настройки по умолчанию: $FORMATS$. Медиа: $MEDIA$.",
+    "placeholders": {
+      "formats": { "content": "$1" },
+      "media": { "content": "$2" }
+    }
+  },
+  "optionsNoMedia": {
+    "message": "Без медиа"
+  },
+  "formatHtml": {
+    "message": "Удобный HTML"
+  },
+  "formatHtmlHint": {
+    "message": "После распаковки откройте messages.html в Firefox и читайте чат как веб-страницу."
+  },
+  "stateOn": {
+    "message": "Вкл."
+  },
+  "stateOff": {
+    "message": "Выкл."
+  },
+  "formatJson": {
+    "message": "Данные для поиска (JSON)"
+  },
+  "formatJsonHint": {
+    "message": "Используйте result.json для поиска, анализа или переноса данных."
+  },
+  "optionsMediaTitle": {
+    "message": "Какие файлы сохранять по умолчанию"
+  },
+  "optionsMediaDescription": {
+    "message": "Слишком крупный файл будет пропущен, но само сообщение останется в архиве."
+  },
+  "mediaPhotos": {
+    "message": "Фотографии"
+  },
+  "mediaVideos": {
+    "message": "Видео и GIF"
+  },
+  "mediaVoice": {
+    "message": "Голосовые сообщения"
+  },
+  "mediaStickers": {
+    "message": "Стикеры"
+  },
+  "mediaSharedFileLimit": {
+    "message": "Для каждого элемента действует лимит из строки «Файлы»"
+  },
+  "mediaFiles": {
+    "message": "Файлы"
+  },
+  "maxEach": {
+    "message": "Не больше на один файл"
+  },
+  "megabytesShort": {
+    "message": "МБ"
+  },
+  "optionsPrivacyTitle": {
+    "message": "К чему получает доступ расширение"
+  },
+  "optionsPrivacyBody": {
+    "message": "Доступ появляется только после вашего действия. Активный поддерживаемый источник передаёт выбранные данные, локальный контекст расширения создаёт ZIP, а в хранилище остаются только настройки. Переписка никуда не загружается."
+  },
+  "saveSettings": {
+    "message": "Сохранить настройки"
+  },
+  "settingsSaved": {
+    "message": "Настройки сохранены"
+  },
+  "settingsSaveError": {
+    "message": "Firefox не смог сохранить настройки. Повторите попытку."
+  },
+  "resetDefaults": {
+    "message": "Вернуть исходные значения"
+  },
+  "defaultsRestored": {
+    "message": "Исходные значения восстановлены"
+  },
+  "openTelegram": {
+    "message": "Открыть Telegram Web"
+  },
+  "validationOneFormat": {
+    "message": "Выберите HTML, JSON или оба формата."
+  },
+  "exporterEyebrow": {
+    "message": "ЭКСПОРТ ПЕРЕПИСОК"
+  },
+  "exporterTitle": {
+    "message": "Local Archive"
+  },
+  "exporterSubtitle": {
+    "message": "Удобная копия, данные и выбранные вложения — всё сохраняется на этом устройстве."
+  },
+  "quickSourceLabel": { "message": "Источник:" },
+  "quickSaveTitle": { "message": "Сохранить" },
+  "quickContentLabel": { "message": "Архив" },
+  "quickMediaLabel": { "message": "Вложения" },
+  "quickPrivacyLabel": { "message": "Доступ" },
+  "quickReadyTitle": { "message": "Можно сохранять" },
+  "quickReadyBody": { "message": "Архив создаётся локально. Ничего не загружается в сеть." },
+  "quickCustomize": { "message": "Изменить состав архива" },
+  "quickCustomizeHint": { "message": "Чаты, форматы, вложения, дата или пароль" },
+  "quickSettingsTitle": { "message": "Настройки архива" },
+  "quickSettingsHint": { "message": "Меняйте только то, что действительно нужно" },
+  "quickContentBoth": { "message": "Удобная страница + данные" },
+  "quickContentHtml": { "message": "Удобная страница" },
+  "quickContentJson": { "message": "Данные для обработки" },
+  "quickMediaNone": { "message": "Без вложений" },
+  "quickProtectionNone": { "message": "ZIP без пароля" },
+  "quickProtectionAes": { "message": "ZIP защищён паролем" },
+  "quickHistoryOne": {
+    "message": "Сейчас загружено сообщений: $COUNT$. Перед сохранением Local Archive автоматически догрузит старую историю.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "quickHistoryMany": {
+    "message": "Сейчас загружено сообщений: $COUNT$. Перед сохранением Local Archive автоматически догрузит старую историю.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "quickHistoryUnknown": { "message": "Перед сохранением откройте переписку." },
+  "quickReadySpecific": {
+    "message": "Переписка «$NAME$» читается из источника $SOURCE$. Не закрывайте вкладку до готовности ZIP.",
+    "placeholders": { "name": { "content": "$1" }, "source": { "content": "$2" } }
+  },
+  "quickBlockedTitle": { "message": "Пока не получается прочитать переписку" },
+  "quickBlockedNoChat": {
+    "message": "Откройте переписку в $SOURCE$ и проверьте снова.",
+    "placeholders": { "source": { "content": "$1" } }
+  },
+  "quickBlockedNoMessages": {
+    "message": "Дождитесь загрузки сообщений в $SOURCE$ и проверьте снова.",
+    "placeholders": { "source": { "content": "$1" } }
+  },
+  "quickBlockedLayout": {
+    "message": "Текущий интерфейс $SOURCE$ пока не поддерживается этим подключением.",
+    "placeholders": { "source": { "content": "$1" } }
+  },
+  "quickSaveAction": { "message": "Сохранить переписку" },
+  "quickSaveProtectedAction": { "message": "Сохранить с паролем" },
+  "quickUnavailableAction": { "message": "Сначала откройте читаемую переписку" },
+  "scopeBoundary": {
+    "message": "Local Archive автоматически догружает старую историю в этой вкладке Telegram и записывает точный достигнутый диапазон; это не полная копия аккаунта."
+  },
+  "presetTitle": {
+    "message": "Быстрая настройка"
+  },
+  "presetText": {
+    "message": "Только текст"
+  },
+  "presetReadable": {
+    "message": "Первый экспорт"
+  },
+  "beginnerGuideTitle": {
+    "message": "Выберите начальный пресет"
+  },
+  "beginnerGuideBody": {
+    "message": "Оба пресета работают только в этой вкладке Telegram и ничего не загружают наружу. Быстрый пресет: ZIP без шифрования, читаемый HTML и без медиа. Приватный пресет: ZIP с паролем AES-256, HTML, JSON, фотографии, голосовые сообщения и стикеры. Позже любой набор можно настроить вручную."
+  },
+  "beginnerGuideBodySimple": {
+    "message": "Режим быстрого открытия включён: текущий чат, читаемый HTML, ZIP без шифрования, без медиа. Распакуйте архив и откройте messages.html в Firefox. Расширенные форматы, медиа, даты и выбор чатов скрыты до возврата к расширенной настройке."
+  },
+  "beginnerGuideAction": {
+    "message": "Использовать быстрый путь"
+  },
+  "beginnerGuideActionHint": {
+    "message": "После скачивания: 1 Распаковать · 2 Открыть messages.html в Firefox · ZIP сможет прочитать любой, у кого он есть"
+  },
+  "beginnerGuideActionTag": {
+    "message": "Быстрый пресет · без шифрования · без медиа"
+  },
+  "beginnerGuideActionAdvanced": {
+    "message": "Показать расширенную настройку"
+  },
+  "beginnerGuideBodyProtected": {
+    "message": "Режим приватности включён: читаемый HTML и данные JSON для поиска защищены AES-256. Firefox сам этот ZIP не откроет; используйте PeaZip или 7-Zip и сохраните пароль. Расширенные параметры доступны ниже."
+  },
+  "beginnerGuideBodyAdvanced": {
+    "message": "Расширенная настройка включена: выберите AES-256 для ZIP с паролем или вариант без пароля для простого открытия. Карточки защиты и нижняя панель всегда показывают текущий выбор."
+  },
+  "beginnerGuideActionProtected": {
+    "message": "Использовать приватный путь"
+  },
+  "beginnerGuideActionProtectedHint": {
+    "message": "До скачивания: сохранить пароль. После скачивания: 1 Открыть в PeaZip/7-Zip · 2 Ввести сохранённый пароль · 3 Распаковать · 4 Открыть messages.html"
+  },
+  "beginnerGuideActionProtectedTag": {
+    "message": "Приватный пресет · AES-256 · выбранные медиа"
+  },
+  "beginnerGuideActionProtectedTagAdvanced": {
+    "message": "ZIP AES-256 · PeaZip/7-Zip"
+  },
+  "beginnerGuideActionSimpleSwitch": {
+    "message": "Использовать быстрый путь"
+  },
+  "beginnerGuideActionProtectedSwitch": {
+    "message": "Показать расширенную настройку"
+  },
+  "beginnerSetupSummaryTitle": {
+    "message": "Текущие настройки архива"
+  },
+  "beginnerSetupScopeLabel": {
+    "message": "Охват"
+  },
+  "beginnerSetupFormatLabel": {
+    "message": "Формат"
+  },
+  "beginnerSetupMediaLabel": {
+    "message": "Медиа"
+  },
+  "beginnerSetupProtectionLabel": {
+    "message": "Защита"
+  },
+  "beginnerSetupCurrent": {
+    "message": "Текущий чат"
+  },
+  "beginnerSetupReadable": {
+    "message": "Читаемый HTML"
+  },
+  "beginnerSetupBalancedFormat": {
+    "message": "Читаемый HTML + данные JSON для поиска"
+  },
+  "beginnerSetupNoMedia": {
+    "message": "Без медиа"
+  },
+  "beginnerSetupBalancedMedia": {
+    "message": "Сбалансированное медиа · фото, голосовые, стикеры"
+  },
+  "beginnerSetupUnencrypted": {
+    "message": "ZIP без шифрования · открыть в Firefox"
+  },
+  "beginnerSetupProtected": {
+    "message": "AES-256 · PeaZip или 7-Zip"
+  },
+  "beginnerSetupChange": {
+    "message": "Изменить настройку"
+  },
+  "beginnerSetupHint": {
+    "message": "Технические сведения об истории, нагрузке и совместимости остаются в раскрываемой проверке ниже."
+  },
+  "beginnerGuideBoundary": {
+    "message": "Не закрывайте вкладку Telegram · сохраняются только доступные ей сообщения."
+  },
+  "beginnerGuideBoundaryCurrent": {
+    "message": "Текущие настройки: 1 чат — $NAME$ · $PROTECTION$ · $FORMATS$ · медиа: $MEDIA$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "protection": { "content": "$2" },
+      "formats": { "content": "$3" },
+      "media": { "content": "$4" }
+    }
+  },
+  "beginnerGuideBoundaryMulti": {
+    "message": "Текущие настройки: несколько чатов · $SCOPE$ · $PROTECTION$ · $FORMATS$ · медиа: $MEDIA$",
+    "placeholders": {
+      "scope": { "content": "$1" },
+      "protection": { "content": "$2" },
+      "formats": { "content": "$3" },
+      "media": { "content": "$4" }
+    }
+  },
+  "beginnerBoundaryProtected": {
+    "message": "ZIP с паролем AES-256"
+  },
+  "beginnerBoundaryUnencrypted": {
+    "message": "Незашифрованный ZIP"
+  },
+  "beginnerBoundaryNoMedia": {
+    "message": "без медиа"
+  },
+  "progressChatsRemaining": {
+    "message": "Проверено чатов: $CURRENT$ из $TOTAL$ · осталось $REMAINING$$BATCH$",
+    "placeholders": {
+      "current": { "content": "$1" },
+      "total": { "content": "$2" },
+      "remaining": { "content": "$3" },
+      "batch": { "content": "$4" }
+    }
+  },
+  "progressBatchHint": {
+    "message": "по одному ZIP на часть · запланировано: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "progressCurrentHint": {
+    "message": "Собрано сообщений: $COUNT$ · не закрывайте вкладку Telegram",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "progressCurrentHintOne": {
+    "message": "Собрано 1 сообщение · не закрывайте вкладку Telegram"
+  },
+  "beginnerGuideStepOne": {
+    "message": "Просто: открытый чат и читаемый HTML."
+  },
+  "beginnerGuideStepTwo": {
+    "message": "Защита: сохраните пароль AES или выберите ZIP без пароля."
+  },
+  "beginnerGuideStepThree": {
+    "message": "Не закрывайте вкладку, проверьте обзор и создайте ZIP."
+  },
+  "presetBalanced": {
+    "message": "Оптимально"
+  },
+  "presetComplete": {
+    "message": "Все медиа"
+  },
+  "currentChat": {
+    "message": "Открытый чат"
+  },
+  "unknownChat": {
+    "message": "Чат не найден"
+  },
+  "scopeTitle": {
+    "message": "Какие чаты сохранить"
+  },
+  "scopeCurrent": {
+    "message": "Текущий чат"
+  },
+  "scopeAllType": {
+    "message": "Все чаты одной категории · автоматическая проверка · каждую партию запускаете вы, вкладка остаётся открытой"
+  },
+  "scopeSelected": {
+    "message": "Выбрать чаты · автоматическая проверка · каждую партию запускаете вы, вкладка остаётся открытой"
+  },
+  "scopeManualPrimer": {
+    "message": "Режим нескольких чатов. Чтобы вернуться к одному чату, выберите выше «Текущий чат». Local Archive проверяет каждый выбранный чат перед добавлением и создаёт один ZIP на партию."
+  },
+  "scopeManualTitle": {
+    "message": "Режим нескольких чатов"
+  },
+  "scopeManualBody": {
+    "message": "Local Archive открывает каждый выбранный чат в этой вкладке, проверяет, отображает ли Telegram его в читаемом виде, и добавляет сообщения в текущий ZIP. План: чатов — $CHATS$ · $BATCHES$. Не закрывайте Telegram; запуск можно остановить и сохранить частично.",
+    "placeholders": {
+      "chats": { "content": "$1" },
+      "batches": { "content": "$2" }
+    }
+  },
+  "commitSummaryTitle": {
+    "message": "Перед началом"
+  },
+  "commitSummaryBody": {
+    "message": "Форматы: $FORMATS$ · Медиа: $MEDIA$. Файлы выше лимита отмечаются как пропущенные; остальная часть ZIP остаётся корректной.",
+    "placeholders": {
+      "formats": { "content": "$1" },
+      "media": { "content": "$2" }
+    }
+  },
+  "commitSummaryNone": {
+    "message": "нет"
+  },
+  "loadingChats": {
+    "message": "Читаю список чатов…"
+  },
+  "noChatsFound": {
+    "message": "Чаты не найдены. Убедитесь, что боковая панель Telegram видна."
+  },
+  "searchChats": {
+    "message": "Найти чат"
+  },
+  "selectAll": {
+    "message": "Выбрать все"
+  },
+  "selectedCount": {
+    "message": "Выбрано: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "selectedScopeSummary": {
+    "message": "Выбрано: $COUNT$ — $NAMES$",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "names": { "content": "$2" }
+    }
+  },
+  "selectedNamesMore": {
+    "message": "+ ещё $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "batchTitle": {
+    "message": "Режим нескольких чатов · $TOTAL_CHATS$ чатов · партий ZIP: $TOTAL_BATCHES$",
+    "placeholders": {
+      "total_chats": { "content": "$1" },
+      "total_batches": { "content": "$2" }
+    }
+  },
+  "batchDetail": {
+    "message": "Партия $ACTIVE$ из $TOTAL$ · чаты $START$–$END$ · в этом ZIP: $SIZE$ · один ZIP на эту партию.",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "total": { "content": "$2" },
+      "start": { "content": "$3" },
+      "end": { "content": "$4" },
+      "size": { "content": "$5" }
+    }
+  },
+  "batchTabGuidance": {
+    "message": "Не закрывайте Telegram · Local Archive открывает и проверяет чаты по одному · один ZIP на партию."
+  },
+  "preflightStripTitle": {
+    "message": "Перед началом"
+  },
+  "preflightStripTabCurrent": {
+    "message": "Не закрывайте вкладку Telegram, пока ZIP не будет готов."
+  },
+  "preflightStripTabMulti": {
+    "message": "Не закрывайте вкладку Telegram. Local Archive открывает выбранные чаты, проверяет разметку и добавляет их в текущий ZIP. Остановить можно в любой момент; после экспорта проверьте ZIP."
+  },
+  "preflightStripScope": {
+    "message": "Сохранить можно только сообщения, доступные этой вкладке."
+  },
+  "preflightStripPassword": {
+    "message": "Запишите пароль или сохраните его отдельно; Local Archive не сможет его восстановить."
+  },
+  "preflightStripNone": {
+    "message": "Без пароля: ZIP сможет прочитать любой, у кого есть файл."
+  },
+  "batchProgress": {
+    "message": "Готово партий: $COMPLETED$ из $TOTAL$ · вся выборка остаётся в очереди.",
+    "placeholders": {
+      "completed": { "content": "$1" },
+      "total": { "content": "$2" }
+    }
+  },
+  "batchReadyStatus": {
+    "message": "Партия $ACTIVE$ готова: запустите и проверьте её до перехода к партии $NEXT$. Готово партий: $COMPLETED$ из $TOTAL$.",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "next": { "content": "$2" },
+      "completed": { "content": "$3" },
+      "total": { "content": "$4" }
+    }
+  },
+  "batchReadyStatusLast": {
+    "message": "Партия $ACTIVE$ готова: запустите и проверьте её. Готово партий: $COMPLETED$ из $TOTAL$.",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "completed": { "content": "$2" },
+      "total": { "content": "$3" }
+    }
+  },
+  "batchProgressComplete": {
+    "message": "Все партии готовы: $TOTAL$ · архивировано чатов: $CHATS$.",
+    "placeholders": {
+      "total": { "content": "$1" },
+      "chats": { "content": "$2" }
+    }
+  },
+  "batchResultProgress": {
+    "message": "Партия $BATCH$ готова · партий: $COMPLETED$ из $TOTAL$ · архивировано чатов: $DONE_CHATS$ из $TOTAL_CHATS$. Ниже можно перейти к следующей проверенной партии.",
+    "placeholders": {
+      "batch": { "content": "$1" },
+      "completed": { "content": "$2" },
+      "total": { "content": "$3" },
+      "done_chats": { "content": "$4" },
+      "total_chats": { "content": "$5" }
+    }
+  },
+  "batchPrevious": {
+    "message": "Предыдущая партия"
+  },
+  "batchNext": {
+    "message": "Следующая партия"
+  },
+  "batchNextRange": {
+    "message": "Далее: партия $BATCH$ ($START$–$END$)",
+    "placeholders": {
+      "batch": { "content": "$1" },
+      "start": { "content": "$2" },
+      "end": { "content": "$3" }
+    }
+  },
+  "batchScopeSummary": {
+    "message": "Партия $ACTIVE$ из $TOTAL$: $SIZE$ из $TOTAL_CHATS$ чатов",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "total": { "content": "$2" },
+      "size": { "content": "$3" },
+      "total_chats": { "content": "$4" }
+    }
+  },
+  "batchScaleGuidance": {
+    "message": "Масштаб: $TOTAL_CHATS$ чатов разделены на $TOTAL_BATCHES$ ZIP. В текущей партии $ACTIVE$ из $TOTAL_BATCHES$ — $SIZE$ чатов; после проверенного экспорта используйте предложенный переход к следующей партии.",
+    "placeholders": {
+      "total_chats": { "content": "$1" },
+      "total_batches": { "content": "$2" },
+      "active": { "content": "$3" },
+      "size": { "content": "$4" }
+    }
+  },
+  "batchResultSummary": {
+    "message": "Партия $ACTIVE$ из $TOTAL$",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "total": { "content": "$2" }
+    }
+  },
+  "batchNextAction": {
+    "message": "Продолжить с партией $ACTIVE$ из $TOTAL$",
+    "placeholders": {
+      "active": { "content": "$1" },
+      "total": { "content": "$2" }
+    }
+  },
+  "batchRunAll": {
+    "message": "Поставить партии в очередь · запускать по одной · проверить каждый ZIP"
+  },
+  "batchRunRemaining": {
+    "message": "Запустить оставшиеся партии"
+  },
+  "batchManifestTitle": {
+    "message": "Передача партий"
+  },
+  "batchManifestCurrent": {
+    "message": "Партия $INDEX$ · чаты $START$–$END$ · текущая партия",
+    "placeholders": { "index": { "content": "$1" }, "start": { "content": "$2" }, "end": { "content": "$3" } }
+  },
+  "batchManifestPending": {
+    "message": "Партия $INDEX$ · чаты $START$–$END$ · ещё не запущена",
+    "placeholders": { "index": { "content": "$1" }, "start": { "content": "$2" }, "end": { "content": "$3" } }
+  },
+  "batchManifestQueued": {
+    "message": "Партия $INDEX$ · чаты $START$–$END$ · ждёт отдельного запуска и проверки",
+    "placeholders": { "index": { "content": "$1" }, "start": { "content": "$2" }, "end": { "content": "$3" } }
+  },
+  "batchManifestVerified": {
+    "message": "Партия $INDEX$ · чаты $START$–$END$ · проверенный ZIP: $FILENAME$",
+    "placeholders": { "index": { "content": "$1" }, "start": { "content": "$2" }, "end": { "content": "$3" }, "filename": { "content": "$4" } }
+  },
+  "batchManifestDownloads": {
+    "message": "сохранён в Downloads"
+  },
+  "batchHandoff": {
+    "message": "Дальше Local Archive откроет в этой вкладке «$NAME$», проверит разметку и добавит чат в текущий ZIP. После экспорта проверьте ZIP.",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "batchResumeHandoff": {
+    "message": "Продолжение: подтверждено ZIP — $DONE$ из $TOTAL$. Запустите партию $BATCH$: Local Archive откроет и проверит её чаты, затем проверьте ZIP.",
+    "placeholders": {
+      "done": { "content": "$1" },
+      "total": { "content": "$2" },
+      "batch": { "content": "$3" }
+    }
+  },
+  "batchNextActionHandoff": {
+    "message": "Продолжить с партией $BATCH$ из $TOTAL$: начать с «$NAME$»; Local Archive откроет и проверит партию, затем проверьте ZIP",
+    "placeholders": {
+      "batch": { "content": "$1" },
+      "total": { "content": "$2" },
+      "name": { "content": "$3" }
+    }
+  },
+  "batchChatProgressTitle": {
+    "message": "Прогресс по чатам"
+  },
+  "batchChatNext": {
+    "message": "Следующий чат: $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "batchChatVerified": {
+    "message": "$NAME$ · проверен",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "batchChatCurrent": {
+    "message": "$NAME$ · будет проверен следующим",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "batchChatQueued": {
+    "message": "$NAME$ · в очереди",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "batchChatMore": {
+    "message": "Ещё чатов в этой партии: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "batchChatAction": {
+    "message": "Продолжить автоматическую проверку чатов",
+    "placeholders": {}
+  },
+  "manualWizardTitle": {
+    "message": "Режим нескольких чатов · автоматическая проверка каждого"
+  },
+  "manualWizardMeta": {
+    "message": "Чат $INDEX$ из $TOTAL$ · добавлено: $VERIFIED$ · один ZIP на партию",
+    "placeholders": {
+      "index": { "content": "$1" },
+      "total": { "content": "$2" },
+      "verified": { "content": "$3" }
+    }
+  },
+  "manualWizardOpen": {
+    "message": "Local Archive откроет в этой вкладке Telegram: «$NAME$»",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "manualWizardCheck": {
+    "message": "Local Archive проверит, отображается ли чат в читаемом виде"
+  },
+  "manualWizardSave": {
+    "message": "Чат добавится в текущий ZIP"
+  },
+  "manualWizardVerify": {
+    "message": "Проверьте ZIP после экспорта"
+  },
+  "manualWizardNext": {
+    "message": "Дальше Local Archive откроет «$NAME$» и проверит его",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "manualWizardNextSave": {
+    "message": "Дальше: подтвердите чек-лист и сохраните этот ZIP"
+  },
+  "manualWizardNextVerify": {
+    "message": "Дальше: проверьте этот ZIP перед переходом к следующему чату"
+  },
+  "manualWizardActionCheck": {
+    "message": "Продолжить автоматическую проверку чатов"
+  },
+  "manualWizardActionReview": {
+    "message": "Проверить обзор и сохранить ZIP"
+  },
+  "manualWizardActionVerify": {
+    "message": "Проверить скачанный ZIP"
+  },
+  "batchProgressQueued": {
+    "message": "Готово партий: $COMPLETED$ из $TOTAL$ · остальные партии в очереди. Каждую партию запускайте отдельно; Local Archive проверит её чаты, а для AES пароль вводится заново.",
+    "placeholders": {
+      "completed": { "content": "$1" },
+      "total": { "content": "$2" }
+    }
+  },
+  "batchResultQueued": {
+    "message": "Партия $BATCH$ готова · партий: $COMPLETED$ из $TOTAL$ · архивировано чатов: $DONE_CHATS$ из $TOTAL_CHATS$. Перейдите к следующей проверенной партии; каждый ZIP запускается и проверяется отдельно.",
+    "placeholders": {
+      "batch": { "content": "$1" },
+      "completed": { "content": "$2" },
+      "total": { "content": "$3" },
+      "done_chats": { "content": "$4" },
+      "total_chats": { "content": "$5" }
+    }
+  },
+  "coverageTargetLabel": {
+    "message": "Самая ранняя нужная дата"
+  },
+  "coverageSettingsTitle": {
+    "message": "Глубина истории и масштаб"
+  },
+  "coverageSettingsHint": {
+    "message": "Необязательная дата, оценка нагрузки и выгрузка партиями"
+  },
+  "coverageTargetHint": {
+    "message": "Необязательно. Local Archive проверит, достигает ли сохранённый диапазон каждого чата этой даты; это не означает, что вся история Telegram выгружена."
+  },
+  "coverageTargetSelected": {
+    "message": "Выбрана дата: $DATE$",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "coverageTargetEmpty": {
+    "message": "Целевая дата не выбрана"
+  },
+  "coveragePreflightTitle": {
+    "message": "Охват до экспорта"
+  },
+  "coveragePreflightNote": {
+    "message": "Сейчас предварительно виден только открытый чат; остальные проверяются во время своего экспорта, а точные периоды будут в квитанции."
+  },
+  "coveragePreflightTarget": {
+    "message": "Цель: дойти до $DATE$ в каждом выбранном чате. Открытый чат виден сейчас; остальные диапазоны проверяются во время экспорта.",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "coveragePreflightOpen": {
+    "message": "$NAME$ — загружено сейчас: $COUNT$ сообщений · самое старое: $DATE$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" },
+      "date": { "content": "$3" }
+    }
+  },
+  "coveragePreflightOpenOne": {
+    "message": "$NAME$ — загружено сейчас: $COUNT$ сообщение · самое старое: $DATE$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" },
+      "date": { "content": "$3" }
+    }
+  },
+  "coveragePreflightOpenUnknown": {
+    "message": "$NAME$ — загружено сейчас: $COUNT$; дата самого старого неизвестна",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" }
+    }
+  },
+  "coveragePreflightPending": {
+    "message": "$NAME$ — точный период появится после экспорта",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "coveragePreflightMore": {
+    "message": "+ ещё чатов: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "coverageCompactCurrent": {
+    "message": "Открытый чат: загружено сейчас $COUNT$ · самое старое $DATE$ · при экспорте может загрузиться больше",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "date": { "content": "$2" }
+    }
+  },
+  "coverageCompactCurrentUnknown": {
+    "message": "Открытый чат: загружено сейчас $COUNT$ · при экспорте может загрузиться больше · самая старая дата неизвестна",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "coverageCompactMulti": {
+    "message": "Выбрано $CHATS$ · в открытом чате загружено сейчас $MESSAGES$ · остальные проверяются при экспорте",
+    "placeholders": {
+      "chats": { "content": "$1" },
+      "messages": { "content": "$2" }
+    }
+  },
+  "coverageCompactTarget": {
+    "message": "Нужна история до $DATE$ · $DETAIL$",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "detail": { "content": "$2" }
+    }
+  },
+  "scaleGuidanceCurrent": {
+    "message": "Сейчас в Telegram загружено сообщений: $COUNT$. При экспорте Local Archive может загрузить больше; большая история или крупные файлы могут потребовать нескольких минут и заметного объёма памяти браузера.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "scaleGuidanceMulti": {
+    "message": "Масштаб: чатов в очереди — $COUNT$ (до $MAX$ в одном архиве). Чаты обрабатываются по одному; большую выборку экспортируйте партиями по $MAX$, затем выбирайте следующую партию.",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "max": { "content": "$2" }
+    }
+  },
+  "manualEffortCompact": {
+    "message": "Чатов: $CHATS$ · $BATCHLABEL$ · Local Archive проверит каждый и соберёт один ZIP",
+    "placeholders": {
+      "chats": { "content": "$1" },
+      "batchLabel": { "content": "$2" }
+    }
+  },
+  "manualBatchOne": {
+    "message": "1 ZIP"
+  },
+  "manualBatchMany": {
+    "message": "$COUNT$ ZIP",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "manualEffortProgress": {
+    "message": "$VERIFIED$ из $TOTAL$ чатов проверено · дальше: $NEXT$",
+    "placeholders": {
+      "verified": { "content": "$1" },
+      "total": { "content": "$2" },
+      "next": { "content": "$3" }
+    }
+  },
+  "manualEffortGuidance": {
+    "message": "Автоматическая проверка чатов: Local Archive по одному откроет $CHATS$ чатов, проверит читаемое отображение и соберёт $BATCHLABEL$.",
+    "placeholders": {
+      "chats": { "content": "$1" },
+      "batchLabel": { "content": "$2" }
+    }
+  },
+  "preparationTitle": {
+    "message": "Проверка перед экспортом"
+  },
+  "preparationHistoryTitle": {
+    "message": "Автоматическое сканирование истории"
+  },
+  "preparationWorkloadTitle": {
+    "message": "Проверьте нагрузку"
+  },
+  "preparationProtectionTitle": {
+    "message": "Подготовьтесь открыть ZIP"
+  },
+  "preparationProtectionAes": {
+    "message": "Запишите пароль или сохраните его отдельно — Local Archive не сможет его восстановить. $APP$ После скачивания нажмите «Проверить скачанный ZIP» ниже.",
+    "placeholders": { "app": { "content": "$1" } }
+  },
+  "preparationProtectionNone": {
+    "message": "Без пароля ZIP сможет прочитать любой, у кого есть файл. После скачивания нажмите «Проверить скачанный ZIP» ниже."
+  },
+  "preparationCompact": {
+    "message": "$WORKLOAD$ · $SCOPE$ · $PROTECTION$",
+    "placeholders": {
+      "workload": { "content": "$1" },
+      "scope": { "content": "$2" },
+      "protection": { "content": "$3" }
+    }
+  },
+  "preparationCompactRendered": {
+    "message": "сообщения, доступные в этой вкладке"
+  },
+  "preparationCompactNoMessages": {
+    "message": "Не готово · откройте чат и повторите проверку"
+  },
+  "preparationCompactAes": {
+    "message": "Архив: ZIP с паролем AES-256"
+  },
+  "preparationCompactLive": {
+    "message": "Интерфейс Telegram: читается"
+  },
+  "preparationCompactNone": {
+    "message": "Архив: ZIP без шифрования"
+  },
+  "preparationCompactLarge": {
+    "message": "Большой экспорт"
+  },
+  "historyCoachStart": {
+    "message": "Предпросмотр старой истории"
+  },
+  "historyCoachTitle": {
+    "message": "Необязательный предпросмотр истории"
+  },
+  "historyCoachBody": {
+    "message": "Во время экспорта Local Archive автоматически проверяет новые и загружает старые сообщения. Если хотите заранее увидеть дату, прокрутите вверх до самого старого нужного сообщения и обновите эту проверку."
+  },
+  "historyCoachReturn": {
+    "message": "Обновить проверку"
+  },
+  "preparationAppWindows": {
+    "message": "В Windows используйте 7-Zip или PeaZip с официального сайта разработчика."
+  },
+  "preparationAppMac": {
+    "message": "В macOS используйте PeaZip с официального сайта разработчика."
+  },
+  "preparationAppLinux": {
+    "message": "В Linux используйте PeaZip или 7-Zip с официального сайта либо из менеджера пакетов."
+  },
+  "preparationAppOther": {
+    "message": "Используйте PeaZip с официального сайта."
+  },
+  "aesHelpOpen": {
+    "message": "Инструкция для первого запуска"
+  },
+  "aesGetPeaZip": {
+    "message": "Скачать PeaZip"
+  },
+  "aesGet7Zip": {
+    "message": "Скачать 7-Zip"
+  },
+  "aesOfficialSource": {
+    "message": "Официальный источник"
+  },
+  "liveCheckTitle": {
+    "message": "Проверка интерфейса Telegram:"
+  },
+  "liveCheckPassed": {
+    "message": "Интерфейс Telegram в открытом чате читается · распознано видимых сообщений: $RECOGNIZED$ из $RENDERED$. Даты истории, незагруженные сообщения и медиа проверяются отдельно.",
+    "placeholders": {
+      "recognized": { "content": "$1" },
+      "rendered": { "content": "$2" }
+    }
+  },
+  "technicalDetailsTitle": {
+    "message": "Технические детали (необязательно)"
+  },
+  "technicalDetailsValue": {
+    "message": "Распознанный интерфейс Telegram: $LAYOUT$ · поддерживаемый контракт: отрисованные сообщения со стабильными ID и читаемым содержимым",
+    "placeholders": { "layout": { "content": "$1" } }
+  },
+  "technicalDetailsFailure": {
+    "message": "Детали распознавания: $LAYOUT$",
+    "placeholders": { "layout": { "content": "$1" } }
+  },
+  "liveCheckNoChat": {
+    "message": "Не готово · откройте чат в этой вкладке."
+  },
+  "liveCheckNoMessages": {
+    "message": "Не готово · дождитесь появления сообщений."
+  },
+  "liveCheckUnsupported": {
+    "message": "Заблокировано · расширение не может безопасно прочитать эту разметку сообщений Telegram."
+  },
+  "liveCheckLayoutUnknown": {
+    "message": "разметка не распознана"
+  },
+  "compatibilityRefresh": {
+    "message": "Проверить сейчас"
+  },
+  "compatibilityNoChat": {
+    "message": "Открытый чат не найден. Нажмите «Предпросмотр старой истории», откройте чат Telegram и обновите проверку. Если чат уже открыт, этот вариант интерфейса Telegram пока не поддерживается."
+  },
+  "compatibilityNoMessages": {
+    "message": "Отображаемые сообщения не найдены. Telegram может ещё загружаться, чат может быть пустым или его разметка изменилась. Подождите и нажмите «Проверить ещё раз»; экспорт заблокирован, пока не найдено читаемое сообщение."
+  },
+  "compatibilityUnsupported": {
+    "message": "Сообщения видны, но эта разметка Telegram не даёт безопасно прочитать стабильные ID и текст. Экспорт заблокирован; повторите проверку после загрузки или обновите Local Archive."
+  },
+  "validationNoMessages": {
+    "message": "Читаемые сообщения не найдены. Откройте или загрузите чат, затем обновите проверку перед экспортом."
+  },
+  "runBoundaryMulti": {
+    "message": "Только локально: ZIP содержит сообщения, которые Local Archive загрузил из выбранных чатов в этой вкладке, а не полную копию аккаунта. Каждый чат проверяется отдельно, точный диапазон будет в квитанции."
+  },
+  "runBoundaryLong": {
+    "message": "Перед большим экспортом: Local Archive автоматически догружает старую историю из этой разрешённой вкладки Telegram и записывает точный сохранённый диапазон; это не полная резервная копия аккаунта."
+  },
+  "preparationDetailsTitle": {
+    "message": "Дополнительные детали (необязательно)"
+  },
+  "preparationDetailsHint": {
+    "message": "Откройте только для даты, нагрузки или открытия ZIP"
+  },
+  "preparationPlainTitle": {
+    "message": "Три решения перед экспортом"
+  },
+  "preparationPlainSave": {
+    "message": "Local Archive автоматически догружает старую историю; точный достигнутый диапазон будет в отчёте этой вкладки Telegram."
+  },
+  "preparationPlainMissing": {
+    "message": "Если Telegram перестанет загружать историю или вы нажмёте «Стоп», отчёт отметит запуск как частичный; большая история требует больше времени и памяти."
+  },
+  "preparationPlainOpenAes": {
+    "message": "Открытие: ZIP без пароля — в Firefox; AES-256 — в PeaZip или 7-Zip."
+  },
+  "preparationPlainOpenNone": {
+    "message": "Защита: без пароля; файл сможет прочитать любой."
+  },
+  "preparationNextTitle": {
+    "message": "Следующий шаг"
+  },
+  "preparationNextCurrent": {
+    "message": "Дальше: подтвердите эти три проверки и используйте главное действие."
+  },
+  "preparationNextReady": {
+    "message": "Дальше: используйте главное действие; Firefox проверит ZIP до скачивания."
+  },
+  "preparationNextBatch": {
+    "message": "Дальше: поставьте партии в очередь. Для каждой запустите автоматическую проверку чатов: Local Archive откроет и проверит их, затем проверьте ZIP перед продолжением."
+  },
+  "preparationNextMulti": {
+    "message": "Дальше: запустите автоматическую проверку чатов; Local Archive откроет и проверит выбранные чаты, соберёт этот ZIP, затем проверьте его."
+  },
+  "preparationNextCompatibility": {
+    "message": "Дальше: откройте чат Telegram и снова запустите проверку перед продолжением."
+  },
+  "workloadDetailsTitle": {
+    "message": "Детали нагрузки (необязательно)"
+  },
+  "workloadCompactCurrent": {
+    "message": "$LEVEL$ · загружено сейчас: $COUNT$ · $MEDIA$",
+    "placeholders": {
+      "level": { "content": "$1" },
+      "count": { "content": "$2" },
+      "media": { "content": "$3" }
+    }
+  },
+  "workloadCompactMulti": {
+    "message": "$LEVEL$ · чатов: $COUNT$ · $MEDIA$",
+    "placeholders": {
+      "level": { "content": "$1" },
+      "count": { "content": "$2" },
+      "media": { "content": "$3" }
+    }
+  },
+  "workloadAdviceSample": {
+    "message": "Запустить необязательный пример ZIP"
+  },
+  "preparationCompactSampleRecommended": {
+    "message": "Необязательный пример ZIP не запускался"
+  },
+  "preparationCompactSamplePassed": {
+    "message": "Необязательный пример ZIP пройден: $COUNT$ сообщений",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
+  "collapsedSampleAction": {
+    "message": "Запустить пример ZIP"
+  },
+  "passwordPanelTitle": {
+    "message": "Сохраните этот пароль до экспорта"
+  },
+  "preparationCompactCurrent": {
+    "message": "1 чат · сейчас видно сообщений: $COUNT$",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
+  "preparationCompactCurrentUnknown": {
+    "message": "1 чат · сейчас видно сообщений: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "preparationCompactMulti": {
+    "message": "Режим нескольких чатов · чатов: $CHATS$ · $VISIBLE$",
+    "placeholders": {
+      "chats": { "content": "$1" },
+      "visible": { "content": "$2" }
+    }
+  },
+  "preparationCompactGoal": {
+    "message": "Цель истории: дойти до $DATE$",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "batchAggregateCoverage": {
+    "message": "Цель по дате: $REACHED$/$REQUESTED$ чатов достигли $DATE$.",
+    "placeholders": {
+      "reached": { "content": "$1" },
+      "requested": { "content": "$2" },
+      "date": { "content": "$3" }
+    }
+  },
+  "preparationNextSimple": {
+    "message": "Дальше: подтвердите короткий обзор и используйте главное действие. ZIP откроется в Firefox без отдельного архиватора."
+  },
+  "privatePreflightTitle": {
+    "message": "Необязательный пример ZIP"
+  },
+  "privatePreflightIdle": {
+    "message": "Необязательно: проверить до 10 текущих или соседних сообщений, локально открыть ZIP и вернуться сюда. Это не меняет экспорт, не сохраняет файл и ничего не отправляет."
+  },
+  "privatePreflightWorking": {
+    "message": "Проверяем небольшой пример и локально открываем его…"
+  },
+  "privatePreflightPassed": {
+    "message": "Пройдено · реальных сообщений: $COUNT$ · проверено: $DIRECTIONS$ · локально открыто · $PROTECTION$ · позиция восстановлена · файл не сохранён",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "directions": { "content": "$2" },
+      "protection": { "content": "$3" }
+    }
+  },
+  "privatePreflightFailed": {
+    "message": "Проверка примера не пройдена. Перезагрузите Telegram Web или измените защиту ZIP и повторите."
+  },
+  "privatePreflightAction": {
+    "message": "Запустить пример ZIP"
+  },
+  "privatePreflightAgain": {
+    "message": "Повторить пример"
+  },
+  "liveSmokeTitle": {
+    "message": "Живая проверка одного сообщения"
+  },
+  "liveSmokeIdle": {
+    "message": "По вашему действию: прочитать одно реальное сообщение в этой вкладке Telegram, собрать и локально открыть ZIP — файл не сохраняется."
+  },
+  "liveSmokeWorking": {
+    "message": "Проверяю одно реальное сообщение и локально открываю ZIP…"
+  },
+  "liveSmokePassed": {
+    "message": "Пройдено · 1 реальное сообщение · ZIP открыт локально · файл не сохранён"
+  },
+  "liveSmokeFailed": {
+    "message": "Проверка одного сообщения не пройдена. Перезагрузите Telegram Web или нажмите «Проверить сейчас», затем повторите."
+  },
+  "liveSmokeAction": {
+    "message": "Проверить одно сообщение"
+  },
+  "liveSmokeAgain": {
+    "message": "Повторить живую проверку"
+  },
+  "preflightFooterRecommended": {
+    "message": "Перед этим запуском рекомендуется проверить соседнюю историю"
+  },
+  "preflightFooterWorking": {
+    "message": "Проверяю соседнюю историю…"
+  },
+  "preflightFooterPassed": {
+    "message": "Проверка соседней истории пройдена · сообщений: $COUNT$ · файл не сохранён",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "preflightFooterFailed": {
+    "message": "Проверке соседней истории нужно внимание"
+  },
+  "privatePreflightPassword": {
+    "message": "Сначала введите и подтвердите пароль архива, чтобы проверить выбранный маршрут AES."
+  },
+  "privatePreflightFormat": {
+    "message": "Сначала выберите HTML, JSON или оба формата."
+  },
+  "privatePreflightDirectionsBoth": {
+    "message": "ближайшая новая и старая история"
+  },
+  "privatePreflightDirectionsNewer": {
+    "message": "ближайшая новая история"
+  },
+  "privatePreflightDirectionsOlder": {
+    "message": "ближайшая старая история"
+  },
+  "privatePreflightDirectionsVisible": {
+    "message": "текущая видимая страница"
+  },
+  "workloadTitle": {
+    "message": "До запуска —"
+  },
+  "workloadLevelLight": {
+    "message": "Лёгкая нагрузка"
+  },
+  "workloadLevelModerate": {
+    "message": "Средняя нагрузка"
+  },
+  "workloadLevelHeavy": {
+    "message": "Высокая нагрузка"
+  },
+  "workloadVerifierLimit": {
+    "message": "Встроенная проверка читает до 512 МБ HTML/JSON; больший архив открывайте в PeaZip или 7-Zip."
+  },
+  "workloadAdviceModerate": {
+    "message": "Перед длинным или многчатовым экспортом сначала проверьте соседнюю историю. Затем экспортируйте по одному чату; если основной объём дают медиа, отключите видео/файлы или уменьшите лимиты на один файл."
+  },
+  "workloadAdviceTarget": {
+    "message": "Перед экспортом с целью по дате сначала проверьте соседнюю историю, затем убедитесь, что сохранённый диапазон дошёл до нужной даты."
+  },
+  "workloadAdviceHeavy": {
+    "message": "Перед большим экспортом сначала проверьте соседнюю историю, затем разделите выборку на небольшие партии или экспортируйте сначала текст и фото. Лимиты на файл применяются; встроенная проверка читает до 512 МБ HTML/JSON, поэтому больший ZIP проверьте в PeaZip или 7-Zip."
+  },
+  "capabilityLimitChats": {
+    "message": "До $COUNT$ чатов в одном ZIP. Большая выборка делится на проверенные партии; не закрывайте вкладку Telegram, пока проверяется каждый чат.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "capabilityLimitReadable": {
+    "message": "Встроенная проверка читает до 512 МБ HTML/JSON. Большие ZIP остаются корректными; открывайте их в PeaZip или 7-Zip."
+  },
+  "workloadCurrent": {
+    "message": "$LEVEL$ · 1 чат · загружено сейчас $MESSAGES$ · $MEDIA$ · лимиты: $CAPS$. При экспорте Local Archive может загрузить больше; итоговый размер измеряется после загрузки, а пиковая память может превысить размер ZIP. $LIMIT$",
+    "placeholders": {
+      "level": { "content": "$1" },
+      "messages": { "content": "$2" },
+      "media": { "content": "$3" },
+      "caps": { "content": "$4" },
+      "limit": { "content": "$5" }
+    }
+  },
+  "workloadMulti": {
+    "message": "$LEVEL$ · чатов: $CHATS$ · загружено в открытом чате сейчас: $MESSAGES$ · $MEDIA$ · лимиты: $CAPS$. Остальные объёмы измеряются во время экспорта; пиковая память может превысить размер ZIP. $LIMIT$",
+    "placeholders": {
+      "level": { "content": "$1" },
+      "chats": { "content": "$2" },
+      "messages": { "content": "$3" },
+      "media": { "content": "$4" },
+      "caps": { "content": "$5" },
+      "limit": { "content": "$6" }
+    }
+  },
+  "workloadMediaNone": {
+    "message": "только текст"
+  },
+  "workloadMediaCount": {
+    "message": "типов медиа: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "workloadMediaOne": {
+    "message": "1 тип медиа"
+  },
+  "workloadCapsNone": {
+    "message": "в этой выборке нет"
+  },
+  "footerScopeCurrent": {
+    "message": "Текущий: $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "footerScopeSelected": {
+    "message": "Выбрано чатов: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "footerScopeCategory": {
+    "message": "Категория: $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "footerScopeSummary": {
+    "message": "$SCOPE$ · $FORMATS$",
+    "placeholders": {
+      "scope": { "content": "$1" },
+      "formats": { "content": "$2" }
+    }
+  },
+  "categoryPersonal": {
+    "message": "Личные чаты"
+  },
+  "categoryBots": {
+    "message": "Боты"
+  },
+  "categoryGroups": {
+    "message": "Группы"
+  },
+  "categoryChannels": {
+    "message": "Каналы"
+  },
+  "outputTitle": {
+    "message": "Форматы"
+  },
+  "outputDescription": {
+    "message": "Оставьте оба варианта, если нужна удобная копия и данные для дальнейшей обработки."
+  },
+  "mediaTitle": {
+    "message": "Медиафайлы"
+  },
+  "mediaDescription": {
+    "message": "Перед сохранением размер каждого файла сверяется с выбранным пределом."
+  },
+  "moreMediaTitle": {
+    "message": "Другие медиафайлы"
+  },
+  "moreMediaStatus": {
+    "message": "Выбрано: $COUNT$ · Видео, стикеры и файлы",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "moreMediaStatusNone": {
+    "message": "Видео, стикеры и файлы"
+  },
+  "protectionTitle": {
+    "message": "Как вы откроете ZIP?"
+  },
+  "protectionDescription": {
+    "message": "Нужно открыть архив сразу в Firefox? Выберите вариант без пароля. Есть или установите PeaZip/7-Zip? Оставьте AES-256."
+  },
+  "protectionPrimerTitle": {
+    "message": "Выберите защиту архива"
+  },
+  "protectionPrimerAes": {
+    "message": "Защита паролем: AES-256 требует PeaZip или 7-Zip. Сохраните пароль отдельно до экспорта."
+  },
+  "protectionPrimerNone": {
+    "message": "По умолчанию ZIP создаётся без пароля: его проще открыть, но любой с файлом сможет его прочитать."
+  },
+  "protectionPrimerAction": {
+    "message": "Изменить защиту ZIP"
+  },
+  "missingSummaryAction": {
+    "message": "Что может не попасть?"
+  },
+  "protectionOpeningWarning": {
+    "message": "Выберите между приватностью и простым открытием: AES-256 приватен, но требует PeaZip/7-Zip; ZIP без пароля откроется в Firefox, но доступен любому с файлом."
+  },
+  "preparationCompactVerifier": {
+    "message": "проверка до 512 МБ HTML/JSON · большую выборку разделите или проверьте архиватором"
+  },
+  "protectionEnable": {
+    "message": "Запрашивать пароль при открытии ZIP"
+  },
+  "protectionEnableHint": {
+    "message": "Используется AES-256. Пароль хранится только в памяти до конца этого экспорта."
+  },
+  "protectionChoiceAesTitle": {
+    "message": "ZIP с паролем · нужен PeaZip/7-Zip"
+  },
+  "protectionChoiceAesHint": {
+    "message": "AES-256 · Firefox сам его не откроет · храните пароль отдельно"
+  },
+  "protectionChoiceNoneTitle": {
+    "message": "ZIP без пароля · проще всего открыть"
+  },
+  "protectionChoiceNoneHint": {
+    "message": "Распакуйте и откройте messages.html в Firefox · файл сможет прочитать любой"
+  },
+  "footerProtectionNone": {
+    "message": "ZIP без шифрования · распакуйте и откройте в Firefox · файл сможет прочитать любой"
+  },
+  "footerProtectionAes": {
+    "message": "AES-256 · храните пароль отдельно · откройте в PeaZip или 7-Zip"
+  },
+  "passwordLabel": {
+    "message": "Пароль"
+  },
+  "passwordConfirmLabel": {
+    "message": "Повторите пароль"
+  },
+  "passwordHint": {
+    "message": "До создания архива запишите пароль или сохраните его отдельно. После экспорта Local Archive очистит его и не сможет восстановить. Минимум 8 символов. Некоторые встроенные распаковщики не открывают AES-зашифрованные ZIP; используйте архиватор с явной поддержкой AES ZIP."
+  },
+  "aesHelpTitle": {
+    "message": "Как открыть ZIP с AES"
+  },
+  "aesHelpHint": {
+    "message": "Официальные ссылки и четыре шага для первого запуска"
+  },
+  "aesHelpStepDownload": {
+    "message": "Дождитесь, пока Firefox полностью скачает ZIP."
+  },
+  "aesHelpStepOpen": {
+    "message": "Откройте ZIP в PeaZip или 7-Zip."
+  },
+  "aesHelpStepPassword": {
+    "message": "Введите пароль, который сохранили перед экспортом."
+  },
+  "aesHelpStepExtract": {
+    "message": "Распакуйте папку, затем откройте messages.html в Firefox; result.json сохраните для дальнейшей обработки."
+  },
+  "aesAppWindows": {
+    "message": "Для Windows: 7-Zip или PeaZip. Используйте одну из официальных ссылок ниже."
+  },
+  "aesAppMac": {
+    "message": "Для macOS: PeaZip. Используйте официальную ссылку ниже."
+  },
+  "aesAppLinux": {
+    "message": "Для Linux: PeaZip или 7-Zip. Используйте официальную ссылку ниже либо пакетный менеджер системы."
+  },
+  "aesAppOther": {
+    "message": "Рекомендуется PeaZip. Используйте официальную ссылку ниже."
+  },
+  "aesCompatibilityNote": {
+    "message": "Совместимость: Local Archive создаёт ZIP с AES-256 / WinZip AES, а не устаревшим ZipCrypto. Используйте архиватор, в документации которого явно указана поддержка AES-256 ZIP или WinZip AES."
+  },
+  "aesHelpSafety": {
+    "message": "Проверьте распакованный архив, прежде чем удалять или заменять исходные данные."
+  },
+  "unencryptedConfirmTitle": {
+    "message": "Этот ZIP не будет зашифрован."
+  },
+  "unencryptedConfirmBody": {
+    "message": "Его сможет прочитать любой, кто получит файл. Включите AES-256 выше или подтвердите скачивание без шифрования."
+  },
+  "createUnencrypted": {
+    "message": "Создать ZIP без шифрования · открыть в Firefox после распаковки"
+  },
+  "localOnlyTitle": {
+    "message": "Переписка не покидает браузер"
+  },
+  "localOnlyBody": {
+    "message": "Архив собирается локально, переписка никуда не загружается. По умолчанию ZIP создаётся без пароля; AES-256 доступен в дополнительных настройках."
+  },
+  "renderedScopeNote": {
+    "message": "Во время экспорта Local Archive автоматически проходит к новым и старым сообщениям и ждёт загрузки каждой страницы Telegram Web. В квитанции будет точный загруженный диапазон; полнота истории аккаунта не гарантируется."
+  },
+  "preExportScopeWarning": {
+    "message": "Local Archive автоматически сканирует старые и новые сообщения. Просматривайте историю заранее только для проверки даты; в отчёте будет точный диапазон."
+  },
+  "preExportMultiScopeWarning": {
+    "message": "Local Archive автоматически проверяет каждый выбранный чат и указывает его точный диапазон. Откройте просмотр текущего чата только для проверки даты."
+  },
+  "preExportTargetCurrent": {
+    "message": "Обязательная цель: сохранить открытый чат до $TARGET$. Сейчас самое старое видимое сообщение датировано $OLDEST$; Local Archive автоматически загрузит старые сообщения и сообщит, достигнут ли нужный диапазон.",
+    "placeholders": {
+      "target": { "content": "$1" },
+      "oldest": { "content": "$2" }
+    }
+  },
+  "preExportTargetCurrentUnknown": {
+    "message": "Обязательная цель: сохранить открытый чат до $TARGET$. Local Archive автоматически просканирует историю и сообщит, достигнут ли точный сохранённый диапазон.",
+    "placeholders": { "target": { "content": "$1" } }
+  },
+  "preExportTargetMulti": {
+    "message": "Обязательная цель: сохранить каждый выбранный чат до $TARGET$. Local Archive автоматически просканирует каждый чат и сообщит, достигнут ли нужный диапазон во всех чатах.",
+    "placeholders": { "target": { "content": "$1" } }
+  },
+  "historyReadyCurrent": {
+    "message": "Проверка интерфейса Telegram для открытого чата пройдена. Я отдельно просмотрел диапазон истории, нагрузку и защиту ZIP."
+  },
+  "historyReadyMulti": {
+    "message": "Проверка интерфейса Telegram для открытого чата пройдена; каждый выбранный чат проверяется перед добавлением. Я отдельно просмотрел диапазоны истории, нагрузку и защиту ZIP."
+  },
+  "historyReadyBadgeRequired": {
+    "message": "Нужно проверить"
+  },
+  "historyReadyBadgeDone": {
+    "message": "Готово"
+  },
+  "oldestLoadedValue": {
+    "message": "Самое старое загруженное сообщение в открытом чате: $DATE$",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "oldestLoadedUnknown": {
+    "message": "Не удалось определить дату самого старого загруженного сообщения — проверьте чат вручную перед экспортом."
+  },
+  "loadedCountValue": {
+    "message": "Сейчас в Telegram загружено сообщений: $COUNT$. При экспорте Local Archive может загрузить больше; большую историю безопаснее выгружать по одному чату, сохраняя готовую часть при остановке.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "loadedCountValueOne": {
+    "message": "Сейчас в Telegram загружено $COUNT$ сообщение. При экспорте Local Archive может загрузить больше; большую историю безопаснее выгружать по одному чату, сохраняя готовую часть при остановке.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "close": {
+    "message": "Закрыть"
+  },
+  "cancelExport": {
+    "message": "Остановить и сохранить готовую часть"
+  },
+  "exportNow": {
+    "message": "Сохранить защищённый ZIP · открыть в PeaZip или 7-Zip"
+  },
+  "exportNowUnencrypted": {
+    "message": "Сохранить ZIP без шифрования · открыть в Firefox после распаковки"
+  },
+  "exportReviewFirst": {
+    "message": "Сначала завершите обязательную проверку"
+  },
+  "createAnother": {
+    "message": "Создать ещё"
+  },
+  "retryExport": {
+    "message": "Повторить"
+  },
+  "exporting": {
+    "message": "Создаю архив…"
+  },
+  "completeTitle": {
+    "message": "ZIP создан · Firefox сохраняет файл"
+  },
+  "downloadSavingTitle": {
+    "message": "ZIP создан · Firefox сохраняет файл"
+  },
+  "downloadCompleteTitle": {
+    "message": "Скачивание завершено"
+  },
+  "downloadSavingHint": {
+    "message": "Firefox сохраняет ZIP · не закрывайте эту вкладку."
+  },
+  "downloadCompleteHint": {
+    "message": "ZIP скачан · эту вкладку можно закрыть."
+  },
+  "downloadInterruptedHint": {
+    "message": "Скачивание остановлено · не закрывайте вкладку и повторите попытку."
+  },
+  "downloadUnknownHint": {
+    "message": "Перед закрытием вкладки проверьте загрузки Firefox."
+  },
+  "downloadInterruptedTitle": {
+    "message": "ZIP создан · скачивание в Firefox прервано"
+  },
+  "downloadUnknownTitle": {
+    "message": "ZIP создан · проверьте загрузки Firefox"
+  },
+  "resultFileLabel": {
+    "message": "Файл"
+  },
+  "resultSizeLabel": {
+    "message": "Размер архива"
+  },
+  "resultProtectionLabel": {
+    "message": "Защита"
+  },
+  "resultProtectionAes": {
+    "message": "Пароль AES-256"
+  },
+  "resultProtectionNone": {
+    "message": "Без пароля"
+  },
+  "resultValidationLabel": {
+    "message": "Локальная проверка"
+  },
+  "resultValidationPassed": {
+    "message": "Пройдена · файлов: $COUNT$ · отчёт читается",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultValidationStructure": {
+    "message": "Пройдена · файлов: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultOpenHelp": {
+    "message": "Проверьте скачанный ZIP кнопкой ниже, затем распакуйте его и откройте messages.html. result.json пригодится для дальнейшей обработки."
+  },
+  "resultOpenHelpEncrypted": {
+    "message": "Проверьте AES-ZIP ниже, повторно введя пароль, затем откройте его в PeaZip или 7-Zip и запустите messages.html."
+  },
+  "resultAesGuideTitle": {
+    "message": "Дальше: откройте защищённый ZIP"
+  },
+  "resultAesGuideBody": {
+    "message": "Архив готов. Откройте его в PeaZip или 7-Zip; после распаковки Firefox откроет messages.html."
+  },
+  "resultAesGuideStepStart": {
+    "message": "Откройте скачанный ZIP в PeaZip или 7-Zip."
+  },
+  "resultAesGuideOpenButton": {
+    "message": "Как открыть этот ZIP"
+  },
+  "resultDetailsTitle": {
+    "message": "Полная квитанция"
+  },
+  "resultPrimaryTitle": {
+    "message": "ZIP локально проверен · Firefox сохраняет файл"
+  },
+  "resultPrimarySavingTitle": {
+    "message": "ZIP локально проверен · Firefox сохраняет файл"
+  },
+  "resultPrimaryDownloadedTitle": {
+    "message": "Сохранённый ZIP локально проверен · скачивание завершено"
+  },
+  "resultPrimaryInterruptedTitle": {
+    "message": "ZIP локально проверен · скачивание в Firefox прервано"
+  },
+  "resultPrimaryDownloadUnknownTitle": {
+    "message": "ZIP локально проверен · подтвердите сохранённый файл в загрузках Firefox"
+  },
+  "resultPrimaryFile": {
+    "message": "Файл: $VALUE$",
+    "placeholders": { "value": { "content": "$1" } }
+  },
+  "resultPrimaryOmissions": {
+    "message": "Часть элементов пропущена — подробности ниже."
+  },
+  "resultOmissionAction": {
+    "message": "Проверить пропуски → изменить лимит → повторить экспорт"
+  },
+  "resultOmissionActionOne": {
+    "message": "Проверить 1 пропущенный медиафайл → изменить лимит → повторить экспорт"
+  },
+  "resultOmissionActionMany": {
+    "message": "Проверить пропущенные медиа: $COUNT$ → изменить лимит → повторить экспорт",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultPrimaryOmissionSpecific": {
+    "message": "Пропущено: $DETAIL$",
+    "placeholders": { "detail": { "content": "$1" } }
+  },
+  "resultPrimaryOmissionExact": {
+    "message": "Пропущено: $NAME$ · $TYPE$ · $ACTUAL$ больше лимита $LIMIT$ · сообщение $MESSAGE$ в чате $CHAT$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "type": { "content": "$2" },
+      "actual": { "content": "$3" },
+      "limit": { "content": "$4" },
+      "message": { "content": "$5" },
+      "chat": { "content": "$6" }
+    }
+  },
+  "resultOmissionActionExact": {
+    "message": "Исправить $NAME$: изменить лимит «$TYPE$» с $LIMIT$ до $ACTUAL$ или больше",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "type": { "content": "$2" },
+      "limit": { "content": "$3" },
+      "actual": { "content": "$4" }
+    }
+  },
+  "resultPrimaryNextOmissionExact": {
+    "message": "Восстановление: увеличьте выделенный лимит «$TYPE$» с $LIMIT$ минимум до $ACTUAL$ → создайте новый архив → проверьте новый ZIP. В текущем ZIP уже есть весь текст и остальные включённые медиа.",
+    "placeholders": {
+      "type": { "content": "$1" },
+      "limit": { "content": "$2" },
+      "actual": { "content": "$3" }
+    }
+  },
+  "resultPrimaryNextSelectedOmissionExact": {
+    "message": "Восстановление: увеличьте выделенный лимит «$TYPE$» с $LIMIT$ минимум до $ACTUAL$ → создайте новый архив → проверьте новый ZIP. Все выбранные чаты и остальные включённые элементы уже есть в текущем ZIP.",
+    "placeholders": {
+      "type": { "content": "$1" },
+      "limit": { "content": "$2" },
+      "actual": { "content": "$3" }
+    }
+  },
+  "resultPrimaryNextBatchOmissionExact": {
+    "message": "Восстановление этого батча: увеличьте выделенный лимит «$TYPE$» с $LIMIT$ минимум до $ACTUAL$ → создайте новый архив → проверьте новый ZIP. Либо оставьте пропуск и перейдите к следующему батчу «$NAME$».",
+    "placeholders": {
+      "type": { "content": "$1" },
+      "limit": { "content": "$2" },
+      "actual": { "content": "$3" },
+      "name": { "content": "$4" }
+    }
+  },
+  "resultPrimaryMissing": {
+    "message": "Сохранено здесь: $INCLUDED$ · за пределами ZIP: $MISSING$ · это не полный архив Telegram",
+    "placeholders": {
+      "included": { "content": "$1" },
+      "missing": { "content": "$2" }
+    }
+  },
+  "resultPrimaryNoOmissions": {
+    "message": "Пропусков элементов нет."
+  },
+  "resultPrimaryNextAes": {
+    "message": "Рекомендуется: проверьте скачанный ZIP своим паролем, затем распакуйте его в PeaZip или 7-Zip и откройте messages.html."
+  },
+  "resultPrimaryNextNone": {
+    "message": "Рекомендуется: проверьте скачанный ZIP, затем распакуйте его и откройте messages.html в Firefox."
+  },
+  "resultPrimaryNextSelected": {
+    "message": "Дальше: проверьте этот ZIP — все выбранные чаты уже вошли в архив."
+  },
+  "resultPrimaryNextBatch": {
+    "message": "Дальше: проверьте этот ZIP, затем переключите Telegram на «$NAME$» и продолжите следующий батч.",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "resultPrimaryNextBatchOmissions": {
+    "message": "Дальше: проверьте этот ZIP, затем переключите Telegram на «$NAME$» и продолжите следующий батч. Пропущенные медиа можно повторить позже, увеличив лимит или включив их тип.",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "resultPrimaryNextBatchesComplete": {
+    "message": "Дальше: проверьте этот ZIP — все запланированные батчи завершены."
+  },
+  "resultPrimaryNextBatchesCompleteOmissions": {
+    "message": "Дальше: проверьте этот ZIP — все запланированные батчи завершены. Пропущенные медиа можно повторить, увеличив лимит или включив их тип."
+  },
+  "resultPrimaryNextSelectedOmissions": {
+    "message": "Дальше: проверьте этот ZIP — все выбранные чаты уже вошли в него. Чтобы добавить пропущенные медиа, увеличьте лимит или включите их тип и экспортируйте снова."
+  },
+  "resultPrimaryNextPartialMulti": {
+    "message": "Дальше: проверьте частичный ZIP, затем снова откройте незавершённый чат и экспортируйте его; остальные чаты пока ждут."
+  },
+  "resultPrimaryStatusPartial": {
+    "message": "Частичный архив"
+  },
+  "resultPrimaryStatusReachedYes": {
+    "message": "Цель истории достигнута"
+  },
+  "resultPrimaryStatusReachedNo": {
+    "message": "Цель истории не достигнута"
+  },
+  "resultPrimaryStatusReachedUnknown": {
+    "message": "Цель истории: неизвестно"
+  },
+  "resultPrimaryStatusBatchRemaining": {
+    "message": "Остался 1 батч"
+  },
+  "resultPrimaryStatusBatchesRemaining": {
+    "message": "Осталось батчей: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultPrimaryStatusBatchesComplete": {
+    "message": "Все запланированные батчи завершены"
+  },
+  "resultReadableLimit": {
+    "message": "Лимит встроенной проверки: 512 МБ читаемого HTML/JSON. Большие ZIP остаются корректными; открывайте их в PeaZip или 7-Zip."
+  },
+  "resultPrimaryNextPartial": {
+    "message": "Дальше: вернитесь в этот чат, загрузите больше истории и экспортируйте снова; этот ZIP содержит только сообщения до остановки."
+  },
+  "resultPrimaryNextOmissions": {
+    "message": "Дальше: увеличьте лимит на один файл или включите нужный тип медиа и экспортируйте снова; текст и вошедшие медиа уже сохранены."
+  },
+  "resultOpenGuideTitle": {
+    "message": "Дальше: откройте этот ZIP"
+  },
+  "resultOpenGuideBody": {
+    "message": "Пароль не нужен. Проверьте архив кнопкой ниже, затем откройте скачанный ZIP в Firefox или любом архиваторе и откройте messages.html. result.json сохраните для дальнейшей обработки."
+  },
+  "resultOpenGuideStepOpen": {
+    "message": "Откройте скачанный ZIP в Firefox или любом архиваторе — пароль не нужен."
+  },
+  "resultOpenGuideStepHtml": {
+    "message": "Откройте messages.html в Firefox."
+  },
+  "resultOpenGuideStepJson": {
+    "message": "Сохраните result.json для дальнейшей обработки."
+  },
+  "progressScopeNote": {
+    "message": "Локальный архив в этом браузере · старая история загружается автоматически · отчёт фиксирует точный достигнутый диапазон этой вкладки Telegram."
+  },
+  "resultExtractionCheck": {
+    "message": "Нажмите «Проверить скачанный ZIP» ниже. После распаковки откройте messages.html, прежде чем удалять или заменять исходные данные."
+  },
+  "resultShowDownload": {
+    "message": "Показать скачанный ZIP"
+  },
+  "resultShowDownloadFile": {
+    "message": "Файл показан в папке: $FILENAME$",
+    "placeholders": { "filename": { "content": "$1" } }
+  },
+  "resultShowDownloadFolder": {
+    "message": "Точное совпадение не найдено. Открыта папка загрузок — найдите: $FILENAME$",
+    "placeholders": { "filename": { "content": "$1" } }
+  },
+  "resultShowDownloadError": {
+    "message": "Не удалось открыть папку. В загрузках Firefox найдите: $FILENAME$",
+    "placeholders": { "filename": { "content": "$1" } }
+  },
+  "resultVerifyDownload": {
+    "message": "Проверить ZIP (рекомендуется)"
+  },
+  "verificationSelectedFile": {
+    "message": "Выбранный файл"
+  },
+  "verificationPasswordLabel": {
+    "message": "Пароль архива"
+  },
+  "verificationPasswordWarning": {
+    "message": "Local Archive не может восстановить забытый пароль. Введите его только для локальной проверки; поле очистится сразу после неё."
+  },
+  "verificationRun": {
+    "message": "Проверить локально"
+  },
+  "verificationReading": {
+    "message": "Открываю и проверяю этот ZIP локально…"
+  },
+  "verificationNeedPassword": {
+    "message": "Для этого AES-ZIP нужен пароль. Введите его ниже; Local Archive очистит поле сразу после проверки."
+  },
+  "verificationPasswordTooShort": {
+    "message": "Введите пароль архива — не менее 8 символов."
+  },
+  "verificationWrongPassword": {
+    "message": "Этот пароль не открыл ZIP. Файл не изменён; попробуйте ещё раз."
+  },
+  "verificationMismatch": {
+    "message": "Выбран $SELECTED$, но эта квитанция относится к $EXPECTED$. Выберите соответствующий скачанный ZIP.",
+    "placeholders": {
+      "selected": { "content": "$1" },
+      "expected": { "content": "$2" }
+    }
+  },
+  "verificationNotArchive": {
+    "message": "Этот файл не является читаемым архивом Local Archive либо его отчёт и сохранённые данные не совпадают."
+  },
+  "verificationLimit": {
+    "message": "Архив успешно создан и скачан. Встроенная проверка остановилась на лимите 512 МБ читаемых HTML/JSON; распакуйте ZIP архиватором и проверьте файлы напрямую. Это не означает, что архив повреждён."
+  },
+  "verificationError": {
+    "message": "Firefox не смог проверить этот ZIP. Файл не изменён; выберите его снова либо распакуйте архиватором."
+  },
+  "verificationOutputsBoth": {
+    "message": "messages.html + result.json"
+  },
+  "verificationOutputsHtml": {
+    "message": "messages.html"
+  },
+  "verificationOutputsJson": {
+    "message": "result.json"
+  },
+  "verificationSuccess": {
+    "message": "Проверено локально: $FILENAME$ · export-summary.json + $OUTPUTS$ · $CHATS$ · $MESSAGES$ · $PROTECTION$. Выбранный файл не покидал устройство.",
+    "placeholders": {
+      "filename": { "content": "$1" },
+      "outputs": { "content": "$2" },
+      "chats": { "content": "$3" },
+      "messages": { "content": "$4" },
+      "protection": { "content": "$5" }
+    }
+  },
+  "resultSummaryChats": {
+    "message": "Чатов: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryChat": {
+    "message": "Чат: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryMessages": {
+    "message": "Сообщений: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryMessage": {
+    "message": "Сообщение: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryMedia": {
+    "message": "Медиа добавлено: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryMediaOne": {
+    "message": "Медиа добавлено: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummarySkipped": {
+    "message": "Пропущено: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryNotSelected": {
+    "message": "Не выбрано: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryPending": {
+    "message": "Не обработано: $COUNT$",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryReasons": {
+    "message": "Причины: $REASONS$",
+    "placeholders": { "reasons": { "content": "$1" } }
+  },
+  "resultSummaryRange": {
+    "message": "Сохранённый период: $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "oldest": { "content": "$1" },
+      "newest": { "content": "$2" }
+    }
+  },
+  "resultTargetStatusLabel": {
+    "message": "Охват истории по дате"
+  },
+  "resultTargetStatusReached": {
+    "message": "Цель истории достигнута · $DATE$ · $REACHED$/$REQUESTED$ чатов",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "reached": { "content": "$2" },
+      "requested": { "content": "$3" }
+    }
+  },
+  "resultTargetStatusMissed": {
+    "message": "Цель истории не достигнута · $DATE$ · $REACHED$/$REQUESTED$ чатов · загрузите старые сообщения и повторите экспорт",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "reached": { "content": "$2" },
+      "requested": { "content": "$3" }
+    }
+  },
+  "resultTargetStatusUnknown": {
+    "message": "Цель истории неизвестна · $DATE$ · экспорт остановлен до проверки всех запрошенных чатов",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "resultTargetReached": {
+    "message": "Сохранённый диапазон достигает $DATE$ в $REACHED$/$REQUESTED$ запрошенных чатах. Это проверка дат, а не полноты истории Telegram.",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "reached": { "content": "$2" },
+      "requested": { "content": "$3" }
+    }
+  },
+  "resultTargetMissed": {
+    "message": "Сохранённый диапазон не достигает $DATE$ в чатах: $CHATS$. Загрузите более старые сообщения и повторите экспорт.",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "chats": { "content": "$2" }
+    }
+  },
+  "resultTargetUnverified": {
+    "message": "Диапазон до $DATE$ не удалось проверить для $COUNT$ запрошенных чатов, потому что они были пропущены.",
+    "placeholders": {
+      "date": { "content": "$1" },
+      "count": { "content": "$2" }
+    }
+  },
+  "resultTargetStopped": {
+    "message": "Экспорт был остановлен, поэтому диапазон до $DATE$ подтверждён не для всех запрошенных чатов.",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "resultCoverageTitle": {
+    "message": "Сохранено по чатам:"
+  },
+  "resultCoverageRow": {
+    "message": "$NAME$ — сообщений: $COUNT$ · $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" },
+      "oldest": { "content": "$3" },
+      "newest": { "content": "$4" }
+    }
+  },
+  "resultCoverageRowOne": {
+    "message": "$NAME$ — $COUNT$ сообщение · $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" },
+      "oldest": { "content": "$3" },
+      "newest": { "content": "$4" }
+    }
+  },
+  "resultCoverageRowNoDate": {
+    "message": "$NAME$ — сообщений: $COUNT$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" }
+    }
+  },
+  "resultCoverageRowNoDateOne": {
+    "message": "$NAME$ — $COUNT$ сообщение",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "count": { "content": "$2" }
+    }
+  },
+  "resultCoverageMore": {
+    "message": "…и ещё чатов: $COUNT$; полный список — в export-summary.json.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultOmissionsTitle": {
+    "message": "Пропущенные файлы:"
+  },
+  "resultOmissionSize": {
+    "message": "$NAME$ — $REASON$ ($ACTUAL$ > $LIMIT$)",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "reason": { "content": "$2" },
+      "actual": { "content": "$3" },
+      "limit": { "content": "$4" }
+    }
+  },
+  "resultOmissionAtLeast": {
+    "message": "$NAME$ — $REASON$ (не менее $ACTUAL$; предел $LIMIT$)",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "reason": { "content": "$2" },
+      "actual": { "content": "$3" },
+      "limit": { "content": "$4" }
+    }
+  },
+  "resultOmissionBasic": {
+    "message": "$NAME$ — $REASON$",
+    "placeholders": {
+      "name": { "content": "$1" },
+      "reason": { "content": "$2" }
+    }
+  },
+  "resultOmissionsMore": {
+    "message": "…и ещё $COUNT$; полный список — в export-summary.json.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultOmissionsMoreOne": {
+    "message": "…и ещё $COUNT$; полный список — в export-summary.json.",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "resultSummaryPartial": {
+    "message": "Это частичный архив: сохранено только то, что успело собраться до остановки."
+  },
+  "resultSummaryRendered": {
+    "message": "Это не полная резервная копия Telegram. Local Archive сохранил сообщения, которые смог загрузить в этой вкладке; старые сообщения остаются за пределами ZIP, если Telegram не дошёл до них."
+  },
+  "resultSummaryHistoryReached": {
+    "message": "Сканирование дошло до самой старой доступной точки Telegram в этой вкладке. Это не полная копия аккаунта."
+  },
+  "mediaReasonSize": { "message": "превышен предел размера" },
+  "mediaReasonNetwork": { "message": "сеть или доступ" },
+  "mediaReasonCancelled": { "message": "остановлено вами" },
+  "mediaReasonInvalid": { "message": "некорректный объект" },
+  "mediaReasonThumbnail": { "message": "миниатюра недоступна" },
+  "mediaReasonUnknown": { "message": "неизвестная причина" },
+  "validationPasswordLength": {
+    "message": "Используйте пароль длиной не менее 8 символов."
+  },
+  "validationPasswordMismatch": {
+    "message": "Пароли не совпадают."
+  },
+  "validationHistoryReady": {
+    "message": "Подтвердите проверку перед экспортом ниже."
+  },
+  "validationLiveCheck": {
+    "message": "Эта разметка сообщений Telegram не прошла проверку безопасности. Экспорт заблокирован, пока Local Archive её не поддерживает."
+  },
+  "errorLiveLayoutCheck": {
+    "message": "Открытый чат больше не проходит проверку разметки Local Archive. Обновите Telegram Web или Local Archive и повторите попытку."
+  },
+  "errorTitle": {
+    "message": "Экспорт остановлен"
+  },
+  "statusStarting": {
+    "message": "Подготавливаю экспорт…"
+  },
+  "statusScrolling": {
+    "message": "Читаю сообщения… найдено: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusScanningNewer": {
+    "message": "Проверяю новые сообщения… найдено: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusScanningOlder": {
+    "message": "Автоматически загружаю старые сообщения… найдено: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusSwitchingTopic": {
+    "message": "Открываю тему: $TOPIC$",
+    "placeholders": {
+      "topic": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusTopic": {
+    "message": "Читаю тему: $TOPIC$",
+    "placeholders": {
+      "topic": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusBuilding": {
+    "message": "Собираю архив…"
+  },
+  "statusSaving": {
+    "message": "Сохраняю ZIP-файл…"
+  },
+  "statusDownloadingMedia": {
+    "message": "Сохраняю медиафайлы… $DONE$ из $TOTAL$",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "statusChatProgress": {
+    "message": "Чат $CURRENT$ из $TOTAL$: $NAME$",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "name": {
+        "content": "$3"
+      }
+    }
+  },
+  "statusBuildingPartial": {
+    "message": "Завершаю частичный архив…"
+  },
+  "statusBuildingFinal": {
+    "message": "Завершаю архив…"
+  },
+  "resultCompleteMessages": {
+    "message": "Сохранено сообщений: $COUNT$. Время: $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultCompleteMessage": {
+    "message": "Сохранено $COUNT$ сообщение. Время: $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "seconds": { "content": "$2" },
+      "skipped": { "content": "$3" }
+    }
+  },
+  "resultPartialMessages": {
+    "message": "Сохранена готовая часть: $COUNT$ сообщений за $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialMessage": {
+    "message": "Сохранена готовая часть: $COUNT$ сообщение за $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "seconds": { "content": "$2" },
+      "skipped": { "content": "$3" }
+    }
+  },
+  "resultCompleteChats": {
+    "message": "Сохранено чатов: $COUNT$. Время: $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultCompleteChat": {
+    "message": "Сохранён $COUNT$ чат. Время: $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "seconds": { "content": "$2" },
+      "skipped": { "content": "$3" }
+    }
+  },
+  "resultPartialChats": {
+    "message": "Сохранена готовая часть: $COUNT$ чатов за $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialChat": {
+    "message": "Сохранена готовая часть: $COUNT$ чат за $SECONDS$ с$SKIPPED$",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "seconds": { "content": "$2" },
+      "skipped": { "content": "$3" }
+    }
+  },
+  "mediaSkippedSuffix": {
+    "message": " · пропущено медиафайлов: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "mediaSkippedSuffixOne": {
+    "message": " · пропущен $COUNT$ медиафайл",
+    "placeholders": {
+      "count": { "content": "$1" }
+    }
+  },
+  "errorNoMessageList": {
+    "message": "Перед запуском откройте нужный чат."
+  },
+  "errorNoMessages": {
+    "message": "В открытом чате не удалось найти сообщения."
+  },
+  "errorNoChats": {
+    "message": "Для выбранного варианта чаты не найдены."
+  },
+  "errorNoExportedChats": {
+    "message": "Ни в одном выбранном чате не удалось собрать сообщения. Оставьте боковую панель Telegram открытой и повторите попытку."
+  },
+  "errorTooManyChats": {
+    "message": "Выбрано чатов: $COUNT$; в одном архиве поддерживается до $LIMIT$. Выберите первые $LIMIT$, экспортируйте их, затем выберите следующую партию.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      }
+    }
+  },
+  "errorSelectChat": {
+    "message": "Выберите хотя бы один чат."
+  },
+  "errorZipUnavailable": {
+    "message": "Не удалось загрузить модуль создания архива. Перезагрузите Telegram Web и повторите попытку."
+  },
+  "errorArchiveService": {
+    "message": "Не запустился локальный процесс архивации. Перезагрузите Telegram Web и повторите попытку."
+  },
+  "errorArchiveEntry": {
+    "message": "Один объект нельзя безопасно добавить в архив. Повторите без медиафайлов; если ошибка вернётся, сообщите о проблеме."
+  },
+  "errorArchiveEngine": {
+    "message": "Firefox не смог завершить ZIP. Выберите только текст или уменьшите пределы медиафайлов и повторите попытку."
+  },
+  "errorExportSafe": {
+    "message": "ZIP не сохранён. Данные Telegram не изменились. Повторите попытку или переоткройте Telegram Web."
+  },
+  "errorExport": {
+    "message": "Не удалось создать архив: $DETAIL$",
+    "placeholders": {
+      "detail": {
+        "content": "$1"
+      }
+    }
+  }
+}

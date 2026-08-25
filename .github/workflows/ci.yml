@@ -1,0 +1,197 @@
+name: Verify extension
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1,4'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 24.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+
+      - name: Use the project npm version
+        run: npm install --global npm@11.17.0 && node --version && npm --version
+
+      - name: Install Rust and WebAssembly toolchain
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component clippy,rustfmt --target wasm32-unknown-unknown
+          rustup default 1.97.1
+          cargo install wasm-pack --version 0.15.0 --locked
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Verify Firefox package
+        run: npm run check
+
+      - name: Build and verify release artifacts
+        run: npm run package:release
+
+      - name: Preserve unpacked extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-archive-firefox-unpacked
+          path: .output/firefox-mv3
+          if-no-files-found: error
+
+      - name: Preserve release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-archive-firefox-release
+          path: |
+            artifacts/Local-Archive-*-firefox-unsigned.zip
+            artifacts/Local-Archive-*-sources.zip
+            artifacts/SHA256SUMS.txt
+            artifacts/RELEASE-MANIFEST.json
+            artifacts/AMO-SUBMISSION.json
+          if-no-files-found: error
+
+  consumer:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        firefox: ['142.0', 'latest']
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 24.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+
+      - name: Use the project npm version
+        run: npm install --global npm@11.17.0 && node --version && npm --version
+
+      - name: Install Rust and WebAssembly toolchain
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component clippy,rustfmt --target wasm32-unknown-unknown
+          rustup default 1.97.1
+          cargo install wasm-pack --version 0.15.0 --locked
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Download exact release artifact from verify job
+        uses: actions/download-artifact@v4
+        with:
+          name: local-archive-firefox-release
+          path: artifacts
+
+      - name: Install Firefox ${{ matrix.firefox }}
+        id: firefox
+        uses: browser-actions/setup-firefox@0bc507ddf224827e3b1af68e014d5e42ab93e795
+        with:
+          firefox-version: ${{ matrix.firefox }}
+
+      - name: Install geckodriver 0.37.1
+        env:
+          GECKODRIVER_ARCHIVE: ${{ runner.temp }}/geckodriver.tar.gz
+          GECKODRIVER_SHA256: e815130ea95983e162ae91843b48d3a3ce991735635fce83a647afde21e09f7e
+          GECKODRIVER_URL: https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-linux64.tar.gz
+        run: |
+          curl --fail --location --silent --show-error "$GECKODRIVER_URL" --output "$GECKODRIVER_ARCHIVE"
+          echo "$GECKODRIVER_SHA256  $GECKODRIVER_ARCHIVE" | sha256sum --check --strict
+          tar --extract --gzip --file "$GECKODRIVER_ARCHIVE" --directory "${{ runner.temp }}"
+          chmod 0755 "${{ runner.temp }}/geckodriver"
+
+      - name: Verify the packaged extension in isolated Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.firefox.outputs.firefox-path }}
+          GECKODRIVER_BIN: ${{ runner.temp }}/geckodriver
+          MOZ_HEADLESS: '1'
+          MOZ_DISABLE_RDD_SANDBOX: '1'
+          MOZ_WEBRENDER: '0'
+          MOZ_ACCELERATED: '0'
+          LOCAL_ARCHIVE_RELEASE_MANIFEST: artifacts/RELEASE-MANIFEST.json
+          LOCAL_ARCHIVE_TELEGRAM_E2E_ARTIFACTS: .output/e2e-firefox-${{ matrix.firefox }}/telegram
+        run: |
+          set -euo pipefail
+          node scripts/verify-release-artifacts.mjs
+          node scripts/prepare-release-consumer.mjs
+          npm run test:e2e:firefox
+          node scripts/verify-consumer-proof.mjs \
+            ".output/e2e-firefox-${{ matrix.firefox }}/telegram/consumer-proof.json"
+
+      - name: Preserve consumer evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-archive-firefox-e2e-${{ matrix.firefox }}
+          path: .output/e2e-firefox-${{ matrix.firefox }}
+          if-no-files-found: error
+
+  live-telegram-smoke:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 24.19.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+
+      - name: Use the project npm version
+        run: npm install --global npm@11.17.0 && node --version && npm --version
+
+      - name: Install Rust and WebAssembly toolchain
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component clippy,rustfmt --target wasm32-unknown-unknown
+          rustup default 1.97.1
+          cargo install wasm-pack --version 0.15.0 --locked
+
+      - name: Install exact dependencies
+        run: npm ci
+
+      - name: Install current Firefox
+        id: firefox
+        uses: browser-actions/setup-firefox@0bc507ddf224827e3b1af68e014d5e42ab93e795
+        with:
+          firefox-version: latest
+
+      - name: Install geckodriver 0.37.1
+        env:
+          GECKODRIVER_ARCHIVE: ${{ runner.temp }}/geckodriver.tar.gz
+          GECKODRIVER_SHA256: e815130ea95983e162ae91843b48d3a3ce991735635fce83a647afde21e09f7e
+          GECKODRIVER_URL: https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-linux64.tar.gz
+        run: |
+          curl --fail --location --silent --show-error "$GECKODRIVER_URL" --output "$GECKODRIVER_ARCHIVE"
+          echo "$GECKODRIVER_SHA256  $GECKODRIVER_ARCHIVE" | sha256sum --check --strict
+          tar --extract --gzip --file "$GECKODRIVER_ARCHIVE" --directory "${{ runner.temp }}"
+          chmod 0755 "${{ runner.temp }}/geckodriver"
+
+      - name: Smoke-test current Telegram Web without an account
+        env:
+          FIREFOX_BIN: ${{ steps.firefox.outputs.firefox-path }}
+          GECKODRIVER_BIN: ${{ runner.temp }}/geckodriver
+        run: npm run check:live-smoke
+
+      - name: Preserve typed live-origin evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: telearchive-telegram-web-live-smoke
+          path: .output/telegram-web-live-smoke/evidence.json
+          if-no-files-found: error

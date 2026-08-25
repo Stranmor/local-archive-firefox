@@ -1,0 +1,11 @@
+node_modules/
+target/
+src/generated/
+.wxt/
+.output/
+artifacts/
+MIGRATION-RECEIPT.json
+coverage/
+tmp/
+*.log
+.DS_Store

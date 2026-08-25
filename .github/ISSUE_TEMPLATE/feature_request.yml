@@ -1,0 +1,23 @@
+name: Feature request
+description: Propose a user outcome, not only an implementation.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What outcome is missing?
+      description: Explain the real archive or recovery job this would improve.
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current workaround
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Privacy or permission impact
+      description: Note whether the idea would require new access, storage, network activity, or background work.
+    validations:
+      required: true

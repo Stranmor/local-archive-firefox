@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="manifest.open_in_tab" content="true" />
+    <title>Local Archive</title>
+  </head>
+  <body>
+    <main class="settings" id="settings" aria-busy="true">
+      <header>
+        <div class="brand">
+          <img src="/icon-48.png" width="40" height="40" alt="">
+          <div><span data-i18n="brand"></span><h1 data-i18n="settingsTitle"></h1></div>
+        </div>
+        <label class="language"><span data-i18n="language"></span><select id="language"></select></label>
+      </header>
+
+      <p class="intro" data-i18n="settingsIntro"></p>
+
+      <form id="defaults-form">
+        <label class="row">
+          <span><strong data-i18n="format"></strong></span>
+          <select id="format">
+            <option value="both" data-i18n="formatBoth"></option>
+            <option value="html" data-i18n="formatHtml"></option>
+            <option value="json" data-i18n="formatJson"></option>
+          </select>
+        </label>
+
+        <label class="row">
+          <span><strong data-i18n="recentCount"></strong><small data-i18n="recentHint"></small></span>
+          <input id="recent-count" type="number" min="1" max="100000" step="1" inputmode="numeric">
+        </label>
+
+        <label class="row row--toggle">
+          <span><strong data-i18n="attachments"></strong><small data-i18n="attachmentsHint"></small></span>
+          <span class="switch"><input id="include-media" type="checkbox"><span aria-hidden="true"></span></span>
+        </label>
+
+        <div class="actions">
+          <p id="status" role="status" aria-live="polite"></p>
+          <button class="button button--quiet" type="button" id="reset" data-i18n="resetDefaults"></button>
+          <button class="button button--primary" type="submit" id="save" data-i18n="saveSettings"></button>
+        </div>
+      </form>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

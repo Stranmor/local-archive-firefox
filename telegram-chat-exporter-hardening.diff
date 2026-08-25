@@ -1,0 +1,1269 @@
+--- /mnt/data/telegram-chat-exporter.user.js	2026-08-10 07:28:20.004264176 +0000
++++ /mnt/data/telegram-chat-exporter-hardened.user.js	2026-08-10 07:41:33.820196334 +0000
+@@ -1,21 +1,28 @@
+ // ==UserScript==
+ // @name         Telegram Web Chat Exporter
+ // @namespace    http://tampermonkey.net/
+-// @version      3.5.0
+-// @description  Export Telegram chat history matching Telegram Desktop format. Works on web.telegram.org/k/ and web.telegram.org/a/. No API keys required.
++// @version      3.6.0
++// @description  Hardened Telegram Web chat exporter for Firefox/Violentmonkey. Local ZIP export with safer media handling and offline HTML.
+ // @author       Sisyphus
+ // @match        https://web.telegram.org/k/*
+ // @match        https://web.telegram.org/a/*
+ // @icon         https://web.telegram.org/favicon.ico
+-// @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.9.1/jszip.min.js
+-// @grant        GM_download
+-// @grant        GM_setValue
+-// @grant        GM_getValue
+-// @grant        GM_notification
+-// @grant        unsafeWindow
++// @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
++// @grant        none
+ // @run-at       document-idle
+ // @license      MIT
+ // ==/UserScript==
++//
++// Hardened changes (3.6.0):
++// - least privilege (@grant none; no unsafeWindow/GM storage/download access)
++// - offline-safe HTML links + CSP + no untrusted inline event handlers
++// - real media concurrency, timeout and byte limits
++// - supports blob:/data: media and avoids common avatar/emoji false positives
++// - local media paths are written before HTML/JSON generation
++// - safer filenames/ZIP paths and signed peer IDs
++// - partial exports are actually downloaded on cancellation
++// - JSZip dependency pinned to 3.10.1
++//
+ 
+ (function() {
+     'use strict';
+@@ -23,16 +30,38 @@
+     const CONFIG = {
+         scrollWaitMs: 800,
+         scrollStep: 600,
+-        staleThreshold: 8,
+-        maxMediaSize: 500 * 1024 * 1024,
+-        messagesPerFile: 1000,
+-        debug: true
++        staleThreshold: 10,
++        mediaConcurrency: 4,
++        mediaFetchTimeoutMs: 45000,
++        maxChats: 50,
++        debug: false
+     };
+ 
+     const EXPORT_CSS = `body { margin: 0; font: 12px/18px 'Open Sans',"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,Verdana,sans-serif; } strong { font-weight: 700; } code, kbd, pre, samp { font-family: Menlo,Monaco,Consolas,"Courier New",monospace; } code { padding: 2px 4px; font-size: 90%; color: #c7254e; background-color: #f9f2f4; border-radius: 4px; } pre { display: block; margin: 0; line-height: 1.42857143; word-break: break-all; word-wrap: break-word; color: #333; background-color: #f5f5f5; border-radius: 4px; overflow: auto; padding: 3px; border: 1px solid #eee; max-height: none; font-size: inherit; } .clearfix:after { content: " "; visibility: hidden; display: block; height: 0; clear: both; } .pull_left { float: left; } .pull_right { float: right; } .page_wrap { background-color: #ffffff; color: #000000; } .page_wrap a { color: #168acd; text-decoration: none; } .page_wrap a:hover { text-decoration: underline; } .page_header { position: fixed; z-index: 10; background-color: #ffffff; width: 100%; border-bottom: 1px solid #e3e6e8; } .page_header .content { width: 480px; margin: 0 auto; border-radius: 0 !important; } .page_header a.content { background-repeat: no-repeat; background-position: 24px 21px; background-size: 24px 24px; } .bold { color: #212121; font-weight: 700; } .details { color: #70777b; } .page_header .content .text { padding: 24px 24px 22px 24px; font-size: 22px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .page_header a.content .text { padding: 24px 24px 22px 82px; } .page_body { padding-top: 64px; width: 480px; margin: 0 auto; } .page_about { padding: 24px 24px; } .with_divider { border-top: 1px solid #e3e6e8; } .userpic_link { display: block; text-decoration: none; } .userpic_link:hover { text-decoration: none; } .userpic { display: block; border-radius: 50%; overflow: hidden; } .story { display: block; border-radius: 4px; overflow: hidden; } .userpic .initials { display: block; color: #fff; text-align: center; text-transform: uppercase; user-select: none; } .color_red, .userpic1, .media_call .fill, .media_file .fill, .media_live_location .fill { background-color: #ff5555; } .color_green, .userpic2, .media_call.success .fill, .media_photo .fill { background-color: #64bf47; } .color_yellow, .userpic3, .media_venue .fill { background-color: #ffab00; } .color_blue, .userpic4, .media_audio_file .fill, .media_voice_message .fill { background-color: #4f9cd9; } .color_purple, .userpic5, .media_game .fill { background-color: #9884e8; } .color_pink, .userpic6, .media_invoice .fill { background-color: #e671a5; } .color_sea, .userpic7, .media_location .fill, .media_video .fill { background-color: #47bcd1; } .color_orange, .userpic8, .media_contact .fill { background-color: #ff8c44; } .personal_info { padding: 24px; } .personal_info .userpic .initials { font-size: 30px; } .personal_info .rows { float: left; padding-right: 24px; } .personal_info .names { width: 164px; } .personal_info .info { width: 124px; } .personal_info .bio { width: 400px; } .personal_info .row { padding-bottom: 16px; } a.block_link { display: block; text-decoration: none !important; border-radius: 4px; } a.block_link:hover { text-decoration: none !important; background-color: #f5f7f8; } a.expanded { padding: 2px 8px; margin: -2px -8px; } .sections { padding: 11px 0; } .section { height: 48px; background-position: 24px 12px; background-repeat: no-repeat; background-size: 24px 24px; } .section .counter { float: right; padding: 14px 24px 0; font-size: 15px; } .section .label { padding: 15px 0 0 82px; font-size: 15px; } .list_page .page_about { padding: 16px 24px 0; font-size: 11px; } .list_page .entry_list { padding: 16px 0; } .list_page .entry { padding: 10px 16px; } .list_page .entry .userpic .initials { font-size: 18px; } .list_page .entry .body { margin-left: 66px; } .list_page .entry .name { padding: 4px 0 2px; font-size: 14px; } .list_page .entry .subname { padding-top: 4px; } .list_page .entry .details_entry { padding-top: 4px; } .list_page .entry .info { font-size: 11px; padding-top: 5px; } .history { padding: 16px 0; } .message { margin: 0 -10px; transition: background-color 2.0s ease; } div.selected { background-color: rgba(242,246,250,255); transition: background-color 0.5s ease; } .service { padding: 10px 24px; } .service .body { text-align: center; } .service .userpic_wrap { padding-top: 10px; } .service .userpic { margin: 0 auto; } .service .userpic .initials { font-size: 24px; } .message .userpic .initials { font-size: 16px; } .default { padding: 10px; } .default.joined { margin-top: -10px; } .default .from_name { color: #3892db; font-weight: 700; padding-bottom: 5px; } .default .from_name .details { font-weight: normal; } .default .body { margin-left: 60px; } .default .text { word-wrap: break-word; line-height: 150%; unicode-bidi: plaintext; text-align: start; } .default .reply_to, .default .media_wrap { padding-bottom: 5px; } .default .media { margin: 0 -10px; padding: 5px 10px; } .default .media .fill, .default .media .thumb { width: 48px; height: 48px; border-radius: 50%; } .default .media .fill { background-repeat: no-repeat; background-position: 12px 12px; background-size: 24px 24px; } .default .media .title, .default .media_poll .question { padding-top: 4px; font-size: 14px; } .default .media .description { color: #000000; padding-top: 4px; font-size: 13px; } .default .media .status { padding-top: 4px; font-size: 13px; } .default .video_file_wrap, .default .animated_wrap { position: relative; } .default .video_file, .default .animated, .default .photo, .default .sticker { display: block; } .video_duration { background: rgba(0, 0, 0, .4); padding: 0px 5px; position: absolute; z-index: 2; border-radius: 2px; right: 3px; bottom: 3px; color: #ffffff; font-size: 11px; } .video_play_bg { background: rgba(0, 0, 0, .4); width: 40px; height: 40px; line-height: 0; position: absolute; z-index: 2; border-radius: 50%; overflow: hidden; margin: -20px auto 0 -20px; top: 50%; left: 50%; pointer-events: none; } .video_play { position: absolute; display: inline-block; top: 50%; left: 50%; margin-left: -5px; margin-top: -9px; z-index: 1; width: 0; height: 0; border-style: solid; border-width: 9px 0 9px 14px; border-color: transparent transparent transparent #fff; } .gif_play { font-weight: 700; color: #FFF; display: block; line-height: 40px; font-size: 13px; text-align: center; } .pagination { text-align: center; padding: 20px; font-size: 16px; }  .toast_container { position: fixed; left: 50%; top: 50%; opacity: 0; transition: opacity 3.0s ease; } .toast_body { margin: 0 -50%; float: left; border-radius: 15px; padding: 10px 20px; background: rgba(0, 0, 0, 0.7); color: #ffffff; } div.toast_shown { opacity: 1; transition: opacity 0.4s ease; }  .section.calls { background-image: url(../images/section_calls.png); } .section.chats { background-image: url(../images/section_chats.png); } .section.contacts { background-image: url(../images/section_contacts.png); } .section.frequent { background-image: url(../images/section_frequent.png); } .section.photos { background-image: url(../images/section_photos.png); } .section.sessions { background-image: url(../images/section_sessions.png); } .section.stories { background-image: url(../images/section_stories.png); } .section.music { background-image: url(../images/section_music.png); } .section.web { background-image: url(../images/section_web.png); } .section.other { background-image: url(../images/section_other.png) } .page_header a.content { background-image: url(../images/back.png); } .media_call .fill { background-image: url(../images/media_call.png) } .media_contact .fill { background-image: url(../images/media_contact.png) } .media_file .fill { background-image: url(../images/media_file.png) } .media_game .fill { background-image: url(../images/media_game.png) } .media_live_location .fill, .media_location .fill, .media_venue .fill { background-image: url(../images/media_location.png) } .media_audio_file .fill { background-image: url(../images/media_music.png) } .media_invoice .fill { background-image: url(../images/media_shop.png) } .media_voice_message .fill { background-image: url(../images/media_voice.png) } .media_photo .fill { background-image: url(../images/media_photo.png) } .media_video .fill { background-image: url(../images/media_video.png) } .audio_icon { width: 48px; height: 48px; border-radius: 50%; background-color: #4f9cd9; background-image: url(../images/media_music.png); background-repeat: no-repeat; background-position: 12px 12px; background-size: 24px 24px; }  @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) { .section.calls { background-image: url(../images/section_calls@2x.png); } .section.chats { background-image: url(../images/section_chats@2x.png); } .section.contacts { background-image: url(../images/section_contacts@2x.png); } .section.frequent { background-image: url(../images/section_frequent@2x.png); } .section.photos { background-image: url(../images/section_photos@2x.png); } .section.sessions { background-image: url(../images/section_sessions@2x.png); } .section.stories { background-image: url(../images/section_stories@2x.png); } .section.music { background-image: url(../images/section_music@2x.png); } .section.web { background-image: url(../images/section_web@2x.png); } .section.other { background-image: url(../images/section_other@2x.png); } .page_header a.content { background-image: url(../images/back@2x.png); } .media_call .fill { background-image: url(../images/media_call@2x.png) } .media_contact .fill { background-image: url(../images/media_contact@2x.png) } .media_file .fill { background-image: url(../images/media_file@2x.png) } .media_game .fill { background-image: url(../images/media_game@2x.png) } .media_live_location .fill, .media_location .fill, .media_venue .fill { background-image: url(../images/media_location@2x.png) } .media_audio_file .fill { background-image: url(../images/media_music@2x.png) } .media_invoice .fill { background-image: url(../images/media_shop@2x.png) } .media_voice_message .fill { background-image: url(../images/media_voice@2x.png) } .media_photo .fill { background-image: url(../images/media_photo@2x.png) } .media_video .fill { background-image: url(../images/media_video@2x.png) } .audio_icon { background-image: url(../images/media_music@2x.png); } }  .spoiler { background: #e8e8e8; } .spoiler.hidden { background: #a9a9a9; cursor: pointer; border-radius: 3px; } .spoiler.hidden span { opacity: 0; user-select: none; }  .bot_buttons_table { border-spacing: 0px 2px; width: 100%; } .bot_button { border-radius: 8px; text-align: center; vertical-align: middle; background-color: #168acd40; } .bot_button_row { display: table; table-layout: fixed; padding: 0px; width:100%; } .bot_button_row div { display: table-cell; } .bot_button_column_separator { width: 2px }  .reactions { margin: 5px 0; }  .reactions .reaction { display: inline-flex; height: 20px; border-radius: 15px; background-color: #e8f5fc; color: #168acd; font-weight: bold; margin-bottom: 5px; }  .reactions .reaction.active { background-color: #40a6e2; color: #fff; }  .reactions .reaction.paid { background-color: #fdf6e1; color: #c58523; }  .reactions .reaction.active.paid { background-color: #ecae0a; color: #fdf6e1; }  .reactions .reaction .emoji { line-height: 20px; margin: 0 5px; font-size: 15px; }  .reactions .reaction .userpic:not(:first-child) { margin-left: -8px; }  .reactions .reaction .userpic { display: inline-block; }  .reactions .reaction .userpic .initials { font-size: 8px; }  .reactions .reaction .count { margin-right: 8px; line-height: 20px; }  @media (prefers-color-scheme: dark) { html, body { background-color: #1a2026; /* groupCallBg */ margin: 0; padding: 0; } .page_wrap { background-color: #1a2026; /* groupCallBg */ color: #ffffff; /* groupCallMembersFg */ min-height: 100vh; } .page_wrap a { color: #4db8ff; /* groupCallActiveFg */ } .page_header { background-color: #1a2026; /* groupCallBg */ border-bottom: 1px solid #2c333d; /* groupCallMembersBg */ } .bold { color: #ffffff; /* groupCallMembersFg */ } .details { color: #91979e; /* groupCallMemberNotJoinedStatus */ } .page_body { background-color: #1a2026; /* groupCallBg */ } code { color: #ff8aac; /* historyPeer6UserpicBg */ background-color: #2c333d; /* groupCallMembersBg */ } pre { color: #ffffff; /* groupCallMembersFg */ background-color: #2c333d; /* groupCallMembersBg */ border: 1px solid #323a45; /* groupCallMembersBgOver */ } .with_divider { border-top: 1px solid #2c333d; /* groupCallMembersBg */ } a.block_link:hover { background-color: #323a45; /* groupCallMembersBgOver */ } .list_page .entry { color: #ffffff; /* groupCallMembersFg */ } .message { color: #ffffff; /* groupCallMembersFg */ } div.selected { background-color: #323a45; /* groupCallMembersBgOver */ } .default .from_name { color: #4db8ff; /* groupCallActiveFg */ } .default .media .description { color: #ffffff; /* groupCallMembersFg */ } msgInBg, .historyComposeAreaBg { background-color: #2c333d; /* groupCallMembersBg */ } msgOutBg { background-color: #323a45; /* groupCallMembersBgOver */ } msgInBgSelected { background-color: #39424f; /* groupCallMembersBgRipple */ } msgOutBgSelected { background-color: #39424f; /* groupCallMembersBgRipple */ } .spoiler { background: #323a45; /* groupCallMembersBgOver */ } .spoiler.hidden { background: #61c0ff; /* groupCallMemberInactiveStatus */ } .bot_button { background-color: #4db8ff40; /* groupCallActiveFg with opacity */ } .reactions .reaction { background-color: #2c333d; /* groupCallMembersBg */ color: #4db8ff; /* groupCallActiveFg */ } .reactions .reaction.active { background-color: #4db8ff; /* groupCallActiveFg */ color: #1a2026; /* groupCallBg */ } .reactions .reaction.paid { background-color: #323a45; /* groupCallMembersBgOver */ color: #febb5b; /* historyPeer8UserpicBg */ } .reactions .reaction.active.paid { background-color: #febb5b; /* historyPeer8UserpicBg */ color: #1a2026; /* groupCallBg */ } }`;
+ 
+     const EXPORT_JS = `"use strict"; window.AllowBackFromHistory = false; function CheckLocation() { var start = "#go_to_message"; var hash = location.hash; if (hash.substr(0, start.length) == start) { var messageId = parseInt(hash.substr(start.length)); if (messageId) { GoToMessage(messageId); } } else if (hash == "#allow_back") { window.AllowBackFromHistory = true; } } function ShowToast(text) { var container = document.createElement("div"); container.className = "toast_container"; var inner = container.appendChild(document.createElement("div")); inner.className = "toast_body"; inner.appendChild(document.createTextNode(text)); var appended = document.body.appendChild(container); setTimeout(function () { AddClass(appended, "toast_shown"); setTimeout(function () { RemoveClass(appended, "toast_shown"); setTimeout(function () { document.body.removeChild(appended); }, 3000); }, 3000); }, 0); } function ShowHashtag(tag) { ShowToast("This is a hashtag '#" + tag + "' link."); return false; } function ShowCashtag(tag) { ShowToast("This is a cashtag '$" + tag + "' link."); return false; } function ShowBotCommand(command) { ShowToast("This is a bot command '/" + command + "' link."); return false; } function ShowMentionName() { ShowToast("This is a link to a user mentioned by name."); return false; } function ShowNotLoadedEmoji() { ShowToast("This custom emoji is not included, change data exporting settings to download."); return false; } function ShowNotAvailableEmoji() { ShowToast("This custom emoji is not available."); return false; } function ShowTextCopied(content) { navigator.clipboard.writeText(content); ShowToast("Text copied to clipboard."); return false; } function ShowSpoiler(target) { if (target.classList.contains("hidden")) { target.classList.toggle("hidden"); } } function AddClass(element, name) { var current = element.className; var expression = new RegExp('(^|\\\\s)' + name + '(\\\\s|$)', 'g'); if (expression.test(current)) { return; } element.className = current + ' ' + name; } function RemoveClass(element, name) { var current = element.className; var expression = new RegExp('(^|\\\\s)' + name + '(\\\\s|$)', ''); var match = expression.exec(current); while ((match = expression.exec(current)) != null) { if (match[1].length > 0 && match[2].length > 0) { current = current.substr(0, match.index + match[1].length) + current.substr(match.index + match[0].length); } else { current = current.substr(0, match.index) + current.substr(match.index + match[0].length); } } element.className = current; } function EaseOutQuad(t) { return t * t; } function EaseInOutQuad(t) { return (t < 0.5) ? (2 * t * t) : ((4 - 2 * t) * t - 1); } function ScrollHeight() { if ("innerHeight" in window) { return window.innerHeight; } else if (document.documentElement) { return document.documentElement.clientHeight; } return document.body.clientHeight; } function ScrollTo(top, callback) { var html = document.documentElement; var current = html.scrollTop; var delta = top - current; var finish = function () { html.scrollTop = top; if (callback) { callback(); } }; if (!window.performance.now || delta == 0) { finish(); return; } var transition = EaseOutQuad; var max = 300; if (delta < -max) { current = top + max; delta = -max; } else if (delta > max) { current = top - max; delta = max; } else { transition = EaseInOutQuad; } var duration = 150; var interval = 7; var time = window.performance.now(); var animate = function () { var now = window.performance.now(); if (now >= time + duration) { finish(); return; } var dt = (now - time) / duration; html.scrollTop = Math.round(current + delta * transition(dt)); setTimeout(animate, interval); }; setTimeout(animate, interval); } function ScrollToElement(element, callback) { var header = document.getElementsByClassName("page_header")[0]; var headerHeight = header.offsetHeight; var html = document.documentElement; var scrollHeight = ScrollHeight(); var available = scrollHeight - headerHeight; var padding = 10; var top = element.offsetTop; var height = element.offsetHeight; var desired = top - Math.max((available - height) / 2, padding) - headerHeight; var scrollTopMax = html.offsetHeight - scrollHeight; ScrollTo(Math.min(desired, scrollTopMax), callback); } function GoToMessage(messageId) { var element = document.getElementById("message" + messageId); if (element) { var hash = "#go_to_message" + messageId; if (location.hash != hash) { location.hash = hash; } ScrollToElement(element, function () { AddClass(element, "selected"); setTimeout(function () { RemoveClass(element, "selected"); }, 1000); }); } else { ShowToast("This message was not exported. Maybe it was deleted."); } return false; } function GoBack(anchor) { if (!window.AllowBackFromHistory) { return true; } history.back(); if (!anchor || !anchor.getAttribute) { return true; } var destination = anchor.getAttribute("href"); if (!destination) { return true; } setTimeout(function () { location.href = destination; }, 100); return false; } `;
+ 
++    const EXPORT_RUNTIME_JS = EXPORT_JS + `
++(function(){
++    function onReady() {
++        CheckLocation();
++        document.addEventListener('click', function(event) {
++            var el = event.target.closest ? event.target.closest('[data-tgx-action]') : null;
++            if (!el) return;
++            var action = el.getAttribute('data-tgx-action') || '';
++            var value = el.getAttribute('data-tgx-value') || '';
++            event.preventDefault();
++            if (action === 'spoiler') ShowSpoiler(el);
++            else if (action === 'mention') ShowMentionName();
++            else if (action === 'hashtag') ShowHashtag(value);
++            else if (action === 'cashtag') ShowCashtag(value);
++            else if (action === 'bot_command') ShowBotCommand(value);
++        });
++    }
++    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady, {once:true});
++    else onReady();
++})();`;
++
+     const IMAGES = {
+         'back.png': 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAPJJREFUSA1jYBgFQyoEiipqGkCYFEczEqsYZPC////rger/sjCzGvS0NVwhRi8TMYqQDWdkZooh1nCQ2QR9gG54f1vzCmIcBVOD1wJKDcfrA2oYjtMCahmO1QIkw2HBSBI9obMVJdiJSkUk2YCmGMU2mBySL/4yMTJE93W0roTJkUozY9Nw/MihA1a29oz/GRgcgTjQytbu5vEjh69iU0tIDKsFIE3UsgSnBdgssbR3uHHi8CGSfILXAnRLgBEWaGlnf5MUSwhagGLJ//9OYEsc7dedOHToNUiOECDKApAhsDgBWnC4v61lNSGDR+UHTwgAADa4h+Zrqrq9AAAAAElFTkSuQmCC',
+         'back@2x.png': 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAcBJREFUaAXtl91KwzAUgHPWgbv0deratTjwDdYH8coLwYkOFUR8H9kP3dT5IPoAXrvGnEGgjDbpT9JkkEBJadOT7ztp2oQQV1wGXAZcBlwGXAY0ZeDy6nqKh6bw+7CeruAInlF6QwmJz8LI+9ykSx19aRHg8ByYSUR+MNpt39cpv6aq7qsKxOMcwu+vA/x6AG+8jcoaVAYrg+8DXDw/3H2p7IvHUiZgAh4llAiYglciYBK+tYBp+FYCNsA3FrAFvpGATfC1BWyDryVgI3xlgUJ4fLqD8vo0E/6rejIGk/AyNrwvFagSxGQbqcDL4/20B3BrElLUt/D9yj9Y+CqxZbLOlWa+/7LzyhsatqNasZ0V4A4rF+wkIyQJwmj5sUm/c9c7O60sgERlEpTSSTCKjUjUEhBIDFDCj8eL7XrV6UjUFhBJQJYlXUs0ErBJorGATGIYxnM2Z36wnc7SSgDBSib2gBCadCHRWkAkwT65k2EYLXSOhBIBmYQfn8/Z10nL66RMQCRBMsq+TnokpGshBKtTitdO9BR2f+M6caq2VToCvNPDiY2LQSY24/ePpsYFIB5HA+xAXQZcBlwGXAaOLgP/TQQam/2N7EUAAAAASUVORK5CYII=',
+@@ -88,26 +117,28 @@
+     }
+     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+     function escapeHtml(str) {
+-        if (!str && str !== 0) return '';
++        if (str === null || str === undefined) return '';
+         const d = document.createElement('div');
+-        d.textContent = str;
++        d.textContent = String(str);
+         return d.innerHTML;
+     }
+     function escapeHtmlAttr(str) {
+-        if (!str) return '';
+-        return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
++        if (str === null || str === undefined) return '';
++        return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+     }
+     function formatFileSize(bytes) {
+-        if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(1) + ' GB';
+-        if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+-        if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+-        return bytes + ' B';
++        const n = Number(bytes) || 0;
++        if (n >= 1073741824) return (n / 1073741824).toFixed(1) + ' GB';
++        if (n >= 1048576) return (n / 1048576).toFixed(1) + ' MB';
++        if (n >= 1024) return (n / 1024).toFixed(1) + ' KB';
++        return n + ' B';
+     }
+     function getInitials(name) {
+         if (!name) return '?';
+-        const parts = name.trim().split(/\s+/);
+-        if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+-        return name.slice(0, 2).toUpperCase();
++        const parts = String(name).trim().split(/\s+/).filter(Boolean);
++        const first = parts[0] ? Array.from(parts[0])[0] : '?';
++        const second = parts.length >= 2 ? Array.from(parts[1])[0] : (Array.from(parts[0] || '').slice(1, 2)[0] || '');
++        return (first + second).toUpperCase();
+     }
+     function getUserpicIndex(name) {
+         if (!name) return 1;
+@@ -115,22 +146,30 @@
+         for (let i = 0; i < name.length; i++) { h = ((h << 5) - h) + name.charCodeAt(i); h |= 0; }
+         return (Math.abs(h) % 7) + 1;
+     }
++    function toValidDate(value) {
++        if (value instanceof Date) return isNaN(value.getTime()) ? null : value;
++        if (value === null || value === undefined || value === '') return null;
++        const d = new Date(value);
++        return isNaN(d.getTime()) ? null : d;
++    }
+     function formatDate(d) {
+-        d = new Date(d);
++        const dt = toValidDate(d);
++        if (!dt) return {dd:'00',mm:'00',yyyy:'0000',hh:'00',min:'00',ss:'00'};
+         return {
+-            dd: String(d.getDate()).padStart(2,'0'),
+-            mm: String(d.getMonth()+1).padStart(2,'0'),
+-            yyyy: d.getFullYear(),
+-            hh: String(d.getHours()).padStart(2,'0'),
+-            min: String(d.getMinutes()).padStart(2,'0'),
+-            ss: String(d.getSeconds()).padStart(2,'0')
++            dd: String(dt.getDate()).padStart(2,'0'),
++            mm: String(dt.getMonth()+1).padStart(2,'0'),
++            yyyy: dt.getFullYear(),
++            hh: String(dt.getHours()).padStart(2,'0'),
++            min: String(dt.getMinutes()).padStart(2,'0'),
++            ss: String(dt.getSeconds()).padStart(2,'0')
+         };
+     }
+     function formatDateForFilename(d) { const f=formatDate(d); return f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss; }
+-    function formatDateForDisplay(d) { return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+-    function formatTimeForDisplay(d) { return new Date(d).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
++    function formatDateForDisplay(d) { const dt=toValidDate(d); return dt?dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'Unknown date'; }
++    function formatTimeForDisplay(d) { const dt=toValidDate(d); return dt?dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):''; }
+     function formatDateTelegram(d) {
+-        const dt = new Date(d);
++        const dt = toValidDate(d);
++        if(!dt) return '';
+         const dd = String(dt.getDate()).padStart(2,'0');
+         const mm = String(dt.getMonth()+1).padStart(2,'0');
+         const yyyy = dt.getFullYear();
+@@ -139,14 +178,47 @@
+         const ss = String(dt.getSeconds()).padStart(2,'0');
+         const offset = -dt.getTimezoneOffset();
+         const sign = offset >= 0 ? '+' : '-';
+-        const offH = String(Math.abs(Math.floor(offset/60))).padStart(2,'0');
+-        const offM = String(Math.abs(offset%60)).padStart(2,'0');
++        const offH = String(Math.floor(Math.abs(offset)/60)).padStart(2,'0');
++        const offM = String(Math.abs(offset)%60).padStart(2,'0');
+         return dd+'.'+mm+'.'+yyyy+' '+hh+':'+min+':'+ss+' UTC'+sign+offH+':'+offM;
+     }
+-    function parseDate(d) { d=new Date(d); return isNaN(d.getTime())?new Date():d; }
++    function parseDate(d) { return toValidDate(d); }
++    function parseTimestampValue(value) {
++        if (value === null || value === undefined || value === '') return null;
++        const raw = String(value).trim();
++        if (/^\d{10,13}$/.test(raw)) {
++            const n = Number(raw);
++            const dt = new Date(raw.length <= 10 ? n * 1000 : n);
++            return isNaN(dt.getTime()) ? null : dt;
++        }
++        return toValidDate(raw);
++    }
++    function parseSignedId(value) {
++        if (value === null || value === undefined) return null;
++        const m = String(value).match(/-?\d+/);
++        if (!m) return null;
++        const n = Number(m[0]);
++        return Number.isSafeInteger(n) ? n : null;
++    }
++    function parseMessageId(value) {
++        if (value === null || value === undefined) return null;
++        const matches = String(value).match(/-?\d+/g);
++        if (!matches || matches.length === 0) return null;
++        const n = Number(matches[matches.length - 1]);
++        return Number.isSafeInteger(n) ? n : null;
++    }
++    function sanitizeFilename(name, fallback='file') {
++        let out = String(name || fallback)
++            .replace(/[\\/\0-\x1f\x7f]+/g, '_')
++            .replace(/[<>:"|?*]/g, '_')
++            .replace(/^\.+/, '_')
++            .trim();
++        if (!out) out = fallback;
++        return out.slice(0, 180);
++    }
+     function getMimeType(fn) {
+         if(!fn) return 'application/octet-stream';
+-        const e=fn.split('.').pop().toLowerCase();
++        const e=String(fn).split('.').pop().toLowerCase();
+         const m={'jpg':'image/jpeg','jpeg':'image/jpeg','png':'image/png','gif':'image/gif','webp':'image/webp','mp4':'video/mp4','webm':'video/webm','mkv':'video/x-matroska','avi':'video/x-msvideo','mov':'video/quicktime','mp3':'audio/mpeg','ogg':'audio/ogg','wav':'audio/wav','opus':'audio/opus','pdf':'application/pdf','zip':'application/zip'};
+         return m[e]||'application/octet-stream';
+     }
+@@ -154,9 +226,33 @@
+         const m={'image/jpeg':'jpg','image/png':'png','image/gif':'gif','image/webp':'webp','video/mp4':'mp4','video/webm':'webm','video/x-matroska':'mkv','audio/ogg':'ogg','audio/mpeg':'mp3','audio/wav':'wav','audio/opus':'opus','application/pdf':'pdf','application/zip':'zip'};
+         return m[mime]||'bin';
+     }
++    function safeHref(raw) {
++        if (!raw) return '#';
++        try {
++            const value = String(raw).trim();
++            let candidate='';
++            if (/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) candidate=value;
++            else if (/^www\./i.test(value)) candidate='https://'+value;
++            else return '#';
++            const u = new URL(candidate);
++            if (['http:','https:','tg:','mailto:','tel:'].includes(u.protocol)) return u.href;
++        } catch (_) {}
++        return '#';
++    }
++    function normalizeMediaUrl(raw) {
++        if (!raw) return '';
++        try {
++            const value = String(raw).trim();
++            if (value.startsWith('blob:') || value.startsWith('data:')) return value;
++            const u = new URL(value, location.href);
++            if (u.protocol !== 'https:') return '';
++            if (u.username || u.password) return '';
++            return u.href;
++        } catch (_) { return ''; }
++    }
+     function extractIdWithPrefix(el, attr, prefix) {
+-        const v=el.getAttribute(attr); if(!v) return '';
+-        return prefix + v.replace(/\D/g,'');
++        const n = parseSignedId(el.getAttribute(attr));
++        return n === null ? '' : prefix + String(Math.abs(n));
+     }
+ 
+     /* ================================================================
+@@ -175,9 +271,14 @@
+         exportMode: 'current', selectedChats: [], chatList: [],
+         maxPhotoSize: 10*1024*1024, maxVideoSize: 100*1024*1024, maxFileSize: 100*1024*1024,
+         dialog: null, progressEl: null, progressText: '',
+-        currentChatIndex: 0
++        currentChatIndex: 0, mediaSkipped: 0, activeControllers: new Set()
+     };
+-    function setCancelled(v) { state.cancelled = v; }
++    function setCancelled(v) {
++        state.cancelled = v;
++        if(v){
++            for(const controller of state.activeControllers){try{controller.abort();}catch(_){}}
++        }
++    }
+ 
+     /* ================================================================
+        DOM INTERFACE
+@@ -208,7 +309,8 @@
+     function getMessageId(el) { return el.getAttribute('data-mid')||el.getAttribute('data-message-id')||el.dataset.mid||''; }
+     function getPeerIdNum(el) {
+         const v=el.getAttribute('data-peer-id')||el.closest('[data-peer-id]')?.getAttribute('data-peer-id')||'';
+-        return v.replace(/\D/g,'');
++        const n=parseSignedId(v);
++        return n===null?'':String(Math.abs(n));
+     }
+     function getChatTitle() {
+         const s=['[data-scope="peer-title"]','.peer-title','[class*="peer-title"]','h1','[class*="chat-name"]',
+@@ -575,7 +677,8 @@
+             console.log('[TG-Exporter] extractChatInfo:', JSON.stringify(info));
+         }
+         if(!name||name.length>100||name==='Unknown Chat'||name==='') return null;
+-        return {name,peerId,element:el.matches('a[data-peer-id]')?el:el};
++        const href=el.getAttribute('href')||el.closest('a[href]')?.getAttribute('href')||'';
++        return {name,peerId,href,element:el};
+     }
+     function getChatGroups(chatList) {
+         if(CONFIG.debug) {
+@@ -628,16 +731,21 @@
+         return '';
+     }
+     function getTimestamp(el) {
+-        const s=['[data-scope="time"]','time[datetime]','time','.time','.time-inner','[class*="time"]'];
+-        for(const sel of s) {
++        const direct = [el.getAttribute('data-date'), el.getAttribute('data-timestamp')];
++        for (const value of direct) {
++            const dt = parseTimestampValue(value);
++            if (dt) return dt.toISOString();
++        }
++        const selectors=['[data-scope="time"]','time[datetime]','time','.time','.time-inner','[class*="time"]'];
++        for(const sel of selectors) {
+             const e=el.querySelector(sel);
+-            if(e) {
+-                const dt=e.getAttribute('datetime');
+-                if(dt) { const d=new Date(dt); if(!isNaN(d.getTime())) return d.toISOString(); }
++            if(!e) continue;
++            const candidates=[e.getAttribute('datetime'),e.getAttribute('data-timestamp'),e.getAttribute('data-date'),e.getAttribute('title')];
++            for(const value of candidates){
++                const dt=parseTimestampValue(value);
++                if(dt) return dt.toISOString();
+             }
+         }
+-        const a=el.getAttribute('data-date')||el.getAttribute('data-timestamp');
+-        if(a){const t=parseInt(a);if(!isNaN(t))return new Date(t*1000).toISOString();}
+         return '';
+     }
+     function isServiceMessage(el) {
+@@ -654,7 +762,7 @@
+         function walk(n) {
+             if(n.nodeType===Node.TEXT_NODE){const t=n.textContent;if(t)entities.push({type:'plain',text:t});return;}
+             if(n.nodeType!==Node.ELEMENT_NODE) return;
+-            const tag=n.tagName.toLowerCase(), cls=n.className||'';
++            const tag=n.tagName.toLowerCase(), cls=typeof n.className==='string'?n.className:(n.getAttribute('class')||'');
+             if(tag==='br'){entities.push({type:'plain',text:'\n'});return;}
+             if(tag==='a') {
+                 const h=n.getAttribute('href')||'', t=n.textContent||'';
+@@ -740,39 +848,47 @@
+     /* ================================================================
+        MEDIA EXTRACTOR
+        ================================================================ */
++    function isDecorativeImage(img) {
++        const cls = typeof img.className === 'string' ? img.className.toLowerCase() : (img.getAttribute('class') || '').toLowerCase();
++        if (/(emoji|avatar|userpic|profile|reaction|badge|status|peer-photo)/.test(cls)) return true;
++        if (img.closest('.userpic,[class*="avatar"],[class*="userpic"],[class*="reaction"],[class*="emoji"],[class*="peer-photo"]')) return true;
++        return false;
++    }
+     function extractMediaInfo(el) {
+         const items=[];
+         const usedUrls=new Set();
+         el.querySelectorAll('img').forEach(img=>{
+-            const src=img.src||img.getAttribute('data-src')||'';
+-            if(src&&!src.startsWith('blob:')&&!src.startsWith('data:')&&!src.includes('emoji')&&!usedUrls.has(src)){
++            if(isDecorativeImage(img)) return;
++            const src=normalizeMediaUrl(img.currentSrc||img.src||img.getAttribute('data-src')||'');
++            if(src&&!usedUrls.has(src)){
+                 usedUrls.add(src);
+                 const isSticker=!!img.closest('[class*="sticker"]');
+                 items.push({type:isSticker?'sticker':'photo',url:src,alt:img.alt||'',width:img.naturalWidth||img.width||0,height:img.naturalHeight||img.height||0});
+             }
+         });
+         el.querySelectorAll('video').forEach(v=>{
+-            const src=v.src||v.getAttribute('data-src')||'';
+-            if(src&&!src.startsWith('blob:')&&!usedUrls.has(src)){
++            const source=v.currentSrc||v.src||v.querySelector('source[src]')?.src||v.getAttribute('data-src')||'';
++            const src=normalizeMediaUrl(source);
++            if(src&&!usedUrls.has(src)){
+                 usedUrls.add(src);
+-                const isVM=!!(v.closest('[class*="video_message"],[class*="round"],[class*="video_msg"]'));
+-                const isVoice=!!(v.closest('[class*="voice"],[class*="audio"]'));
+-                items.push({type:isVM?'video_message':isVoice?'voice_message':'video_file',url:src,duration:v.duration||0,width:v.videoWidth||0,height:v.videoHeight||0});
++                const isVM=!!v.closest('[class*="video_message"],[class*="round"],[class*="video_msg"]');
++                const isVoice=!!v.closest('[class*="voice"],[class*="audio"]');
++                items.push({type:isVM?'video_message':isVoice?'voice_message':'video_file',url:src,duration:Number.isFinite(v.duration)?v.duration:0,width:v.videoWidth||0,height:v.videoHeight||0});
+             }
+         });
+         el.querySelectorAll('audio').forEach(a=>{
+-            const src=a.src||a.getAttribute('data-src')||'';
+-            if(src&&!src.startsWith('blob:')&&!usedUrls.has(src)){
++            const source=a.currentSrc||a.src||a.querySelector('source[src]')?.src||a.getAttribute('data-src')||'';
++            const src=normalizeMediaUrl(source);
++            if(src&&!usedUrls.has(src)){
+                 usedUrls.add(src);
+-                items.push({type:'voice_message',url:src,duration:a.duration||0});
++                items.push({type:'voice_message',url:src,duration:Number.isFinite(a.duration)?a.duration:0});
+             }
+         });
+-        // Document links
+-        el.querySelectorAll('a[download],a[href*="cdn"],[data-scope="document"] a,[class*="document"] a').forEach(a=>{
+-            const h=a.href||'';
+-            if(h&&!h.startsWith('blob:')&&!h.startsWith('data:')&&!h.startsWith('javascript:')&&!usedUrls.has(h)){
++        el.querySelectorAll('a[download],[data-scope="document"] a,[class*="document"] a').forEach(a=>{
++            const h=normalizeMediaUrl(a.href||a.getAttribute('href')||'');
++            if(h&&!usedUrls.has(h)){
+                 usedUrls.add(h);
+-                items.push({type:'file',url:h,alt:a.textContent.trim()||a.getAttribute('download')||''});
++                items.push({type:'file',url:h,alt:(a.getAttribute('download')||a.textContent||'').trim()});
+             }
+         });
+         return items;
+@@ -782,8 +898,13 @@
+         if(type==='sticker') return 'webp';
+         if(type==='voice_message') return 'ogg';
+         if(type==='video_message') return 'mp4';
+-        const m=url.match(/\.(\w{2,4})(\?|$)/);
+-        return m?m[1]:'file';
++        try {
++            const pathname = url.startsWith('blob:') || url.startsWith('data:') ? '' : new URL(url, location.href).pathname;
++            const m=pathname.match(/\.([a-zA-Z0-9]{1,10})$/);
++            if(m) return m[1].toLowerCase();
++        } catch (_) {}
++        if(type==='video_file'||type==='animation') return 'mp4';
++        return 'bin';
+     }
+ 
+     /* ================================================================
+@@ -792,13 +913,15 @@
+     function extractMessage(el) {
+         const mid=getMessageId(el);
+         if(!mid) return null;
+-        if(state.messages.has(mid)) return null;
++        const messageId=parseMessageId(mid);
++        if(messageId===null) return null;
++        if(state.messages.has(messageId)) return null;
+ 
+         const isService=isServiceMessage(el);
+         const timestamp=getTimestamp(el);
+         const dateObj=parseDate(timestamp);
+-        const dateISO=dateObj.toISOString().replace('.000Z','');
+-        const dateUnix=String(Math.floor(dateObj.getTime()/1000));
++        const dateISO=dateObj?dateObj.toISOString().replace('.000Z',''):'';
++        const dateUnix=dateObj?String(Math.floor(dateObj.getTime()/1000)):'';
+ 
+         if(isService) {
+             const action=classifyServiceAction(el);
+@@ -806,7 +929,7 @@
+             const actor=getActorFromService(el);
+             const peerNum=getPeerIdNum(el);
+             const fromId=peerNum?'user'+peerNum:'';
+-            const msg={id:parseInt(mid)||0,type:'service',date:dateISO,date_unixtime:dateUnix,actor:actor||'Unknown',actor_id:fromId,action:action,text:'',text_entities:[]};
++            const msg={id:messageId,type:'service',date:dateISO,date_unixtime:dateUnix,actor:actor||'Unknown',actor_id:fromId,action:action,text:'',text_entities:[]};
+             if(action==='phone_call'){
+                 msg.discard_reason=getCallDiscardReason(el);
+                 const dur=getCallDuration(el);
+@@ -830,7 +953,7 @@
+             const fn=fwdEl.querySelector('.from_name');
+             if(fn) forwardedFrom=fn.textContent.trim();
+             const fwdPeer=fwdEl.querySelector('[data-peer-id]');
+-            if(fwdPeer) forwardedFromId='user'+fwdPeer.getAttribute('data-peer-id').replace(/\D/g,'');
++            if(fwdPeer){const n=parseSignedId(fwdPeer.getAttribute('data-peer-id'));if(n!==null)forwardedFromId='user'+Math.abs(n);}
+         }
+ 
+         // Check for reply
+@@ -838,7 +961,7 @@
+         const replyEl=el.querySelector('[data-scope="reply"],[class*="reply"]');
+         if(replyEl){
+             const rid=replyEl.getAttribute('data-mid')||replyEl.getAttribute('data-message-id')||replyEl.getAttribute('data-reply-id');
+-            if(rid) replyToId=parseInt(rid)||null;
++            if(rid) replyToId=parseMessageId(rid);
+         }
+ 
+         // Check for edit - parse actual edit timestamp from DOM
+@@ -850,11 +973,7 @@
+                 const dt=editTimeEl.getAttribute('datetime');
+                 if(dt){const d=new Date(dt);if(!isNaN(d.getTime())){edited=d.toISOString().replace('.000Z','');editedUnix=String(Math.floor(d.getTime()/1000));}}
+             }
+-            if(!edited){
+-                const now=new Date();
+-                edited=now.toISOString().replace('.000Z','');
+-                editedUnix=String(Math.floor(now.getTime()/1000));
+-            }
++            // Do not fabricate an edit timestamp when Telegram Web does not expose it.
+         }
+ 
+         // Text extraction
+@@ -881,33 +1000,35 @@
+ 
+         // Media extraction
+         const mediaItems=extractMediaInfo(el);
+-        const msg={id:parseInt(mid)||0,type:'message',date:dateISO,date_unixtime:dateUnix,from:sender,from_id:fromId,text:textField,text_entities:textEntities};
++        const msg={id:messageId,type:'message',date:dateISO,date_unixtime:dateUnix,from:sender,from_id:fromId,text:textField,text_entities:textEntities};
+         if(forwardedFrom) msg.forwarded_from=forwardedFrom;
+         if(forwardedFromId) msg.forwarded_from_id=forwardedFromId;
+         if(replyToId) msg.reply_to_message_id=replyToId;
+         if(edited) { msg.edited=edited; msg.edited_unixtime=editedUnix; }
+         if(state._currentTopic) msg.topic=state._currentTopic;
+ 
+-        // Process media
++        // Process one primary media item. Preview images become thumbnails for files/videos.
+         if(mediaItems.length>0){
+-            for(const mi of mediaItems){
+-                if(mi.type==='photo'){
+-                    msg.photo=mi.url; // stored for download, will be replaced with relative path
+-                    msg.photo_file_size=0;
+-                    if(mi.width) msg.width=mi.width;
+-                    if(mi.height) msg.height=mi.height;
+-                } else {
+-                    const ext=getFileExtension(mi.url,mi.type);
+-                    msg.file=mi.url;
+-                    msg.file_name=(mi.alt||'file')+'.'+ext;
+-                    msg.file_size=0;
+-                    msg.media_type=mi.type;
+-                    msg.mime_type=getMimeType(msg.file_name);
+-                    if(mi.duration) msg.duration_seconds=Math.round(mi.duration);
+-                    if(mi.width) msg.width=mi.width;
+-                    if(mi.height) msg.height=mi.height;
+-                }
+-            }
++            const priority=['video_message','voice_message','video_file','animation','sticker','file','photo'];
++            const primary=priority.map(t=>mediaItems.find(mi=>mi.type===t)).find(Boolean)||mediaItems[0];
++            const preview=primary.type!=='photo'?mediaItems.find(mi=>mi.type==='photo'&&mi.url!==primary.url):null;
++            if(primary.type==='photo'){
++                msg.photo=primary.url;
++                msg.photo_file_size=0;
++            } else {
++                const ext=getFileExtension(primary.url,primary.type);
++                let candidate=sanitizeFilename(primary.alt||'file');
++                if(!/\.[a-zA-Z0-9]{1,10}$/.test(candidate)) candidate += '.'+ext;
++                msg.file=primary.url;
++                msg.file_name=candidate;
++                msg.file_size=0;
++                msg.media_type=primary.type;
++                msg.mime_type=getMimeType(msg.file_name);
++                if(preview) msg._thumbnail_source=preview.url;
++            }
++            if(primary.duration) msg.duration_seconds=Math.round(primary.duration);
++            if(primary.width) msg.width=primary.width;
++            if(primary.height) msg.height=primary.height;
+         }
+ 
+         // Reactions
+@@ -1032,7 +1153,7 @@
+             const t=state.topics[i];
+             state.currentTopicName=t.name||'Topic '+(i+1);
+             state._currentTopic=state.currentTopicName;
+-            const safeTopic=escapeHtml(state.currentTopicName);
++            const safeTopic=state.currentTopicName;
+             if(i>0){
+                 updateProgress('Switching topic: '+safeTopic+'...');
+                 const ok=await switchToTopic(t);
+@@ -1293,10 +1414,11 @@
+             if(sl&&val){sl.addEventListener('input',upd);upd();}
+         });
+ 
+-        D.querySelector('#tgx-cancel').onclick=()=>{if(!state.isExporting)closeDialog();else setCancelled(true);};
+-        D.querySelector('#tgx-export').onclick=()=>{
++        D.querySelector('#tgx-cancel').onclick=()=>{if(!state.isExporting)closeDialog();else{setCancelled(true);updateProgress('Cancelling…');}};
++        D.querySelector('#tgx-export').onclick=async()=>{
+             state.formatHtml=D.querySelector('#tgx-html').checked;
+             state.formatJson=D.querySelector('#tgx-json').checked;
++            if(!state.formatHtml&&!state.formatJson){alert('Select HTML and/or JSON.');return;}
+             state.exportPhotos=D.querySelector('#tgx-photos').checked;
+             state.exportVideos=D.querySelector('#tgx-videos').checked;
+             state.exportVoice=D.querySelector('#tgx-voice').checked;
+@@ -1321,217 +1443,284 @@
+                 const sel=D.querySelector('#tgx-chat-type');
+                 if(sel) state.chatType=sel.value;
+             }
+-            closeDialog();
+-            startExport();
++            const exportAction=D.querySelector('#tgx-export');
++            if(exportAction){exportAction.disabled=true;exportAction.textContent='Exporting…';exportAction.style.opacity='0.65';}
++            const cancelAction=D.querySelector('#tgx-cancel');
++            if(cancelAction) cancelAction.textContent='Cancel export';
++            await startExport();
+         };
+     }
+     function closeDialog() {
+         if(state.dialog){state.dialog.remove();state.dialog=null;}
+     }
+     function updateProgress(text, pct) {
+-        state.progressText=text;
+-        if(state.dialog){
+-            const p=state.dialog.querySelector('#tgx-progress');
+-            if(p){p.style.display='block';p.innerHTML=text+(pct!==undefined?'<br><div style="height:4px;background:#e0e0e0;border-radius:2px;margin-top:8px;"><div style="height:4px;background:#2AABEE;border-radius:2px;width:'+pct+'%;"></div></div>':'');}
++        state.progressText=String(text||'');
++        if(!state.dialog) return;
++        const p=state.dialog.querySelector('#tgx-progress');
++        if(!p) return;
++        p.style.display='block';
++        p.replaceChildren();
++        p.appendChild(document.createTextNode(state.progressText));
++        if(pct!==undefined){
++            const clamped=Math.max(0,Math.min(100,Number(pct)||0));
++            const track=document.createElement('div');
++            track.style.cssText='height:4px;background:#e0e0e0;border-radius:2px;margin-top:8px;';
++            const bar=document.createElement('div');
++            bar.style.cssText='height:4px;background:#2AABEE;border-radius:2px;width:'+clamped+'%;';
++            track.appendChild(bar);
++            p.appendChild(document.createElement('br'));
++            p.appendChild(track);
+         }
+     }
+     function showComplete(message) {
+         if(state.dialog){
+             const p=state.dialog.querySelector('#tgx-progress');
+-            if(p){p.style.display='block';p.innerHTML='<span style="color:#64bf47;">✓</span> '+escapeHtml(message);}
++            if(p){p.style.display='block';p.textContent='✓ '+String(message||'');}
+             setTimeout(()=>{if(state.dialog&&!state.isExporting)closeDialog();},5000);
+         }
+     }
+     function showError(message) {
+         if(state.dialog){
+             const p=state.dialog.querySelector('#tgx-progress');
+-            if(p){p.style.display='block';p.innerHTML='<span style="color:#ff5555;">✗</span> '+escapeHtml(message);}
++            if(p){p.style.display='block';p.textContent='✗ '+String(message||'');}
+         }
+     }
+ 
+     /* ================================================================
+        ZIP EXPORT BUILDER
+        ================================================================ */
++    function mediaLimitForType(mediaType) {
++        if(mediaType==='photo') return state.maxPhotoSize;
++        if(mediaType==='video_file'||mediaType==='video_message'||mediaType==='animation') return state.maxVideoSize;
++        return state.maxFileSize;
++    }
++    function makeMediaFilename(prefix, counter, msg, ext) {
++        const f=formatDate(msg.date);
++        return sanitizeFilename(prefix+'_'+counter+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+'.'+ext);
++    }
+     async function buildExportZip(messages, chatInfo, isMultiChat, chatIndex, existingZip) {
+         if(typeof JSZip==='undefined') {
+             await new Promise(r=>setTimeout(r,2000));
+             if(typeof JSZip==='undefined') throw new Error('JSZip not loaded');
+         }
++        if(!state.formatHtml&&!state.formatJson) throw new Error('No output format selected');
+         const zip=existingZip||new JSZip();
+         const prefix=isMultiChat?'chats/chat_'+String(chatIndex).padStart(2,'0')+'/':'';
+-        const exportDate=new Date();
+-        const dateStr=exportDate.toISOString().replace(/[:.]/g,'-').slice(0,19);
+-        const safeName=chatInfo.name.replace(/[^a-zA-Z0-9_-]/g,'_').slice(0,30);
+-
+-        // Add CSS
+-        zip.file(prefix+'css/style.css', EXPORT_CSS);
+-        // Add JS
+-        zip.file(prefix+'js/script.js', EXPORT_JS);
+-        // Add images
+-        for(const [name,b64] of Object.entries(IMAGES)){
+-            zip.file(prefix+'images/'+name, b64, {base64:true});
+-        }
+-        // Build result.json
+-        const resultJson=buildResultJson(messages, chatInfo, isMultiChat);
+-        zip.file(prefix+'result.json', JSON.stringify(resultJson, null, 1));
+-
+-        // Build messages.html
+-        const htmlContent=buildMessagesHtml(messages, chatInfo, isMultiChat);
+-        zip.file(prefix+'messages.html', htmlContent);
+-
+-        // Add media files
+-        let photoCount=0, videoCount=0, voiceCount=0, stickerCount=0, fileCount=0, animCount=0, videoMsgCount=0;
+-        const mediaPromises=[];
++
++        let photoCount=0, videoCount=0, voiceCount=0, stickerCount=0, fileCount=0, videoMsgCount=0;
++        const mediaTasks=[];
++
++        function queueMedia(task){ mediaTasks.push(task); }
++        function clearRemoteMedia(msg){
++            if(msg.photo && /^(https?:|blob:|data:)/i.test(msg.photo)) delete msg.photo;
++            if(msg.file && /^(https?:|blob:|data:)/i.test(msg.file)) delete msg.file;
++            if(msg.thumbnail && /^(https?:|blob:|data:)/i.test(msg.thumbnail)) delete msg.thumbnail;
++        }
+ 
+         for(const msg of messages){
+-            if(state.cancelled) break;
+-            let hasPhoto=false;
+-            let mime='';
+             let mediaType='';
+-            let fileUrl='';
+-            let fileName='';
+-            let ext='';
+-
+-            if(msg.photo&&msg.photo.startsWith('http')){
+-                hasPhoto=true; mime='image/jpeg'; mediaType='photo'; fileUrl=msg.photo;
+-            }else if(msg.file&&msg.file.startsWith('http')){
+-                mime=msg.mime_type||'application/octet-stream';
+-                mediaType=msg.media_type||'file';
+-                fileUrl=msg.file;
+-                fileName=msg.file_name||'file';
+-            }
+-
+-            if(!fileUrl) continue;
+-
+-            // Check size limits
+-            if(mediaType==='photo'||hasPhoto){
+-                if(!state.exportPhotos) continue;
++            let sourceUrl='';
++            let sourceName='';
++            const normalizedPhoto=msg.photo?normalizeMediaUrl(msg.photo):'';
++            const normalizedFile=msg.file?normalizeMediaUrl(msg.file):'';
++            if(msg.photo&&normalizedPhoto){
++                mediaType='photo'; sourceUrl=normalizedPhoto;
++            } else if(msg.file&&normalizedFile){
++                mediaType=msg.media_type||'file'; sourceUrl=normalizedFile; sourceName=msg.file_name||'file';
++            }
++            if(!sourceUrl){
++                if(msg.photo&&!/^(photos|images)\//.test(msg.photo)) delete msg.photo;
++                if(msg.file&&!/^(files|video_files|voice_messages|stickers|video_message_files|animations)\//.test(msg.file)) delete msg.file;
++                delete msg.thumbnail; delete msg._thumbnail_source;
++                continue;
++            }
++
++            const thumbnailSource=normalizeMediaUrl(msg._thumbnail_source||'');
++            delete msg._thumbnail_source;
++            clearRemoteMedia(msg);
++
++            const enabled = mediaType==='photo' ? state.exportPhotos :
++                (mediaType==='video_file'||mediaType==='animation'||mediaType==='video_message') ? state.exportVideos :
++                mediaType==='voice_message' ? state.exportVoice :
++                mediaType==='sticker' ? state.exportStickers : state.exportFiles;
++            if(!enabled) continue;
++
++            const maxBytes=mediaLimitForType(mediaType);
++            if(mediaType==='photo'){
+                 photoCount++;
+-                const f=formatDate(msg.date);
+-                const fn='photo_'+photoCount+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+'.jpg';
+-                mediaPromises.push(downloadAndAddMedia(zip, prefix+'photos/', fn, fileUrl));
+-                // Thumbnail
+-                mediaPromises.push(downloadAndAddMedia(zip, prefix+'photos/', fn.replace('.jpg','_thumb.jpg'), fileUrl, true));
+-                msg.photo='photos/'+fn;
+-                msg.photo_file_size=0;
+-                delete msg.file; delete msg.file_name; delete msg.file_size; delete msg.media_type;
++                const fn=makeMediaFilename('photo',photoCount,msg,'jpg');
++                const rel='photos/'+fn;
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+'photos/',fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.photo=rel;msg.photo_file_size=result.size;}
++                });
++                const thumbName=fn.replace(/\.jpg$/i,'_thumb.jpg');
++                queueMedia(async()=>{ await downloadAndAddMedia(zip,prefix+'photos/',thumbName,sourceUrl,{maxBytes,isThumb:true}); });
++                delete msg.file; delete msg.file_name; delete msg.file_size; delete msg.media_type; delete msg.thumbnail;
++            } else if(mediaType==='video_file'||mediaType==='animation'){
++                videoCount++;
++                const ext=getFileExtension(sourceUrl,mediaType);
++                const fn=makeMediaFilename(mediaType,videoCount,msg,ext);
++                const folder=mediaType==='video_file'?'video_files/':'animations/';
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+folder,fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.file=folder+fn;msg.file_name=fn;msg.file_size=result.size;if(result.mime)msg.mime_type=result.mime;}
++                });
++                if(thumbnailSource){
++                    const thumbName=fn+'_thumb.jpg';
++                    queueMedia(async()=>{
++                        const result=await downloadAndAddMedia(zip,prefix+folder,thumbName,thumbnailSource,{maxBytes:state.maxPhotoSize,isThumb:true});
++                        if(result.ok){msg.thumbnail=folder+thumbName;msg.thumbnail_file_size=result.size;}
++                    });
++                }
++            } else if(mediaType==='voice_message'){
++                voiceCount++;
++                const ext=getFileExtension(sourceUrl,mediaType);
++                const fn=makeMediaFilename('audio',voiceCount,msg,ext);
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+'voice_messages/',fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.file='voice_messages/'+fn;msg.file_name=fn;msg.file_size=result.size;if(result.mime)msg.mime_type=result.mime;}
++                });
++            } else if(mediaType==='sticker'){
++                stickerCount++;
++                const ext=getFileExtension(sourceUrl,mediaType);
++                const fn=sanitizeFilename('sticker_'+stickerCount+'.'+ext);
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+'stickers/',fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.file='stickers/'+fn;msg.file_name=fn;msg.file_size=result.size;if(result.mime)msg.mime_type=result.mime;}
++                });
++            } else if(mediaType==='video_message'){
++                videoMsgCount++;
++                const ext=getFileExtension(sourceUrl,mediaType);
++                const fn=makeMediaFilename('video',videoMsgCount,msg,ext);
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+'video_message_files/',fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.file='video_message_files/'+fn;msg.file_name=fn;msg.file_size=result.size;if(result.mime)msg.mime_type=result.mime;}
++                });
+             } else {
+-                if(mediaType==='video_file'||mediaType==='animation'){
+-                    if(!state.exportVideos) continue;
+-                    videoCount++; const c=videoCount;
+-                    ext=getFileExtension(fileUrl,mediaType);
+-                    const f=formatDate(msg.date);
+-                    const fn=mediaType+'_'+c+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+'.'+ext;
+-                    const folder=mediaType==='video_file'?'video_files/':'animations/';
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+folder, fn, fileUrl));
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+folder, fn+'_thumb.jpg', fileUrl, true));
+-                    msg.file=folder+fn;
+-                    msg.file_name=fn;
+-                    msg.media_type=mediaType;
+-                    msg.thumbnail=folder+fn+'_thumb.jpg';
+-                    msg.thumbnail_file_size=0;
+-                } else if(mediaType==='voice_message'){
+-                    if(!state.exportVoice) continue;
+-                    voiceCount++;
+-                    ext=getFileExtension(fileUrl,mediaType);
+-                    const f=formatDate(msg.date);
+-                    const fn='audio_'+voiceCount+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+'.'+ext;
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+'voice_messages/', fn, fileUrl));
+-                    msg.file='voice_messages/'+fn;
+-                    msg.file_name=fn;
+-                    msg.media_type='voice_message';
+-                } else if(mediaType==='sticker'){
+-                    if(!state.exportStickers) continue;
+-                    stickerCount++;
+-                    ext=getFileExtension(fileUrl,mediaType);
+-                    const fn='sticker_'+stickerCount+'.'+ext;
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+'stickers/', fn, fileUrl));
+-                    msg.file='stickers/'+fn;
+-                    msg.file_name=fn;
+-                    msg.media_type='sticker';
+-                } else if(mediaType==='video_message'){
+-                    if(!state.exportVideos) continue;
+-                    videoMsgCount++;
+-                    ext=getFileExtension(fileUrl,mediaType);
+-                    const f=formatDate(msg.date);
+-                    const fn='video_'+videoMsgCount+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+'.'+ext;
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+'video_message_files/', fn, fileUrl));
+-                    msg.file='video_message_files/'+fn;
+-                    msg.file_name=fn;
+-                    msg.media_type='video_message';
+-                } else {
+-                    if(!state.exportFiles) continue;
+-                    fileCount++;
+-                    const origName=msg.file_name||'file';
+-                    const f=formatDate(msg.date);
+-                    const fn=(mediaType==='file'?'file_'+fileCount+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss:origName);
+-                    const folder='files/';
+-                    mediaPromises.push(downloadAndAddMedia(zip, prefix+folder, fn, fileUrl));
+-                    msg.file=folder+fn;
+-                    msg.file_name=fn;
+-                    delete msg.media_type;
+-                }
+-                msg.file_size=0;
+-                if(mime) msg.mime_type=mime;
+-                delete msg.photo; delete msg.photo_file_size;
++                fileCount++;
++                const orig=sanitizeFilename(sourceName||'file');
++                const f=formatDate(msg.date);
++                const ext=getFileExtension(sourceUrl,'file');
++                const hasExt=/\.[a-zA-Z0-9]{1,10}$/.test(orig);
++                const fn=sanitizeFilename('file_'+fileCount+'@'+f.dd+'-'+f.mm+'-'+f.yyyy+'_'+f.hh+'-'+f.min+'-'+f.ss+(hasExt?'_'+orig:'.'+ext));
++                queueMedia(async()=>{
++                    const result=await downloadAndAddMedia(zip,prefix+'files/',fn,sourceUrl,{maxBytes});
++                    if(result.ok){msg.file='files/'+fn;msg.file_name=fn;msg.file_size=result.size;if(result.mime)msg.mime_type=result.mime;}
++                });
++                delete msg.media_type;
+             }
+         }
+ 
+-        // Wait for media downloads with concurrency limit
+-        const total=mediaPromises.length;
++        const total=mediaTasks.length;
+         let done=0;
+-        updateProgress('Downloading media... (0/'+total+')', 0);
+-        const concurrency=5;
+-        let i=0;
+-        async function processBatch(){
+-            while(i<total && !state.cancelled){
+-                const idx=i++;
+-                try{await mediaPromises[idx];}catch(e){log('Media download error:',e);}
++        if(total>0) updateProgress('Downloading media... (0/'+total+')',0);
++        let next=0;
++        async function worker(){
++            while(!state.cancelled){
++                const idx=next++;
++                if(idx>=total) return;
++                try{await mediaTasks[idx]();}catch(e){log('Media task failed:',e?.message||e);}
+                 done++;
+-                updateProgress('Downloading media... ('+done+'/'+total+')', Math.round(done/total*100));
++                updateProgress('Downloading media... ('+done+'/'+total+')',Math.round(done/total*100));
+             }
+         }
+-        const workers=Array.from({length:Math.min(concurrency,total)},()=>processBatch());
++        const workers=Array.from({length:Math.min(CONFIG.mediaConcurrency,total)},()=>worker());
+         await Promise.all(workers);
+ 
+-        // Update result.json with media paths
+-        const updatedJson=buildResultJson(messages, chatInfo, isMultiChat);
+-        zip.file(prefix+'result.json', JSON.stringify(updatedJson, null, 1));
+-
+-        if(existingZip) return; // files added to parent zip, no blob needed
+-        updateProgress('Building ZIP...', 90);
+-        const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+-        return blob;
+-    }
+-
+-    async function downloadAndAddMedia(zip, folder, filename, url, isThumb) {
+-        if(state.cancelled) return;
+-        try {
+-            const resp=await fetch(url, {mode:'cors',credentials:'omit'});
+-            if(!resp.ok) throw new Error('HTTP '+resp.status);
+-            const blob=await resp.blob();
+-            if(isThumb){
+-                // Generate thumbnail using canvas
+-                try {
+-                    const img=await createImageBitmap(blob);
+-                    const maxDim=90;
+-                    let w=img.width, h=img.height;
+-                    if(w>h){if(w>maxDim){h=Math.round(h*maxDim/w);w=maxDim;}}else{if(h>maxDim){w=Math.round(w*maxDim/h);h=maxDim;}}
+-                    const canvas=document.createElement('canvas');
+-                    canvas.width=w; canvas.height=h;
+-                    const ctx=canvas.getContext('2d');
+-                    ctx.drawImage(img,0,0,w,h);
+-                    const thumbBlob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',0.8));
+-                    zip.file(folder+filename, thumbBlob);
+-                    img.close();
+-                } catch(e) {
+-                    zip.file(folder+filename, blob);
++        // Build outputs only after media URLs have been converted to local paths.
++        if(state.formatJson){
++            const resultJson=buildResultJson(messages,chatInfo,isMultiChat);
++            zip.file(prefix+'result.json',JSON.stringify(resultJson,null,1));
++        }
++        if(state.formatHtml){
++            zip.file(prefix+'css/style.css',EXPORT_CSS);
++            zip.file(prefix+'js/script.js',EXPORT_RUNTIME_JS);
++            for(const [name,b64] of Object.entries(IMAGES)) zip.file(prefix+'images/'+name,b64,{base64:true});
++            zip.file(prefix+'messages.html',buildMessagesHtml(messages,chatInfo,isMultiChat));
++        }
++
++        state.downloadedMedia.clear();
++        if(existingZip) return;
++        updateProgress('Building ZIP...',90);
++        return await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
++    }
++
++    async function fetchMediaBlob(url,maxBytes) {
++        const normalized=normalizeMediaUrl(url);
++        if(!normalized) throw new Error('Blocked unsafe media URL');
++        const cacheKey=normalized+'|'+String(maxBytes||0);
++        if(state.downloadedMedia.has(cacheKey)) return await state.downloadedMedia.get(cacheKey);
++
++        const promise=(async()=>{
++            const controller=new AbortController();
++            state.activeControllers.add(controller);
++            const timer=setTimeout(()=>controller.abort(),CONFIG.mediaFetchTimeoutMs);
++            try{
++                let credentials='omit';
++                if(normalized.startsWith(location.origin+'/')) credentials='same-origin';
++                const resp=await fetch(normalized,{mode:'cors',credentials,signal:controller.signal,cache:'no-store',referrerPolicy:'no-referrer'});
++                if(!resp.ok) throw new Error('HTTP '+resp.status);
++                const declared=Number(resp.headers.get('content-length'))||0;
++                if(maxBytes&&declared>maxBytes) throw new Error('Media exceeds size limit ('+formatFileSize(declared)+' > '+formatFileSize(maxBytes)+')');
++                const mime=(resp.headers.get('content-type')||'').split(';')[0].trim();
++                if(resp.body&&resp.body.getReader){
++                    const reader=resp.body.getReader();
++                    const chunks=[];
++                    let total=0;
++                    while(true){
++                        const {done,value}=await reader.read();
++                        if(done) break;
++                        total+=value.byteLength;
++                        if(maxBytes&&total>maxBytes){
++                            try{await reader.cancel();}catch(_){}
++                            throw new Error('Media exceeds size limit ('+formatFileSize(maxBytes)+')');
++                        }
++                        chunks.push(value);
++                    }
++                    return new Blob(chunks,{type:mime||'application/octet-stream'});
+                 }
+-            } else {
+-                zip.file(folder+filename, blob);
+-            }
++                const blob=await resp.blob();
++                if(maxBytes&&blob.size>maxBytes) throw new Error('Media exceeds size limit ('+formatFileSize(blob.size)+' > '+formatFileSize(maxBytes)+')');
++                return blob;
++            } finally { clearTimeout(timer); state.activeControllers.delete(controller); }
++        })();
++        state.downloadedMedia.set(cacheKey,promise);
++        try{return await promise;}catch(e){state.downloadedMedia.delete(cacheKey);throw e;}
++    }
++
++    async function makeImageThumbnail(blob) {
++        if(!blob||!(blob.type||'').startsWith('image/')) return null;
++        let img=null;
++        try{
++            img=await createImageBitmap(blob);
++            const maxDim=90;
++            let w=img.width,h=img.height;
++            if(!w||!h) return null;
++            if(w>h&&w>maxDim){h=Math.max(1,Math.round(h*maxDim/w));w=maxDim;}
++            else if(h>=w&&h>maxDim){w=Math.max(1,Math.round(w*maxDim/h));h=maxDim;}
++            const canvas=document.createElement('canvas');
++            canvas.width=w;canvas.height=h;
++            const ctx=canvas.getContext('2d');
++            if(!ctx) return null;
++            ctx.drawImage(img,0,0,w,h);
++            return await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.82));
++        } finally { if(img&&img.close) img.close(); }
++    }
++
++    async function downloadAndAddMedia(zip,folder,filename,url,options={}) {
++        if(state.cancelled) return {ok:false,cancelled:true};
++        const safeName=sanitizeFilename(filename);
++        try{
++            const blob=await fetchMediaBlob(url,options.maxBytes||0);
++            const payload=options.isThumb?(await makeImageThumbnail(blob)):blob;
++            if(!payload) return {ok:false,reason:'thumbnail-unavailable'};
++            zip.file(folder+safeName,payload);
++            return {ok:true,size:payload.size,mime:payload.type||blob.type||''};
+         } catch(e) {
+-            log('Download failed for '+filename+': '+e.message);
++            if(!options.isThumb) state.mediaSkipped++;
++            log('Media skipped: '+safeName+' — '+(e?.message||e));
++            return {ok:false,error:e};
+         }
+     }
+ 
+@@ -1639,17 +1828,18 @@
+             }
+ 
+             const id=msg.id;
+-            const fromName=escapeHtml(msg.from||'Unknown');
+-            const initials=escapeHtml(getInitials(fromName));
+-            const userpicIdx=getUserpicIndex(fromName);
++            const rawFromName=msg.from||'Unknown';
++            const fromName=escapeHtml(rawFromName);
++            const initials=escapeHtml(getInitials(rawFromName));
++            const userpicIdx=getUserpicIndex(rawFromName);
+             const time=formatTimeForDisplay(msg.date);
+             const fullDate=formatDateTelegram(msg.date);
+             const msgTime=new Date(msg.date).getTime();
+ 
+             // joined class: same sender within 900s (tdesktop messageNeedsWrap)
+-            const isJoined=(fromName===lastFrom && lastTime>0 && (msgTime-lastTime)<=900000);
++            const isJoined=(rawFromName===lastFrom && lastTime>0 && Number.isFinite(msgTime) && (msgTime-lastTime)<=900000);
+             const joinedClass=isJoined?' joined':'';
+-            lastFrom=fromName; lastTime=msgTime;
++            lastFrom=rawFromName; lastTime=Number.isFinite(msgTime)?msgTime:0;
+ 
+             body+='<div class="message default clearfix'+joinedClass+'" id="message'+id+'">';
+             if(!isJoined){
+@@ -1661,9 +1851,10 @@
+ 
+             // Forwarded
+             if(msg.forwarded_from){
+-                const fwdName=escapeHtml(msg.forwarded_from);
+-                const fwdInitials=escapeHtml(getInitials(fwdName));
+-                const fwdIdx=getUserpicIndex(fwdName);
++                const rawFwdName=msg.forwarded_from;
++                const fwdName=escapeHtml(rawFwdName);
++                const fwdInitials=escapeHtml(getInitials(rawFwdName));
++                const fwdIdx=getUserpicIndex(rawFwdName);
+                 body+='<div class="pull_left forwarded userpic_wrap"><div class="userpic userpic'+fwdIdx+'" style="width:42px;height:42px"><div class="initials" style="line-height:42px">'+fwdInitials+'</div></div></div>';
+                 body+='<div class="forwarded body"><div class="from_name">'+fwdName+'</div>';
+             }
+@@ -1702,7 +1893,7 @@
+ 
+         body+='</div>';
+ 
+-        return '<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Exported Data</title><meta content="width=device-width,initial-scale=1.0" name="viewport"/><link href="css/style.css" rel="stylesheet"/><script src="js/script.js" type="text/javascript"></script></head><body onload="CheckLocation();"><div class="page_wrap"><div class="page_header"><div class="content"><div class="text bold">'+name+'</div></div></div><div class="page_body chat_page">'+body+'</div></div></body></html>';
++        return '<!DOCTYPE html><html><head><meta charset="utf-8"/><meta http-equiv="Content-Security-Policy" content="default-src \'self\' data: blob:; img-src \'self\' data: blob:; media-src \'self\' data: blob:; style-src \'self\' \'unsafe-inline\'; script-src \'self\'; connect-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'"/><title>Exported Data</title><meta content="width=device-width,initial-scale=1.0" name="viewport"/><link href="css/style.css" rel="stylesheet"/><script src="js/script.js" type="text/javascript"></script></head><body><div class="page_wrap"><div class="page_header"><div class="content"><div class="text bold">'+name+'</div></div></div><div class="page_body chat_page">'+body+'</div></div></body></html>';
+     }
+ 
+     function buildServiceMessageHtml(msg) {
+@@ -1728,20 +1919,21 @@
+         if(!msg.text_entities||msg.text_entities.length===0) return '';
+         let html='';
+         for(const e of msg.text_entities){
+-            const t=escapeHtml(e.text);
++            const raw=String(e.text||'');
++            const t=escapeHtml(raw);
+             if(e.type==='bold') html+='<b>'+t+'</b>';
+             else if(e.type==='italic') html+='<i>'+t+'</i>';
+             else if(e.type==='underline') html+='<u>'+t+'</u>';
+             else if(e.type==='strikethrough') html+='<s>'+t+'</s>';
+             else if(e.type==='code') html+='<code>'+t+'</code>';
+             else if(e.type==='pre') html+='<pre>'+t+'</pre>';
+-            else if(e.type==='spoiler') html+='<span class="spoiler" onclick="ShowSpoiler(this)"><span>'+t+'</span></span>';
+-            else if(e.type==='text_link') html+='<a href="'+escapeHtmlAttr(e.href||'')+'">'+t+'</a>';
+-            else if(e.type==='link') html+='<a href="'+escapeHtmlAttr(t)+'">'+t+'</a>';
+-            else if(e.type==='mention') html+='<a class="mention" href="#" onclick="return ShowMentionName();">'+t+'</a>';
+-            else if(e.type==='hashtag') html+='<a class="hashtag" href="#" onclick="return ShowHashtag(\''+escapeHtmlAttr(t.replace('#',''))+'\');">'+t+'</a>';
+-            else if(e.type==='cashtag') html+='<a class="cashtag" href="#" onclick="return ShowCashtag(\''+escapeHtmlAttr(t.replace('$',''))+'\');">'+t+'</a>';
+-            else if(e.type==='bot_command') html+='<a class="bot_command" href="#" onclick="return ShowBotCommand(\''+escapeHtmlAttr(t.replace('/',''))+'\');">'+t+'</a>';
++            else if(e.type==='spoiler') html+='<span class="spoiler hidden" data-tgx-action="spoiler"><span>'+t+'</span></span>';
++            else if(e.type==='text_link') html+='<a href="'+escapeHtmlAttr(safeHref(e.href||''))+'" rel="noopener noreferrer">'+t+'</a>';
++            else if(e.type==='link') html+='<a href="'+escapeHtmlAttr(safeHref(raw))+'" rel="noopener noreferrer">'+t+'</a>';
++            else if(e.type==='mention') html+='<a class="mention" href="#" data-tgx-action="mention">'+t+'</a>';
++            else if(e.type==='hashtag') html+='<a class="hashtag" href="#" data-tgx-action="hashtag" data-tgx-value="'+escapeHtmlAttr(raw.replace(/^#/,''))+'">'+t+'</a>';
++            else if(e.type==='cashtag') html+='<a class="cashtag" href="#" data-tgx-action="cashtag" data-tgx-value="'+escapeHtmlAttr(raw.replace(/^\$/,''))+'">'+t+'</a>';
++            else if(e.type==='bot_command') html+='<a class="bot_command" href="#" data-tgx-action="bot_command" data-tgx-value="'+escapeHtmlAttr(raw.replace(/^\//,''))+'">'+t+'</a>';
+             else html+=t.replace(/\n/g,'<br>');
+         }
+         return html;
+@@ -1756,6 +1948,32 @@
+     /* ================================================================
+        MAIN EXPORT FLOW
+        ================================================================ */
++    async function activateChat(chat, timeoutMs=6000) {
++        if(!chat) return false;
++        const peerId=String(chat.peerId||'');
++        const current=document.querySelector('.input-message-input[data-peer-id]')?.getAttribute('data-peer-id')||'';
++        if(peerId&&current===peerId) return true;
++        let el=peerId?document.querySelector(`[data-peer-id="${CSS.escape(peerId)}"]`):null;
++        if(!el&&chat.element?.isConnected) el=chat.element;
++        if(el){
++            el.click();
++        } else if(chat.href){
++            try{
++                const u=new URL(chat.href,location.href);
++                if(u.origin!==location.origin||u.pathname!==location.pathname||u.search!==location.search||!u.hash) return false;
++                location.hash=u.hash;
++            }catch(_){return false;}
++        } else return false;
++        const deadline=Date.now()+timeoutMs;
++        while(Date.now()<deadline){
++            await sleep(150);
++            const loadedPeer=document.querySelector('.input-message-input[data-peer-id]')?.getAttribute('data-peer-id')||'';
++            if(peerId&&loadedPeer===peerId) return true;
++            if(!peerId&&getChatTitle()===chat.name) return true;
++        }
++        return getChatTitle()===chat.name;
++    }
++
+     async function scrollChat(chatEl) {
+         chatEl.click();
+         await sleep(800);
+@@ -1766,12 +1984,10 @@
+     }
+ 
+     function getCurrentChatInfo() {
+-        const peerEl = document.querySelector('[data-peer-id]') || (state.scrollContainer?state.scrollContainer.querySelector('[data-peer-id]'):null);
+-        let chatId=0;
+-        if(peerEl) {
+-            const raw = peerEl.getAttribute('data-peer-id') || '';
+-            chatId = raw ? parseInt(raw.replace(/\D/g,'')) || 0 : 0;
+-        }
++        const input=document.querySelector('.input-message-input[data-peer-id]');
++        const active=document.querySelector('a.chatlist-chat.active[data-peer-id],.chatlist-chat.active[data-peer-id]');
++        const raw=input?.getAttribute('data-peer-id')||active?.getAttribute('data-peer-id')||'';
++        const chatId=parseSignedId(raw)||0;
+         return {name:state.chatName||getChatTitle(),type:detectChatType(),id:chatId};
+     }
+ 
+@@ -1797,10 +2013,9 @@
+         return true;
+     }
+ 
+-    async function startExport() {
+-        if(state.isExporting) return;
+-        state.isExporting=true; state.cancelled=false;
+-        state.downloadedMedia.clear(); state.exportStartTime=Date.now();
++    async function runExportInternal() {
++        state.cancelled=false;
++        state.downloadedMedia.clear(); state.mediaSkipped=0; state.exportStartTime=Date.now();
+         state.currentChatIndex=0;
+ 
+         updateProgress('Starting export...',0);
+@@ -1811,34 +2026,21 @@
+             if(!state.scrollContainer){showError('Could not find message list. Open a chat first.');state.isExporting=false;return;}
+             state.chatName=getChatTitle();
+             state.chatType=detectChatType();
+-            const peerEl = document.querySelector('[data-peer-id]') || state.scrollContainer?.querySelector('[data-peer-id]');
+-            if(peerEl) {
+-                const raw = peerEl.getAttribute('data-peer-id') || '';
+-                state.chatId = raw ? parseInt(raw.replace(/\D/g,'')) || null : null;
+-            }
++            const peerEl=document.querySelector('.input-message-input[data-peer-id]')||document.querySelector('a.chatlist-chat.active[data-peer-id],.chatlist-chat.active[data-peer-id]');
++            if(peerEl) state.chatId=parseSignedId(peerEl.getAttribute('data-peer-id'));
+             await detectAndExportTopics();
+-            if(state.cancelled){state.isExporting=false;showError('Export cancelled.');return;}
+             const msgs=Array.from(state.messages.values()).sort((a,b)=>a.id-b.id);
+             if(msgs.length===0){showError('No messages found.');state.isExporting=false;return;}
+             updateProgress('Building export... ('+msgs.length+' messages)',30);
+             const chatInfo={name:state.chatName,type:state.chatType,id:state.chatId||0};
+             try {
+                 const blob=await buildExportZip(msgs, chatInfo, false, 1);
+-                if(state.cancelled){
+-                    showComplete('Export cancelled — partial data saved ('+msgs.length+' messages)');
+-                } else {
+-                    updateProgress('Downloading ZIP...',95);
+-                    const a=document.createElement('a');
+-                    a.href=URL.createObjectURL(blob);
+-                    a.download=state.chatName.replace(/[^a-zA-Z0-9_-]/g,'_')+'_'+new Date().toISOString().replace(/[:.]/g,'-').slice(0,19)+'.zip';
+-                    a.click();
+-                    setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+-                    const elapsed=Math.round((Date.now()-state.exportStartTime)/1000);
+-                    showComplete('Export complete! '+msgs.length+' messages in '+elapsed+'s');
+-                    if(typeof GM_notification!=='undefined') {
+-                        GM_notification({title:'Telegram Export Complete',text:'Exported '+msgs.length+' messages from "'+state.chatName+'"',timeout:5000});
+-                    }
+-                }
++                updateProgress('Saving ZIP...',95);
++                const isPartial=state.cancelled;
++                downloadBlob(blob,sanitizeFilename(state.chatName,'Telegram_chat')+'_'+new Date().toISOString().replace(/[:.]/g,'-').slice(0,19)+(isPartial?'_partial':'')+'.zip');
++                const elapsed=Math.round((Date.now()-state.exportStartTime)/1000);
++                const skipped=state.mediaSkipped?' · '+state.mediaSkipped+' media skipped':'';
++                showComplete((isPartial?'Partial export saved: ':'Export complete: ')+msgs.length+' messages in '+elapsed+'s'+skipped);
+             } catch(e) {
+                 showError('Export error: '+e.message);
+                 log(e);
+@@ -1863,24 +2065,16 @@
+             chatList=getChatList();
+         }
+         if(!chatList||chatList.length===0){showError('No chats found to export.');state.isExporting=false;return;}
+-        if(chatList.length>50){showError('Too many chats ('+chatList.length+'). Limit: 50.');state.isExporting=false;return;}
+-
+-        // Click first chat to start
+-        if(chatList[0].element) chatList[0].element.click();
+-        await sleep(1000);
++        if(chatList.length>CONFIG.maxChats){showError('Too many chats ('+chatList.length+'). Limit: '+CONFIG.maxChats+'.');state.isExporting=false;return;}
+ 
+         let successCount=0;
+         for(let i=0;i<chatList.length;i++){
+             if(state.cancelled) break;
+             state.currentChatIndex=i;
+             const chat=chatList[i];
+-            updateProgress('Chat '+(i+1)+'/'+chatList.length+': '+escapeHtml(chat.name)+'...', Math.round(i/chatList.length*80));
+-            // Click to switch — re-query by data-peer-id to handle sidebar virtual scroll recycling
+-            if(i>0){
+-                const el = (chat.peerId && document.querySelector(`[data-peer-id="${CSS.escape(chat.peerId)}"]`)) || chat.element;
+-                if(el){ el.click(); }
+-                await sleep(1000);
+-            }
++            updateProgress('Chat '+(i+1)+'/'+chatList.length+': '+chat.name+'...', Math.round(i/chatList.length*80));
++            const activated=await activateChat(chat);
++            if(!activated){log('Skipping chat because it could not be activated:',chat.name);continue;}
+             // Verify chat type matches expected group (mitigates -100 prefix ambiguity)
+             if(state.exportMode==='all' && !verifyCurrentChatType()){
+                 log('Skipping "'+chat.name+'" — type mismatch (expected '+state.chatType+', got '+detectChatType()+')');
+@@ -1890,24 +2084,49 @@
+             if(ok) successCount++;
+         }
+ 
+-        if(state.cancelled){
+-            showComplete('Export cancelled — '+successCount+' of '+chatList.length+' chats exported');
+-        } else {
+-            updateProgress('Building final ZIP...',90);
+-        }
++        updateProgress(state.cancelled?'Building partial ZIP...':'Building final ZIP...',90);
+ 
+         const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
++        downloadBlob(blob,'Telegram_Export_'+new Date().toISOString().replace(/[:.]/g,'-').slice(0,19)+(state.cancelled?'_partial':'')+'.zip');
++        const elapsed=Math.round((Date.now()-state.exportStartTime)/1000);
++        const skipped=state.mediaSkipped?' · '+state.mediaSkipped+' media skipped':'';
++        showComplete((state.cancelled?'Partial export saved: ':'Export complete: ')+successCount+' chats in '+elapsed+'s'+skipped);
++        state.isExporting=false;
++    }
++
++    function downloadBlob(blob, filename) {
++        const url=URL.createObjectURL(blob);
+         const a=document.createElement('a');
+-        a.href=URL.createObjectURL(blob);
+-        a.download='Telegram_Export_'+new Date().toISOString().replace(/[:.]/g,'-').slice(0,19)+'.zip';
++        a.href=url;
++        a.download=sanitizeFilename(filename,'Telegram_Export.zip');
++        a.style.display='none';
++        document.body.appendChild(a);
+         a.click();
+-        setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+-        const elapsed=Math.round((Date.now()-state.exportStartTime)/1000);
+-        showComplete('Export complete! '+successCount+' chats in '+elapsed+'s');
+-        if(typeof GM_notification!=='undefined') {
+-            GM_notification({title:'Telegram Export Complete',text:'Exported '+successCount+' chats',timeout:5000});
++        a.remove();
++        setTimeout(()=>URL.revokeObjectURL(url),30000);
++    }
++
++    async function startExport() {
++        if(state.isExporting) return;
++        state.isExporting=true;
++        updateExportButton('✕ Cancel Export',true);
++        try {
++            await runExportInternal();
++        } catch(e) {
++            log('Export failed:',e);
++            showError('Export error: '+(e?.message||String(e)));
++        } finally {
++            if(state.observer){state.observer.disconnect();state.observer=null;}
++            state.isExporting=false;
++            state.isDownloading=false;
++            updateExportButton('📋 Export Chats',false);
++            if(state.dialog){
++                const action=state.dialog.querySelector('#tgx-export');
++                if(action){action.disabled=false;action.textContent='Export';action.style.opacity='1';}
++                const cancel=state.dialog.querySelector('#tgx-cancel');
++                if(cancel) cancel.textContent='Close';
++            }
+         }
+-        state.isExporting=false;
+     }
+ 
+     /* ================================================================

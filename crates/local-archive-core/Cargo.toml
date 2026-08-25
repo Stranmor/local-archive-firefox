@@ -1,0 +1,31 @@
+[package]
+name = "local-archive-core"
+version = "3.0.0"
+description = "Typed Rust domain and archive core for the Local Archive Firefox extension"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+num-traits = "0.2.19"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.142"
+sha2 = "0.10.9"
+time = { version = "0.3.47", default-features = false }
+url = "2.5.8"
+wasm-bindgen = "=0.2.127"
+serde-wasm-bindgen = "=0.6.5"
+zeroize = { version = "1.8.1", features = ["alloc"] }
+zip = { version = "=9.0.0-pre3", default-features = false, features = ["aes-crypto", "deflate"] }
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+
+[lints]
+workspace = true
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-O4", "--enable-bulk-memory", "--enable-nontrapping-float-to-int"]

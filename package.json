@@ -1,0 +1,59 @@
+{
+  "name": "local-archive-firefox",
+  "version": "3.0.0",
+  "description": "Local Telegram conversation exporter for Firefox.",
+  "author": "Stranmor",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Stranmor/local-archive-firefox.git"
+  },
+  "homepage": "https://github.com/Stranmor/local-archive-firefox",
+  "bugs": {
+    "url": "https://github.com/Stranmor/local-archive-firefox/issues"
+  },
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": ">=24.19 <25",
+    "npm": ">=11.17"
+  },
+  "scripts": {
+    "rust:fmt": "node scripts/run-rust.mjs fmt",
+    "rust:fmt:check": "node scripts/run-rust.mjs fmt:check",
+    "rust:lint": "node scripts/run-rust.mjs clippy",
+    "rust:test": "node scripts/run-rust.mjs test",
+    "rust:build": "node scripts/run-rust.mjs wasm-build && node scripts/embed-rust-wasm.mjs",
+    "dev": "npm run rust:build && wxt -b firefox --mv3",
+    "dev:loader": "cargo install --quiet --force --root \"$HOME/.local\" --path crates/firefox-dev-loader",
+    "dev:install": "npm run build && npm run dev:loader && \"$HOME/.local/bin/local-archive-firefox-dev-loader\" --socket \"$XDG_RUNTIME_DIR/local-archive-firefox-dev/devtools.sock\" --addon .output/firefox-mv3 --addon-id '{893462e9-4b44-4be5-97d6-f7178ef693b6}' --version 3.0.0 --receipt \"$XDG_RUNTIME_DIR/local-archive-firefox-dev/install-receipt.json\"",
+    "build": "npm run rust:build && npm run build:extension",
+    "build:extension": "wxt build -b firefox --mv3",
+    "build:chromium": "npm run rust:build && wxt build -b chrome --mv3",
+    "zip": "npm run rust:build && wxt zip -b firefox --mv3",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e:firefox": "node scripts/e2e-firefox-v3.mjs",
+    "test:e2e:legacy": "node scripts/e2e-firefox.mjs",
+    "test:smoke:telegram-web": "node scripts/smoke-telegram-web.mjs",
+    "test:watch": "vitest",
+    "verify:build": "node scripts/verify-build.mjs",
+    "verify:release": "node scripts/verify-release-metadata.mjs",
+    "lint:addon": "npx --yes web-ext@10.6.0 lint --source-dir .output/firefox-mv3 --warnings-as-errors",
+    "check": "npm run rust:fmt:check && npm run rust:lint && npm run rust:test && npm run rust:build && npm run typecheck && npm run test && npm run build:extension && npm run verify:build && npm run verify:release && npm run lint:addon",
+    "check:consumer": "npm run zip && npm run verify:build && npm run test:e2e:firefox",
+    "check:live-smoke": "npm run zip && npm run test:smoke:telegram-web",
+    "prepare:amo": "node scripts/prepare-amo-submission.mjs",
+    "package:release": "npm run check && wxt zip -b firefox --mv3 && node scripts/package-sources.mjs && npm run prepare:amo && node scripts/verify-release-artifacts.mjs",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@zip.js/zip.js": "2.8.51",
+    "happy-dom": "20.11.2",
+    "jszip": "3.10.1",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10",
+    "wxt": "0.21.4"
+  }
+}

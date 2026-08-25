@@ -1,0 +1,43 @@
+direction: down
+
+ui: {
+  label: "1 · Firefox popup\nconversation · range · format · attachments\nlocal defaults and eight UI languages"
+  style.fill: "#eef5ff"
+}
+
+access: {
+  label: "2 · Firefox capability boundary\nexplicit click · activeTab or exact optional origin\nno persistent content script"
+  style.fill: "#eef5ff"
+}
+
+adapter: {
+  label: "3 · Thin source adapter\nTypeScript page-manager/DOM bridge · parsing · chunked media\nTelegram cursor history · exact range receipt"
+  style.fill: "#eefaf7"
+}
+
+core: {
+  label: "4 · Rust 2024 → WebAssembly\ntyped request/settings · connector validation\nrange + typestate · safe paths · ZIP/AES/verification"
+  style.fill: "#fff8e8"
+}
+
+download: {
+  label: "5 · Firefox background\nvalidated message boundary · local download\nterminal receipt · 5-minute reload recovery"
+  style.fill: "#eef5ff"
+}
+
+result: {
+  label: "6 · Consumer result\nZIP with HTML · JSON · attachments · summary\ncompact progress, elapsed time, filename and Show file"
+  style.fill: "#f5f5f7"
+}
+
+sources: {
+  label: "Telegram history/media managers + rendered fallback\nversioned origin-limited bridge · bounded media chunks · inactive worker-tab scan\nOlder history loads without scrolling the visible source tab · source close cancels helper"
+  style.fill: "#f8f2ff"
+}
+
+ui -> access: "validated choice"
+access -> adapter: "inject after grant"
+adapter -> core: "parsed messages + history receipt"
+core -> download: "verified bytes + receipt"
+download -> result: "browser-owned save"
+sources -> core: "Telegram contract"

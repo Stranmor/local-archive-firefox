@@ -1,0 +1,3014 @@
+{
+  "extensionName": {
+    "message": "Local Archive"
+  },
+  "extensionDescription": {
+    "message": "Speichert Unterhaltungen aus unterstützten Web-Apps als lokale ZIP-Archive mit lesbaren Seiten, wiederverwendbaren Daten und optionalen Medien."
+  },
+  "extensionActionTitle": {
+    "message": "Local Archive"
+  },
+  "popupEyebrow": {
+    "message": "Local Archive"
+  },
+  "popupTitle": {
+    "message": "Unterhaltung exportieren"
+  },
+  "popupReady": {
+    "message": "Bereit"
+  },
+  "popupReadyDescription": {
+    "message": "Öffne die Unterhaltung, die du speichern möchtest, und fahre fort."
+  },
+  "popupNotTelegram": {
+    "message": "Unterstützte Quelle öffnen"
+  },
+  "popupNotTelegramDescription": {
+    "message": "Öffne eine Unterhaltung in einer unterstützten Quelle und klicke die Erweiterung erneut."
+  },
+  "popupOpenExporter": {
+    "message": "ZIP exportieren"
+  },
+  "popupOpenTelegram": {
+    "message": "Quelle öffnen"
+  },
+  "popupWorking": {
+    "message": "Wird gestartet…"
+  },
+  "popupInjectionError": {
+    "message": "Der Export konnte nicht starten. Lade den Quell-Tab neu und versuche es erneut."
+  },
+  "popupPrivacyTitle": {
+    "message": "Lokal entwickelt"
+  },
+  "popupPrivacyBody": {
+    "message": "Der autorisierte Quell-Tab liefert deine Auswahl; Local Archive erstellt das ZIP auf diesem Gerät. Keine Telemetrie, kein separates Konto und kein externer Server."
+  },
+  "popupSettings": {
+    "message": "Einstellungen"
+  },
+  "popupVersion": {
+    "message": "Version $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "optionsEyebrow": {
+    "message": "LOCAL ARCHIVE SETTINGS"
+  },
+  "optionsTitle": {
+    "message": "Exportvorgaben"
+  },
+  "optionsIntro": {
+    "message": "Diese Werte sind im Exportfenster vorausgewählt und können vor jedem Export geändert werden."
+  },
+  "optionsOutputTitle": {
+    "message": "Archiv"
+  },
+  "optionsOutputDescription": {
+    "message": "HTML is easy to read; JSON is better for search, analysis, or migration."
+  },
+  "optionsDefaultSummary": {
+    "message": "Current default: $FORMATS$. Media: $MEDIA$.",
+    "placeholders": {
+      "formats": {
+        "content": "$1"
+      },
+      "media": {
+        "content": "$2"
+      }
+    }
+  },
+  "optionsNoMedia": {
+    "message": "No media"
+  },
+  "formatHtml": {
+    "message": "Lesbares HTML"
+  },
+  "formatHtmlHint": {
+    "message": "Open messages.html in Firefox after unzipping; browse the chat like a webpage."
+  },
+  "stateOn": {
+    "message": "On"
+  },
+  "stateOff": {
+    "message": "Off"
+  },
+  "formatJson": {
+    "message": "JSON-Daten"
+  },
+  "formatJsonHint": {
+    "message": "Use result.json for search, analysis, or migration."
+  },
+  "optionsMediaTitle": {
+    "message": "Media included by default"
+  },
+  "optionsMediaDescription": {
+    "message": "Large items are skipped when they exceed the per-file limit. Messages are still kept."
+  },
+  "mediaPhotos": {
+    "message": "Photos"
+  },
+  "mediaVideos": {
+    "message": "Videos and GIFs"
+  },
+  "mediaVoice": {
+    "message": "Voice messages"
+  },
+  "mediaStickers": {
+    "message": "Stickers"
+  },
+  "mediaSharedFileLimit": {
+    "message": "Uses the same per-item limit as Files"
+  },
+  "mediaFiles": {
+    "message": "Files"
+  },
+  "maxEach": {
+    "message": "Max per item"
+  },
+  "megabytesShort": {
+    "message": "MB"
+  },
+  "optionsPrivacyTitle": {
+    "message": "What the extension can access"
+  },
+  "optionsPrivacyBody": {
+    "message": "Access starts only after your action. The active supported source provides the selection, the local extension context builds the ZIP, and only your defaults are stored. Conversation content is never uploaded."
+  },
+  "saveSettings": {
+    "message": "Speichern"
+  },
+  "settingsSaved": {
+    "message": "Vorgaben gespeichert"
+  },
+  "settingsSaveError": {
+    "message": "Firefox could not save these defaults. Try again."
+  },
+  "resetDefaults": {
+    "message": "Zurücksetzen"
+  },
+  "defaultsRestored": {
+    "message": "Vorgaben wiederhergestellt"
+  },
+  "openTelegram": {
+    "message": "Quelle öffnen"
+  },
+  "validationOneFormat": {
+    "message": "Select HTML, JSON, or both."
+  },
+  "exporterEyebrow": {
+    "message": "CONVERSATION EXPORTER"
+  },
+  "exporterTitle": {
+    "message": "Local Archive"
+  },
+  "exporterSubtitle": {
+    "message": "A readable copy, reusable data, and selected media — saved on this device."
+  },
+  "quickSourceLabel": {
+    "message": "Aktuelle Unterhaltung"
+  },
+  "quickSaveTitle": {
+    "message": "Local Archive"
+  },
+  "quickContentLabel": {
+    "message": "Archiv"
+  },
+  "quickMediaLabel": {
+    "message": "Anhänge einschließen"
+  },
+  "quickPrivacyLabel": {
+    "message": "Access"
+  },
+  "quickReadyTitle": {
+    "message": "Bereit"
+  },
+  "quickReadyBody": {
+    "message": "Du kannst weiterarbeiten; lass diesen Quell-Tab bis zum Ende geöffnet."
+  },
+  "quickCustomize": {
+    "message": "Archiv"
+  },
+  "quickCustomizeHint": {
+    "message": "Chats, formats, attachments, date range, or password"
+  },
+  "quickSettingsTitle": {
+    "message": "Exportvorgaben"
+  },
+  "quickSettingsHint": {
+    "message": "Change only what you need"
+  },
+  "quickContentBoth": {
+    "message": "Readable page + reusable data"
+  },
+  "quickContentHtml": {
+    "message": "Lesbares HTML"
+  },
+  "quickContentJson": {
+    "message": "JSON-Daten"
+  },
+  "quickMediaNone": {
+    "message": "No attachments"
+  },
+  "quickProtectionNone": {
+    "message": "ZIP without password"
+  },
+  "quickProtectionAes": {
+    "message": "Password-protected ZIP"
+  },
+  "quickHistoryOne": {
+    "message": "$COUNT$ message is loaded now. Local Archive will load older history before saving.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "quickHistoryMany": {
+    "message": "$COUNT$ messages are loaded now. Local Archive will load older history before saving.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "quickHistoryUnknown": {
+    "message": "Wähle eine Unterhaltung in der aktuellen Quelle und öffne dieses Fenster erneut."
+  },
+  "quickReadySpecific": {
+    "message": "$NAME$ can be read from the $SOURCE$ source. Keep the source tab open until the ZIP is ready.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "source": {
+        "content": "$2"
+      }
+    }
+  },
+  "quickBlockedTitle": {
+    "message": "Cannot read this conversation yet"
+  },
+  "quickBlockedNoChat": {
+    "message": "Open a conversation in $SOURCE$, then check again.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "quickBlockedNoMessages": {
+    "message": "Wait for messages to load in $SOURCE$, then check again.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "quickBlockedLayout": {
+    "message": "This $SOURCE$ layout is not supported by the current connector yet.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "quickSaveAction": {
+    "message": "ZIP exportieren"
+  },
+  "quickSaveProtectedAction": {
+    "message": "ZIP exportieren"
+  },
+  "quickUnavailableAction": {
+    "message": "Open a readable conversation first"
+  },
+  "scopeBoundary": {
+    "message": "Local Archive loads older history automatically in this Telegram tab and records the exact range reached; this is not a complete account backup."
+  },
+  "presetTitle": {
+    "message": "Quick setup"
+  },
+  "presetText": {
+    "message": "Text only"
+  },
+  "presetReadable": {
+    "message": "Readable first"
+  },
+  "beginnerGuideTitle": {
+    "message": "Choose a starting preset"
+  },
+  "beginnerGuideBody": {
+    "message": "Both presets stay in this Telegram tab and upload nothing. Quick preset: unencrypted ZIP with readable HTML and no media. Privacy preset: AES-256 password-protected ZIP with HTML, reusable JSON, photos, voice messages, and stickers. You can customize either setup later."
+  },
+  "beginnerGuideBodySimple": {
+    "message": "Quick-open mode is active: current chat, readable HTML, unencrypted ZIP, no media. Unzip it, then open messages.html in Firefox. Advanced formats, media, dates, and chat selection are hidden until you switch back."
+  },
+  "beginnerGuideAction": {
+    "message": "Use quick path"
+  },
+  "beginnerGuideActionHint": {
+    "message": "After download: 1 Unzip · 2 Open messages.html in Firefox · anyone with the ZIP can read it"
+  },
+  "beginnerGuideActionTag": {
+    "message": "Quick preset · unencrypted · no media"
+  },
+  "beginnerGuideActionAdvanced": {
+    "message": "Show advanced setup"
+  },
+  "beginnerGuideBodyProtected": {
+    "message": "Privacy mode is active: readable HTML + reusable JSON data are protected with AES-256. Firefox cannot open this ZIP itself; use PeaZip or 7-Zip and keep the password. Advanced controls remain below."
+  },
+  "beginnerGuideBodyAdvanced": {
+    "message": "Advanced setup is active: choose AES-256 for a password-protected ZIP, or no password for easiest opening. The protection cards and footer always show the current choice."
+  },
+  "beginnerGuideActionProtected": {
+    "message": "Use privacy path"
+  },
+  "beginnerGuideActionProtectedHint": {
+    "message": "Before download: save the password. After download: 1 Open in PeaZip/7-Zip · 2 Enter saved password · 3 Extract · 4 Open messages.html"
+  },
+  "beginnerGuideActionProtectedTag": {
+    "message": "Privacy preset · AES-256 · selected media"
+  },
+  "beginnerGuideActionProtectedTagAdvanced": {
+    "message": "AES-256 ZIP · PeaZip/7-Zip"
+  },
+  "beginnerGuideActionSimpleSwitch": {
+    "message": "Use quick path"
+  },
+  "beginnerGuideActionProtectedSwitch": {
+    "message": "Show advanced setup"
+  },
+  "beginnerSetupSummaryTitle": {
+    "message": "Current archive settings"
+  },
+  "beginnerSetupScopeLabel": {
+    "message": "Scope"
+  },
+  "beginnerSetupFormatLabel": {
+    "message": "Format"
+  },
+  "beginnerSetupMediaLabel": {
+    "message": "Media"
+  },
+  "beginnerSetupProtectionLabel": {
+    "message": "Protection"
+  },
+  "beginnerSetupCurrent": {
+    "message": "Current chat"
+  },
+  "beginnerSetupReadable": {
+    "message": "Readable HTML"
+  },
+  "beginnerSetupBalancedFormat": {
+    "message": "Readable HTML + reusable JSON data"
+  },
+  "beginnerSetupNoMedia": {
+    "message": "No media"
+  },
+  "beginnerSetupBalancedMedia": {
+    "message": "Balanced media · photos, voice, stickers"
+  },
+  "beginnerSetupUnencrypted": {
+    "message": "Unencrypted ZIP · open in Firefox"
+  },
+  "beginnerSetupProtected": {
+    "message": "AES-256 · PeaZip or 7-Zip"
+  },
+  "beginnerSetupChange": {
+    "message": "Change setup"
+  },
+  "beginnerSetupHint": {
+    "message": "The technical history, workload, and compatibility details stay behind the review below."
+  },
+  "beginnerGuideBoundary": {
+    "message": "Keep this Telegram tab open · only messages it exposes can be saved."
+  },
+  "beginnerGuideBoundaryCurrent": {
+    "message": "Current settings: 1 chat — $NAME$ · $PROTECTION$ · $FORMATS$ · media: $MEDIA$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "protection": {
+        "content": "$2"
+      },
+      "formats": {
+        "content": "$3"
+      },
+      "media": {
+        "content": "$4"
+      }
+    }
+  },
+  "beginnerGuideBoundaryMulti": {
+    "message": "Current settings: multi-chat · $SCOPE$ · $PROTECTION$ · $FORMATS$ · media: $MEDIA$",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "protection": {
+        "content": "$2"
+      },
+      "formats": {
+        "content": "$3"
+      },
+      "media": {
+        "content": "$4"
+      }
+    }
+  },
+  "beginnerBoundaryProtected": {
+    "message": "AES-256 password-protected ZIP"
+  },
+  "beginnerBoundaryUnencrypted": {
+    "message": "Unencrypted ZIP"
+  },
+  "beginnerBoundaryNoMedia": {
+    "message": "no media"
+  },
+  "progressChatsRemaining": {
+    "message": "$CURRENT$ of $TOTAL$ chats checked · $REMAINING$ remaining$BATCH$",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "remaining": {
+        "content": "$3"
+      },
+      "batch": {
+        "content": "$4"
+      }
+    }
+  },
+  "progressBatchHint": {
+    "message": "one ZIP per batch · $COUNT$ planned",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "progressCurrentHint": {
+    "message": "$COUNT$ messages collected so far · keep this Telegram tab open",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "progressCurrentHintOne": {
+    "message": "1 message collected so far · keep this Telegram tab open"
+  },
+  "beginnerGuideStepOne": {
+    "message": "Simple: current chat + readable HTML."
+  },
+  "beginnerGuideStepTwo": {
+    "message": "Protection: save the AES password, or choose no password."
+  },
+  "beginnerGuideStepThree": {
+    "message": "Keep this tab open, review, then create the ZIP."
+  },
+  "presetBalanced": {
+    "message": "Balanced"
+  },
+  "presetComplete": {
+    "message": "All media"
+  },
+  "currentChat": {
+    "message": "Aktuelle Unterhaltung"
+  },
+  "unknownChat": {
+    "message": "Unterhaltung öffnen"
+  },
+  "scopeTitle": {
+    "message": "Chats"
+  },
+  "scopeCurrent": {
+    "message": "Current chat"
+  },
+  "scopeAllType": {
+    "message": "All chats in one category · automatic chat check · you start each batch and keep this tab open"
+  },
+  "scopeSelected": {
+    "message": "Choose chats · automatic chat check · you start each batch and keep this tab open"
+  },
+  "scopeManualPrimer": {
+    "message": "Multi-chat mode. To return to one chat, choose Current chat above. Local Archive checks each selected chat before adding it and creates one ZIP per batch."
+  },
+  "scopeManualTitle": {
+    "message": "Multi-chat mode"
+  },
+  "scopeManualBody": {
+    "message": "Local Archive opens each selected chat in this tab, checks whether Telegram displays it in a readable format, and adds readable messages to the current ZIP. Plan: $CHATS$ chats · $BATCHES$. Keep Telegram open; you can stop and save a partial archive.",
+    "placeholders": {
+      "chats": {
+        "content": "$1"
+      },
+      "batches": {
+        "content": "$2"
+      }
+    }
+  },
+  "commitSummaryTitle": {
+    "message": "Before you start"
+  },
+  "commitSummaryBody": {
+    "message": "Formats: $FORMATS$ · Media: $MEDIA$. Items above a per-file limit are reported as omissions; the rest of the ZIP stays valid.",
+    "placeholders": {
+      "formats": {
+        "content": "$1"
+      },
+      "media": {
+        "content": "$2"
+      }
+    }
+  },
+  "commitSummaryNone": {
+    "message": "none"
+  },
+  "loadingChats": {
+    "message": "Reading the chat list…"
+  },
+  "noChatsFound": {
+    "message": "No chats found. Make sure the Telegram sidebar is visible."
+  },
+  "searchChats": {
+    "message": "Search chats"
+  },
+  "selectAll": {
+    "message": "Select all"
+  },
+  "selectedCount": {
+    "message": "$COUNT$ selected",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "selectedScopeSummary": {
+    "message": "$COUNT$ selected: $NAMES$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "names": {
+        "content": "$2"
+      }
+    }
+  },
+  "selectedNamesMore": {
+    "message": "+$COUNT$ more",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchTitle": {
+    "message": "Multi-chat mode · $TOTAL_CHATS$ chats · $TOTAL_BATCHES$ ZIP batches",
+    "placeholders": {
+      "total_chats": {
+        "content": "$1"
+      },
+      "total_batches": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchDetail": {
+    "message": "Batch $ACTIVE$ of $TOTAL$ · chats $START$–$END$ · $SIZE$ in this ZIP. One ZIP is built for this batch.",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "start": {
+        "content": "$3"
+      },
+      "end": {
+        "content": "$4"
+      },
+      "size": {
+        "content": "$5"
+      }
+    }
+  },
+  "batchTabGuidance": {
+    "message": "Keep Telegram open · Local Archive opens and checks chats one by one · one ZIP per batch."
+  },
+  "preflightStripTitle": {
+    "message": "Before you start"
+  },
+  "preflightStripTabCurrent": {
+    "message": "Keep this Telegram tab open until the ZIP is ready."
+  },
+  "preflightStripTabMulti": {
+    "message": "Keep this Telegram tab open. Local Archive opens each selected chat, checks its layout, and adds it to the current ZIP. Stop anytime; verify the ZIP after export."
+  },
+  "preflightStripScope": {
+    "message": "Only messages exposed in this tab can be saved."
+  },
+  "preflightStripPassword": {
+    "message": "Write down or store the password elsewhere; Local Archive cannot recover it."
+  },
+  "preflightStripNone": {
+    "message": "No password: anyone with the ZIP can read it."
+  },
+  "batchProgress": {
+    "message": "$COMPLETED$ of $TOTAL$ batches complete · your full selection remains queued.",
+    "placeholders": {
+      "completed": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchReadyStatus": {
+    "message": "Batch $ACTIVE$ is ready; start and verify it before Batch $NEXT$. $COMPLETED$ of $TOTAL$ batches complete.",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "next": {
+        "content": "$2"
+      },
+      "completed": {
+        "content": "$3"
+      },
+      "total": {
+        "content": "$4"
+      }
+    }
+  },
+  "batchReadyStatusLast": {
+    "message": "Batch $ACTIVE$ is ready; start and verify it. $COMPLETED$ of $TOTAL$ batches complete.",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "completed": {
+        "content": "$2"
+      },
+      "total": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchProgressComplete": {
+    "message": "All $TOTAL$ batches complete · $CHATS$ chats archived.",
+    "placeholders": {
+      "total": {
+        "content": "$1"
+      },
+      "chats": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchResultProgress": {
+    "message": "Batch $BATCH$ complete · $COMPLETED$ of $TOTAL$ batches · $DONE_CHATS$ of $TOTAL_CHATS$ chats archived. Continue with the next verified batch below.",
+    "placeholders": {
+      "batch": {
+        "content": "$1"
+      },
+      "completed": {
+        "content": "$2"
+      },
+      "total": {
+        "content": "$3"
+      },
+      "done_chats": {
+        "content": "$4"
+      },
+      "total_chats": {
+        "content": "$5"
+      }
+    }
+  },
+  "batchPrevious": {
+    "message": "Previous batch"
+  },
+  "batchNext": {
+    "message": "Next batch"
+  },
+  "batchNextRange": {
+    "message": "Next: batch $BATCH$ ($START$–$END$)",
+    "placeholders": {
+      "batch": {
+        "content": "$1"
+      },
+      "start": {
+        "content": "$2"
+      },
+      "end": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchScopeSummary": {
+    "message": "Batch $ACTIVE$ of $TOTAL$: $SIZE$ of $TOTAL_CHATS$ chats",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "size": {
+        "content": "$3"
+      },
+      "total_chats": {
+        "content": "$4"
+      }
+    }
+  },
+  "batchScaleGuidance": {
+    "message": "Scale: $TOTAL_CHATS$ chats are split into $TOTAL_BATCHES$ ZIPs. Current batch $ACTIVE$ of $TOTAL_BATCHES$ contains $SIZE$ chats; use the guided next-batch action after a verified export.",
+    "placeholders": {
+      "total_chats": {
+        "content": "$1"
+      },
+      "total_batches": {
+        "content": "$2"
+      },
+      "active": {
+        "content": "$3"
+      },
+      "size": {
+        "content": "$4"
+      }
+    }
+  },
+  "batchResultSummary": {
+    "message": "Batch $ACTIVE$ of $TOTAL$",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchNextAction": {
+    "message": "Continue to batch $ACTIVE$ of $TOTAL$",
+    "placeholders": {
+      "active": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchRunAll": {
+    "message": "Queue all batches · start each · verify each ZIP"
+  },
+  "batchRunRemaining": {
+    "message": "Run remaining batches"
+  },
+  "batchManifestTitle": {
+    "message": "Batch handoff"
+  },
+  "batchManifestCurrent": {
+    "message": "Batch $INDEX$ · chats $START$–$END$ · current batch",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "start": {
+        "content": "$2"
+      },
+      "end": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchManifestPending": {
+    "message": "Batch $INDEX$ · chats $START$–$END$ · not started",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "start": {
+        "content": "$2"
+      },
+      "end": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchManifestQueued": {
+    "message": "Batch $INDEX$ · chats $START$–$END$ · queued for a separate start and verification",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "start": {
+        "content": "$2"
+      },
+      "end": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchManifestVerified": {
+    "message": "Batch $INDEX$ · chats $START$–$END$ · verified ZIP: $FILENAME$",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "start": {
+        "content": "$2"
+      },
+      "end": {
+        "content": "$3"
+      },
+      "filename": {
+        "content": "$4"
+      }
+    }
+  },
+  "batchManifestDownloads": {
+    "message": "saved in Downloads"
+  },
+  "batchHandoff": {
+    "message": "Next: Local Archive opens “$NAME$” in this tab, checks the layout, and adds it to the current ZIP. Verify the ZIP after export.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchResumeHandoff": {
+    "message": "Resuming: $DONE$ of $TOTAL$ ZIPs verified. Start batch $BATCH$; Local Archive opens and checks its chats, then verify the ZIP.",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "batch": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchNextActionHandoff": {
+    "message": "Continue to batch $BATCH$ of $TOTAL$: start with “$NAME$”; Local Archive opens and checks the batch, then verify its ZIP",
+    "placeholders": {
+      "batch": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "name": {
+        "content": "$3"
+      }
+    }
+  },
+  "batchChatProgressTitle": {
+    "message": "Chat-by-chat progress"
+  },
+  "batchChatNext": {
+    "message": "Next chat: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchChatVerified": {
+    "message": "$NAME$ · verified",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchChatCurrent": {
+    "message": "$NAME$ · checked next",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchChatQueued": {
+    "message": "$NAME$ · queued",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchChatMore": {
+    "message": "+$COUNT$ more chats in this batch",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchChatAction": {
+    "message": "Continue automatic chat check",
+    "placeholders": {}
+  },
+  "manualWizardTitle": {
+    "message": "Multi-chat mode · automatic per-chat check"
+  },
+  "manualWizardMeta": {
+    "message": "Chat $INDEX$ of $TOTAL$ · $VERIFIED$ included · one ZIP per batch",
+    "placeholders": {
+      "index": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "verified": {
+        "content": "$3"
+      }
+    }
+  },
+  "manualWizardOpen": {
+    "message": "Local Archive opens “$NAME$” in this Telegram tab",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "manualWizardCheck": {
+    "message": "Local Archive checks whether Telegram displays this chat in a readable format"
+  },
+  "manualWizardSave": {
+    "message": "Add this chat to the current ZIP"
+  },
+  "manualWizardVerify": {
+    "message": "Verify the ZIP after export"
+  },
+  "manualWizardNext": {
+    "message": "Next: Local Archive opens “$NAME$” and checks it",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "manualWizardNextSave": {
+    "message": "Next: Local Archive adds the checked chat to this ZIP"
+  },
+  "manualWizardNextVerify": {
+    "message": "Next: verify the ZIP after export"
+  },
+  "manualWizardActionCheck": {
+    "message": "Continue automatic chat check"
+  },
+  "manualWizardActionReview": {
+    "message": "Review and save ZIP"
+  },
+  "manualWizardActionVerify": {
+    "message": "Verify downloaded ZIP"
+  },
+  "batchProgressQueued": {
+    "message": "$COMPLETED$ of $TOTAL$ batches complete · all remaining batches are queued. Start each batch separately; Local Archive checks its chats and AES passwords are re-entered per batch.",
+    "placeholders": {
+      "completed": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "batchResultQueued": {
+    "message": "Batch $BATCH$ complete · $COMPLETED$ of $TOTAL$ batches · $DONE_CHATS$ of $TOTAL_CHATS$ chats archived. Continue to the next verified batch; each ZIP is started and verified separately.",
+    "placeholders": {
+      "batch": {
+        "content": "$1"
+      },
+      "completed": {
+        "content": "$2"
+      },
+      "total": {
+        "content": "$3"
+      },
+      "done_chats": {
+        "content": "$4"
+      },
+      "total_chats": {
+        "content": "$5"
+      }
+    }
+  },
+  "coverageTargetLabel": {
+    "message": "Oldest date I need"
+  },
+  "coverageSettingsTitle": {
+    "message": "History goal & scale"
+  },
+  "coverageSettingsHint": {
+    "message": "Optional date target, workload, and batching guidance"
+  },
+  "coverageTargetHint": {
+    "message": "Optional. Local Archive checks whether each saved chat range reaches this date; this does not claim that Telegram history is complete."
+  },
+  "coverageTargetSelected": {
+    "message": "Selected date: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "coverageTargetEmpty": {
+    "message": "No date target selected"
+  },
+  "coveragePreflightTitle": {
+    "message": "Coverage before export"
+  },
+  "coveragePreflightNote": {
+    "message": "Only the open chat is previewed now; other selected chats are checked during their own export and appear with exact ranges in the receipt."
+  },
+  "coveragePreflightTarget": {
+    "message": "Goal: reach $DATE$ in every chosen chat. The open chat is previewed now; every other range is checked during export.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "coveragePreflightOpen": {
+    "message": "$NAME$ — $COUNT$ messages loaded now · oldest $DATE$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "date": {
+        "content": "$3"
+      }
+    }
+  },
+  "coveragePreflightOpenOne": {
+    "message": "$NAME$ — $COUNT$ message loaded now · oldest $DATE$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "date": {
+        "content": "$3"
+      }
+    }
+  },
+  "coveragePreflightOpenUnknown": {
+    "message": "$NAME$ — $COUNT$ loaded now; oldest date unavailable",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "coveragePreflightPending": {
+    "message": "$NAME$ — exact range reported after export",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "coveragePreflightMore": {
+    "message": "+$COUNT$ more chats",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "coverageCompactCurrent": {
+    "message": "Open chat: $COUNT$ loaded now · oldest $DATE$ · export may load more",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "date": {
+        "content": "$2"
+      }
+    }
+  },
+  "coverageCompactCurrentUnknown": {
+    "message": "Open chat: $COUNT$ loaded now · export may load more · oldest date unavailable",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "coverageCompactMulti": {
+    "message": "$CHATS$ chosen · open chat: $MESSAGES$ loaded now · other chats checked during export",
+    "placeholders": {
+      "chats": {
+        "content": "$1"
+      },
+      "messages": {
+        "content": "$2"
+      }
+    }
+  },
+  "coverageCompactTarget": {
+    "message": "Need history back to $DATE$ · $DETAIL$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "detail": {
+        "content": "$2"
+      }
+    }
+  },
+  "scaleGuidanceCurrent": {
+    "message": "Loaded in Telegram now: $COUNT$ messages. Local Archive may load more during export; large histories or many large files can take minutes and use substantial browser memory.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "scaleGuidanceMulti": {
+    "message": "Scale: chats to process — $COUNT$ (up to $MAX$ per archive). Chats are processed one at a time; for a larger selection, export batches of $MAX$ and then select the next batch.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "manualEffortCompact": {
+    "message": "$CHATS$ chats · $BATCHLABEL$ · Local Archive checks each and builds one ZIP",
+    "placeholders": {
+      "chats": {
+        "content": "$1"
+      },
+      "batchLabel": {
+        "content": "$2"
+      }
+    }
+  },
+  "manualBatchOne": {
+    "message": "1 ZIP"
+  },
+  "manualBatchMany": {
+    "message": "$COUNT$ ZIPs",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "manualEffortProgress": {
+    "message": "$VERIFIED$ of $TOTAL$ chats included · next: $NEXT$",
+    "placeholders": {
+      "verified": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "next": {
+        "content": "$3"
+      }
+    }
+  },
+  "manualEffortGuidance": {
+    "message": "Automatic chat check: Local Archive opens $CHATS$ chats one by one, checks each readable format, and builds $BATCHLABEL$.",
+    "placeholders": {
+      "chats": {
+        "content": "$1"
+      },
+      "batchLabel": {
+        "content": "$2"
+      }
+    }
+  },
+  "preparationTitle": {
+    "message": "Review before export"
+  },
+  "preparationHistoryTitle": {
+    "message": "Automatic history scan"
+  },
+  "preparationWorkloadTitle": {
+    "message": "Check the workload"
+  },
+  "preparationProtectionTitle": {
+    "message": "Prepare to open the ZIP"
+  },
+  "preparationProtectionAes": {
+    "message": "Write down or store the password elsewhere — Local Archive cannot recover it. $APP$ After download, use Verify downloaded ZIP below.",
+    "placeholders": {
+      "app": {
+        "content": "$1"
+      }
+    }
+  },
+  "preparationProtectionNone": {
+    "message": "No password: anyone with the ZIP can read it. After download, use Verify downloaded ZIP below."
+  },
+  "preparationCompact": {
+    "message": "$WORKLOAD$ · $SCOPE$ · $PROTECTION$",
+    "placeholders": {
+      "workload": {
+        "content": "$1"
+      },
+      "scope": {
+        "content": "$2"
+      },
+      "protection": {
+        "content": "$3"
+      }
+    }
+  },
+  "preparationCompactRendered": {
+    "message": "Messages available in this tab"
+  },
+  "preparationCompactNoMessages": {
+    "message": "Not ready · open a chat and check again"
+  },
+  "preparationCompactAes": {
+    "message": "Archive: AES-256 password-protected ZIP"
+  },
+  "preparationCompactLive": {
+    "message": "Telegram layout: readable"
+  },
+  "preparationCompactNone": {
+    "message": "Archive: unencrypted ZIP"
+  },
+  "preparationCompactLarge": {
+    "message": "Large export"
+  },
+  "historyCoachStart": {
+    "message": "Preview older history"
+  },
+  "historyCoachTitle": {
+    "message": "Optional history preview"
+  },
+  "historyCoachBody": {
+    "message": "Local Archive scans newer and older messages automatically during export. If you want to inspect the date first, scroll upward until the oldest message you need appears, then update this review."
+  },
+  "historyCoachReturn": {
+    "message": "Update review"
+  },
+  "preparationAppWindows": {
+    "message": "On Windows, use 7-Zip or PeaZip from the publisher's official site."
+  },
+  "preparationAppMac": {
+    "message": "On macOS, use PeaZip from the publisher's official site."
+  },
+  "preparationAppLinux": {
+    "message": "On Linux, use PeaZip or 7-Zip from the official site or package manager."
+  },
+  "preparationAppOther": {
+    "message": "Use PeaZip from its official site."
+  },
+  "aesHelpOpen": {
+    "message": "First-use walkthrough"
+  },
+  "aesGetPeaZip": {
+    "message": "Get PeaZip"
+  },
+  "aesGet7Zip": {
+    "message": "Get 7-Zip"
+  },
+  "aesOfficialSource": {
+    "message": "Official source"
+  },
+  "liveCheckTitle": {
+    "message": "Telegram layout check:"
+  },
+  "liveCheckPassed": {
+    "message": "Telegram layout readable in this open chat · $RECOGNIZED$/$RENDERED$ visible messages recognized. History dates, unloaded messages, and media are checked separately.",
+    "placeholders": {
+      "recognized": {
+        "content": "$1"
+      },
+      "rendered": {
+        "content": "$2"
+      }
+    }
+  },
+  "technicalDetailsTitle": {
+    "message": "Technical details (optional)"
+  },
+  "technicalDetailsValue": {
+    "message": "Recognized Telegram layout: $LAYOUT$ · supported contract: rendered messages with stable IDs and readable content",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "technicalDetailsFailure": {
+    "message": "Recognition detail: $LAYOUT$",
+    "placeholders": {
+      "layout": {
+        "content": "$1"
+      }
+    }
+  },
+  "liveCheckNoChat": {
+    "message": "Not ready · open a chat in this tab."
+  },
+  "liveCheckNoMessages": {
+    "message": "Not ready · wait for messages to appear."
+  },
+  "liveCheckUnsupported": {
+    "message": "Blocked · this Telegram message layout could not be read safely."
+  },
+  "liveCheckLayoutUnknown": {
+    "message": "layout not recognized"
+  },
+  "compatibilityRefresh": {
+    "message": "Check again now"
+  },
+  "compatibilityNoChat": {
+    "message": "No open chat was detected. Choose Preview older history, open a Telegram chat, then Update review. If a chat is already open, this Telegram layout is not supported yet."
+  },
+  "compatibilityNoMessages": {
+    "message": "No readable messages were detected. Telegram may still be loading, the chat may be empty, or its layout may have changed. Wait, then use Check again; export stays blocked until a readable message appears."
+  },
+  "compatibilityUnsupported": {
+    "message": "Messages are visible, but this Telegram layout does not expose stable IDs and readable text safely. Export is blocked; check again after loading or update Local Archive."
+  },
+  "validationNoMessages": {
+    "message": "No readable messages were detected. Open or load a chat, then update the pre-export review."
+  },
+  "runBoundaryMulti": {
+    "message": "Local only: this ZIP contains the messages Local Archive loads from each selected chat in this tab, not a complete account backup. Each chat is checked separately and its exact range is in the receipt."
+  },
+  "runBoundaryLong": {
+    "message": "Before this larger export: Local Archive loads older history from this authorized Telegram tab and records the exact saved range; this is not a complete account backup."
+  },
+  "preparationDetailsTitle": {
+    "message": "More details (optional)"
+  },
+  "preparationDetailsHint": {
+    "message": "Open only for date, workload, or ZIP-opening help"
+  },
+  "preparationPlainTitle": {
+    "message": "Three decisions before export"
+  },
+  "preparationPlainSave": {
+    "message": "Local Archive loads older history automatically; the receipt shows the exact range reached in this Telegram tab."
+  },
+  "preparationPlainMissing": {
+    "message": "If Telegram stops loading or you press Stop, the receipt marks the run partial; large histories take more time and memory."
+  },
+  "preparationPlainOpenAes": {
+    "message": "Open: Firefox for an unencrypted ZIP; PeaZip or 7-Zip for AES-256."
+  },
+  "preparationPlainOpenNone": {
+    "message": "Protection: no password; anyone with the file can read it."
+  },
+  "preparationNextTitle": {
+    "message": "Next step"
+  },
+  "preparationNextCurrent": {
+    "message": "Next: confirm these three checks, then use the main action."
+  },
+  "preparationNextReady": {
+    "message": "Next: use the main action; Firefox validates the ZIP before download."
+  },
+  "preparationNextBatch": {
+    "message": "Next: queue the batches. For each one, start the automatic chat check; Local Archive opens and checks every chat, then verify the ZIP before moving on."
+  },
+  "preparationNextMulti": {
+    "message": "Next: start the automatic chat check; Local Archive opens and checks each selected chat, builds this ZIP, then you verify it."
+  },
+  "preparationNextCompatibility": {
+    "message": "Next: open a Telegram chat and use Check again before continuing."
+  },
+  "workloadDetailsTitle": {
+    "message": "Workload details (optional)"
+  },
+  "workloadCompactCurrent": {
+    "message": "$LEVEL$ · $COUNT$ loaded now · $MEDIA$",
+    "placeholders": {
+      "level": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "media": {
+        "content": "$3"
+      }
+    }
+  },
+  "workloadCompactMulti": {
+    "message": "$LEVEL$ · $COUNT$ chats · $MEDIA$",
+    "placeholders": {
+      "level": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "media": {
+        "content": "$3"
+      }
+    }
+  },
+  "workloadAdviceSample": {
+    "message": "Run optional ZIP sample"
+  },
+  "preparationCompactSampleRecommended": {
+    "message": "Optional ZIP sample not run"
+  },
+  "preparationCompactSamplePassed": {
+    "message": "Optional ZIP sample passed: $COUNT$ messages",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "collapsedSampleAction": {
+    "message": "Run optional ZIP sample"
+  },
+  "passwordPanelTitle": {
+    "message": "Save this password before exporting"
+  },
+  "preparationCompactCurrent": {
+    "message": "1 chat · $COUNT$ messages currently visible",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "preparationCompactCurrentUnknown": {
+    "message": "1 chat · $COUNT$ messages currently visible",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "preparationCompactMulti": {
+    "message": "Multi-chat mode · $CHATS$ chats · $VISIBLE$",
+    "placeholders": {
+      "chats": {
+        "content": "$1"
+      },
+      "visible": {
+        "content": "$2"
+      }
+    }
+  },
+  "preparationCompactGoal": {
+    "message": "History goal: reach $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "batchAggregateCoverage": {
+    "message": "Date goal: $REACHED$/$REQUESTED$ chats reached $DATE$.",
+    "placeholders": {
+      "reached": {
+        "content": "$1"
+      },
+      "requested": {
+        "content": "$2"
+      },
+      "date": {
+        "content": "$3"
+      }
+    }
+  },
+  "preparationNextSimple": {
+    "message": "Next: confirm this short review, then use the main action. It opens in Firefox without an extra app."
+  },
+  "privatePreflightTitle": {
+    "message": "Optional ZIP sample"
+  },
+  "privatePreflightIdle": {
+    "message": "Optional: test up to 10 current or nearby messages, reopen the ZIP locally, and return here. This does not change your export, save a file, or upload content."
+  },
+  "privatePreflightWorking": {
+    "message": "Checking a small sample and reopening it locally…"
+  },
+  "privatePreflightPassed": {
+    "message": "Passed · $COUNT$ real messages · checked $DIRECTIONS$ · reopened locally · $PROTECTION$ · position restored · no file saved",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "directions": {
+        "content": "$2"
+      },
+      "protection": {
+        "content": "$3"
+      }
+    }
+  },
+  "privatePreflightFailed": {
+    "message": "Sample check did not pass. Reload Telegram Web or change ZIP protection and try again."
+  },
+  "privatePreflightAction": {
+    "message": "Run optional ZIP sample"
+  },
+  "privatePreflightAgain": {
+    "message": "Run sample again"
+  },
+  "liveSmokeTitle": {
+    "message": "One-message live check"
+  },
+  "liveSmokeIdle": {
+    "message": "User-driven: read one real message in this Telegram tab, build and reopen a local ZIP, and save nothing."
+  },
+  "liveSmokeWorking": {
+    "message": "Checking one real message and reopening the ZIP locally…"
+  },
+  "liveSmokePassed": {
+    "message": "Passed · 1 real message · ZIP reopened locally · no file saved"
+  },
+  "liveSmokeFailed": {
+    "message": "One-message check did not pass. Reload Telegram Web or use Check again, then retry."
+  },
+  "liveSmokeAction": {
+    "message": "Test one message"
+  },
+  "liveSmokeAgain": {
+    "message": "Run one-message check"
+  },
+  "preflightFooterRecommended": {
+    "message": "Nearby-history sample recommended before this run"
+  },
+  "preflightFooterWorking": {
+    "message": "Checking nearby history…"
+  },
+  "preflightFooterPassed": {
+    "message": "Nearby-history sample passed · $COUNT$ messages · no file saved",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "preflightFooterFailed": {
+    "message": "Nearby-history sample needs attention"
+  },
+  "privatePreflightPassword": {
+    "message": "Enter and confirm the archive password first so the selected AES route can be tested."
+  },
+  "privatePreflightFormat": {
+    "message": "Select HTML, JSON, or both before running this test."
+  },
+  "privatePreflightDirectionsBoth": {
+    "message": "newer + older nearby history"
+  },
+  "privatePreflightDirectionsNewer": {
+    "message": "newer nearby history"
+  },
+  "privatePreflightDirectionsOlder": {
+    "message": "older nearby history"
+  },
+  "privatePreflightDirectionsVisible": {
+    "message": "the current visible page"
+  },
+  "workloadTitle": {
+    "message": "Preflight —"
+  },
+  "workloadLevelLight": {
+    "message": "Light"
+  },
+  "workloadLevelModerate": {
+    "message": "Moderate"
+  },
+  "workloadLevelHeavy": {
+    "message": "Heavy"
+  },
+  "workloadVerifierLimit": {
+    "message": "Local verifier reads up to 512 MB of HTML/JSON; open larger archives with PeaZip or 7-Zip."
+  },
+  "workloadAdviceModerate": {
+    "message": "Recommended before a long or multi-chat export: test nearby history first. Then export one chat at a time; if media dominates, deselect Videos/GIFs or Files, or lower their per-item limits."
+  },
+  "workloadAdviceTarget": {
+    "message": "Recommended before a date-targeted export: test nearby history first, then confirm the saved range reaches the date you need."
+  },
+  "workloadAdviceHeavy": {
+    "message": "Recommended before a large export: test nearby history first, then split the selection into smaller batches or export text + photos. Per-item limits are enforced; built-in verification reads up to 512 MB of HTML/JSON, so inspect larger ZIPs directly with PeaZip or 7-Zip."
+  },
+  "capabilityLimitChats": {
+    "message": "Up to $COUNT$ chats per ZIP. Larger selections are split into verified batches; keep this Telegram tab open while each chat is checked.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "capabilityLimitReadable": {
+    "message": "Built-in verification reads up to 512 MB of HTML/JSON. Larger ZIPs are still valid; open them with PeaZip or 7-Zip."
+  },
+  "workloadCurrent": {
+    "message": "$LEVEL$ · 1 chat · $MESSAGES$ loaded now · $MEDIA$ · caps: $CAPS$. Local Archive may load more during export; final size is measured after fetch and peak memory can exceed the ZIP. $LIMIT$",
+    "placeholders": {
+      "level": {
+        "content": "$1"
+      },
+      "messages": {
+        "content": "$2"
+      },
+      "media": {
+        "content": "$3"
+      },
+      "caps": {
+        "content": "$4"
+      },
+      "limit": {
+        "content": "$5"
+      }
+    }
+  },
+  "workloadMulti": {
+    "message": "$LEVEL$ · $CHATS$ chats · $MESSAGES$ loaded in the open chat now · $MEDIA$ · caps: $CAPS$. Other counts are measured during export; peak memory can exceed the ZIP. $LIMIT$",
+    "placeholders": {
+      "level": {
+        "content": "$1"
+      },
+      "chats": {
+        "content": "$2"
+      },
+      "messages": {
+        "content": "$3"
+      },
+      "media": {
+        "content": "$4"
+      },
+      "caps": {
+        "content": "$5"
+      },
+      "limit": {
+        "content": "$6"
+      }
+    }
+  },
+  "workloadMediaNone": {
+    "message": "text only"
+  },
+  "workloadMediaCount": {
+    "message": "$COUNT$ media types",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "workloadMediaOne": {
+    "message": "1 media type"
+  },
+  "workloadCapsNone": {
+    "message": "none in this selection"
+  },
+  "footerScopeCurrent": {
+    "message": "Current: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "footerScopeSelected": {
+    "message": "$COUNT$ chats selected",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "footerScopeCategory": {
+    "message": "Category: $NAME$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "footerScopeSummary": {
+    "message": "$SCOPE$ · $FORMATS$",
+    "placeholders": {
+      "scope": {
+        "content": "$1"
+      },
+      "formats": {
+        "content": "$2"
+      }
+    }
+  },
+  "categoryPersonal": {
+    "message": "Personal chats"
+  },
+  "categoryBots": {
+    "message": "Bots"
+  },
+  "categoryGroups": {
+    "message": "Groups"
+  },
+  "categoryChannels": {
+    "message": "Channels"
+  },
+  "outputTitle": {
+    "message": "Formats"
+  },
+  "outputDescription": {
+    "message": "Keep both when you want a readable copy and reusable data."
+  },
+  "mediaTitle": {
+    "message": "Media"
+  },
+  "mediaDescription": {
+    "message": "Each file is checked against its size limit before it enters the archive."
+  },
+  "moreMediaTitle": {
+    "message": "More media options"
+  },
+  "moreMediaStatus": {
+    "message": "$COUNT$ selected · Videos, stickers, and files",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "moreMediaStatusNone": {
+    "message": "Videos, stickers, and files"
+  },
+  "protectionTitle": {
+    "message": "How will you open your ZIP?"
+  },
+  "protectionDescription": {
+    "message": "Need to open it in Firefox now? Choose no password. Have or will install PeaZip/7-Zip? Keep AES-256."
+  },
+  "protectionPrimerTitle": {
+    "message": "Choose archive protection"
+  },
+  "protectionPrimerAes": {
+    "message": "Password protection: AES-256 needs PeaZip or 7-Zip. Save the password elsewhere before export."
+  },
+  "protectionPrimerNone": {
+    "message": "Default: a no-password ZIP is easiest to open, but anyone with the file can read it."
+  },
+  "protectionPrimerAction": {
+    "message": "Change ZIP protection"
+  },
+  "missingSummaryAction": {
+    "message": "What may be missing?"
+  },
+  "protectionOpeningWarning": {
+    "message": "Choose between privacy and easy opening: AES-256 is private but needs PeaZip/7-Zip; unencrypted opens in Firefox but anyone with the file can read it."
+  },
+  "preparationCompactVerifier": {
+    "message": "verify up to 512 MB HTML/JSON · split large runs or inspect larger ZIP directly"
+  },
+  "protectionEnable": {
+    "message": "Require a password to open this ZIP"
+  },
+  "protectionEnableHint": {
+    "message": "Uses AES-256. The password stays only in memory for this export."
+  },
+  "protectionChoiceAesTitle": {
+    "message": "Password-protected ZIP · requires PeaZip/7-Zip"
+  },
+  "protectionChoiceAesHint": {
+    "message": "AES-256 · Firefox cannot open it by itself · keep the password elsewhere"
+  },
+  "protectionChoiceNoneTitle": {
+    "message": "No-password ZIP · easiest to open"
+  },
+  "protectionChoiceNoneHint": {
+    "message": "Unzip, then open messages.html in Firefox · anyone with the file can read it"
+  },
+  "footerProtectionNone": {
+    "message": "Unencrypted ZIP · unzip, then open in Firefox · anyone with the file can read it"
+  },
+  "footerProtectionAes": {
+    "message": "AES-256 · keep password elsewhere · open with PeaZip or 7-Zip"
+  },
+  "passwordLabel": {
+    "message": "Password"
+  },
+  "passwordConfirmLabel": {
+    "message": "Confirm password"
+  },
+  "passwordHint": {
+    "message": "Before creating the archive, write down or store this password elsewhere. Local Archive clears it after export and cannot recover it. Use at least 8 characters. Some built-in extractors cannot open AES-encrypted ZIPs; use an archive app that explicitly supports AES ZIP encryption."
+  },
+  "aesHelpTitle": {
+    "message": "How to open an AES ZIP"
+  },
+  "aesHelpHint": {
+    "message": "Official app links and four first-use steps"
+  },
+  "aesHelpStepDownload": {
+    "message": "Let Firefox finish downloading the ZIP."
+  },
+  "aesHelpStepOpen": {
+    "message": "Open the ZIP in PeaZip or 7-Zip."
+  },
+  "aesHelpStepPassword": {
+    "message": "Enter the password you saved before export."
+  },
+  "aesHelpStepExtract": {
+    "message": "Extract the folder, then open messages.html in Firefox; keep result.json for reusable data."
+  },
+  "aesAppWindows": {
+    "message": "Recommended on Windows: 7-Zip or PeaZip. Use one of the official links below."
+  },
+  "aesAppMac": {
+    "message": "Recommended on macOS: PeaZip. Use the official link below."
+  },
+  "aesAppLinux": {
+    "message": "Recommended on Linux: PeaZip or 7-Zip. Use an official link below or your package manager."
+  },
+  "aesAppOther": {
+    "message": "Recommended: PeaZip. Use the official link below."
+  },
+  "aesCompatibilityNote": {
+    "message": "Compatibility: Local Archive creates AES-256 / WinZip AES ZIPs, not legacy ZipCrypto. Use an app whose documentation explicitly lists AES-256 ZIP or WinZip AES support."
+  },
+  "aesHelpSafety": {
+    "message": "Test the extracted archive before deleting or replacing any original data."
+  },
+  "unencryptedConfirmTitle": {
+    "message": "This ZIP will not be encrypted."
+  },
+  "unencryptedConfirmBody": {
+    "message": "Anyone who gets the file can read it. Enable AES-256 above, or confirm the unencrypted download."
+  },
+  "createUnencrypted": {
+    "message": "Create unencrypted ZIP · open in Firefox after unzipping"
+  },
+  "localOnlyTitle": {
+    "message": "Nothing leaves this browser"
+  },
+  "localOnlyBody": {
+    "message": "Archive processing stays local and no conversation content is uploaded. The default ZIP has no password; optional AES-256 protection is available in advanced settings."
+  },
+  "renderedScopeNote": {
+    "message": "Local Archive scans toward newer and older messages automatically during export and waits for Telegram Web to finish each history page. The receipt records the exact loaded range; a complete account history is not guaranteed."
+  },
+  "preExportScopeWarning": {
+    "message": "Local Archive scans older and newer messages automatically. Preview only to check the date now; the receipt records the exact saved range."
+  },
+  "preExportMultiScopeWarning": {
+    "message": "Local Archive scans every chosen chat automatically and reports its exact saved range. Preview the open chat only to inspect the date before export."
+  },
+  "preExportTargetCurrent": {
+    "message": "Required goal: save the open chat back to $TARGET$. Its oldest currently visible date is $OLDEST$; Local Archive will scan older messages automatically and report whether the saved range reached the goal.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      },
+      "oldest": {
+        "content": "$2"
+      }
+    }
+  },
+  "preExportTargetCurrentUnknown": {
+    "message": "Required goal: save the open chat back to $TARGET$. Local Archive will scan automatically and report whether the exact saved range reached the goal.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      }
+    }
+  },
+  "preExportTargetMulti": {
+    "message": "Required goal: save every chosen chat back to $TARGET$. Local Archive scans each chat automatically and reports whether every exact saved range reached the goal.",
+    "placeholders": {
+      "target": {
+        "content": "$1"
+      }
+    }
+  },
+  "historyReadyCurrent": {
+    "message": "Telegram layout check passed for this open chat. I reviewed the separate history range, workload, and ZIP protection."
+  },
+  "historyReadyMulti": {
+    "message": "Telegram layout check passed for the open chat; every selected chat is checked before it is added. I reviewed the separate history ranges, workload, and ZIP protection."
+  },
+  "historyReadyBadgeRequired": {
+    "message": "Review required"
+  },
+  "historyReadyBadgeDone": {
+    "message": "Ready"
+  },
+  "oldestLoadedValue": {
+    "message": "Oldest currently loaded in the open chat: $DATE$",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "oldestLoadedUnknown": {
+    "message": "Oldest loaded message could not be dated — check the chat manually before export."
+  },
+  "loadedCountValue": {
+    "message": "Loaded in Telegram now: $COUNT$ messages. Local Archive may load more during export; large histories are safer one chat at a time and can be stopped with a partial save.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "loadedCountValueOne": {
+    "message": "Loaded in Telegram now: $COUNT$ message. Local Archive may load more during export; large histories are safer one chat at a time and can be stopped with a partial save.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "close": {
+    "message": "Schließen"
+  },
+  "cancelExport": {
+    "message": "Abbrechen"
+  },
+  "exportNow": {
+    "message": "Save protected ZIP · open with PeaZip or 7-Zip"
+  },
+  "exportNowUnencrypted": {
+    "message": "Save unencrypted ZIP · open in Firefox after unzipping"
+  },
+  "exportReviewFirst": {
+    "message": "Complete required review first"
+  },
+  "createAnother": {
+    "message": "Create another"
+  },
+  "retryExport": {
+    "message": "Try again"
+  },
+  "exporting": {
+    "message": "Creating archive…"
+  },
+  "completeTitle": {
+    "message": "ZIP created · Firefox is saving it"
+  },
+  "downloadSavingTitle": {
+    "message": "ZIP created · Firefox is saving it"
+  },
+  "downloadCompleteTitle": {
+    "message": "Download complete"
+  },
+  "downloadSavingHint": {
+    "message": "Firefox is saving the ZIP · keep this tab open."
+  },
+  "downloadCompleteHint": {
+    "message": "ZIP downloaded · you can close this tab."
+  },
+  "downloadInterruptedHint": {
+    "message": "Download stopped · keep this tab open and try again."
+  },
+  "downloadUnknownHint": {
+    "message": "Check Firefox Downloads before closing this tab."
+  },
+  "downloadInterruptedTitle": {
+    "message": "ZIP created · Firefox download interrupted"
+  },
+  "downloadUnknownTitle": {
+    "message": "ZIP created · check Firefox Downloads"
+  },
+  "resultFileLabel": {
+    "message": "File"
+  },
+  "resultSizeLabel": {
+    "message": "Archive size"
+  },
+  "resultProtectionLabel": {
+    "message": "Protection"
+  },
+  "resultProtectionAes": {
+    "message": "AES-256 password"
+  },
+  "resultProtectionNone": {
+    "message": "No password"
+  },
+  "resultValidationLabel": {
+    "message": "Local check"
+  },
+  "resultValidationPassed": {
+    "message": "Passed · $COUNT$ files · report readable",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultValidationStructure": {
+    "message": "Passed · $COUNT$ files",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultOpenHelp": {
+    "message": "Verify the downloaded ZIP below, then extract it and open messages.html. Keep result.json for reusable data."
+  },
+  "resultOpenHelpEncrypted": {
+    "message": "Verify this AES ZIP below by re-entering the password, then open it with PeaZip or 7-Zip and open messages.html."
+  },
+  "resultAesGuideTitle": {
+    "message": "Next: open this protected ZIP"
+  },
+  "resultAesGuideBody": {
+    "message": "The archive is ready. Open it with PeaZip or 7-Zip; Firefox can open messages.html after extraction."
+  },
+  "resultAesGuideStepStart": {
+    "message": "Open the downloaded ZIP in PeaZip or 7-Zip."
+  },
+  "resultAesGuideOpenButton": {
+    "message": "How to open this ZIP"
+  },
+  "resultDetailsTitle": {
+    "message": "Full receipt details"
+  },
+  "resultPrimaryTitle": {
+    "message": "ZIP checked locally · Firefox is saving it"
+  },
+  "resultPrimarySavingTitle": {
+    "message": "ZIP checked locally · Firefox is saving it"
+  },
+  "resultPrimaryDownloadedTitle": {
+    "message": "Saved ZIP checked locally · download complete"
+  },
+  "resultPrimaryInterruptedTitle": {
+    "message": "ZIP checked locally · Firefox download interrupted"
+  },
+  "resultPrimaryDownloadUnknownTitle": {
+    "message": "ZIP checked locally · confirm the saved file in Firefox Downloads"
+  },
+  "resultPrimaryFile": {
+    "message": "File: $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryOmissions": {
+    "message": "Some items were omitted; see full receipt details below."
+  },
+  "resultOmissionAction": {
+    "message": "Review skipped media → change limit → re-export"
+  },
+  "resultOmissionActionOne": {
+    "message": "Review 1 skipped media item → change limit → re-export"
+  },
+  "resultOmissionActionMany": {
+    "message": "Review $COUNT$ skipped media items → change limit → re-export",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryOmissionSpecific": {
+    "message": "Skipped: $DETAIL$",
+    "placeholders": {
+      "detail": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryOmissionExact": {
+    "message": "Skipped: $NAME$ · $TYPE$ · $ACTUAL$ exceeds the $LIMIT$ limit · message $MESSAGE$ in $CHAT$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "type": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      },
+      "limit": {
+        "content": "$4"
+      },
+      "message": {
+        "content": "$5"
+      },
+      "chat": {
+        "content": "$6"
+      }
+    }
+  },
+  "resultOmissionActionExact": {
+    "message": "Fix $NAME$: set $TYPE$ limit from $LIMIT$ to at least $ACTUAL$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "type": {
+        "content": "$2"
+      },
+      "limit": {
+        "content": "$3"
+      },
+      "actual": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultPrimaryNextOmissionExact": {
+    "message": "Recovery: increase the highlighted $TYPE$ limit from $LIMIT$ to at least $ACTUAL$ → Create another archive → Verify the new ZIP. This ZIP already contains all text and other included media.",
+    "placeholders": {
+      "type": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPrimaryNextSelectedOmissionExact": {
+    "message": "Recovery: increase the highlighted $TYPE$ limit from $LIMIT$ to at least $ACTUAL$ → Create another archive → Verify the new ZIP. All selected chats and other included items are already in this ZIP.",
+    "placeholders": {
+      "type": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPrimaryNextBatchOmissionExact": {
+    "message": "Recovery for this batch: increase the highlighted $TYPE$ limit from $LIMIT$ to at least $ACTUAL$ → Create another archive → Verify the new ZIP. Or keep this omission and continue with the next batch, “$NAME$”.",
+    "placeholders": {
+      "type": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      },
+      "name": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultPrimaryMissing": {
+    "message": "Saved here: $INCLUDED$ · outside this ZIP: $MISSING$ · this is not a complete Telegram backup",
+    "placeholders": {
+      "included": {
+        "content": "$1"
+      },
+      "missing": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultPrimaryNoOmissions": {
+    "message": "No item omissions were recorded."
+  },
+  "resultPrimaryNextAes": {
+    "message": "Recommended: verify the downloaded ZIP with your password, then extract it in PeaZip or 7-Zip and open messages.html."
+  },
+  "resultPrimaryNextNone": {
+    "message": "Recommended: verify the downloaded ZIP, then unzip it and open messages.html in Firefox."
+  },
+  "resultPrimaryNextSelected": {
+    "message": "Next: verify this ZIP; all selected chats are already in this archive."
+  },
+  "resultPrimaryNextBatch": {
+    "message": "Next: verify this ZIP, then switch Telegram to “$NAME$” and continue with the next batch.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryNextBatchOmissions": {
+    "message": "Next: verify this ZIP, then switch Telegram to “$NAME$” and continue with the next batch. Omitted media can be retried later by raising the limit or enabling its type.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryNextBatchesComplete": {
+    "message": "Next: verify this ZIP; all planned batches are complete."
+  },
+  "resultPrimaryNextBatchesCompleteOmissions": {
+    "message": "Next: verify this ZIP; all planned batches are complete. Omitted media can be retried by raising the limit or enabling its type."
+  },
+  "resultPrimaryNextSelectedOmissions": {
+    "message": "Next: verify this ZIP; all selected chats are already in it. To include omitted media, raise the limit or enable its type, then export again."
+  },
+  "resultPrimaryNextPartialMulti": {
+    "message": "Next: verify this partial ZIP, then reopen the incomplete chat and export it again; remaining chats stay pending."
+  },
+  "resultPrimaryStatusPartial": {
+    "message": "Partial archive"
+  },
+  "resultPrimaryStatusReachedYes": {
+    "message": "History goal: reached"
+  },
+  "resultPrimaryStatusReachedNo": {
+    "message": "History goal: not reached"
+  },
+  "resultPrimaryStatusReachedUnknown": {
+    "message": "History goal: unknown"
+  },
+  "resultPrimaryStatusBatchRemaining": {
+    "message": "1 batch remaining"
+  },
+  "resultPrimaryStatusBatchesRemaining": {
+    "message": "$COUNT$ batches remaining",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultPrimaryStatusBatchesComplete": {
+    "message": "All planned batches complete"
+  },
+  "resultReadableLimit": {
+    "message": "Built-in verifier limit: 512 MB of readable HTML/JSON. Larger ZIPs remain valid; open them with PeaZip or 7-Zip."
+  },
+  "resultPrimaryNextPartial": {
+    "message": "Next: return to this chat, load more history, and export again; this ZIP keeps only messages collected before Stop."
+  },
+  "resultPrimaryNextOmissions": {
+    "message": "Next: raise the per-file limit or enable the media type, then export again; text and included media are already saved."
+  },
+  "resultOpenGuideTitle": {
+    "message": "Next: open this ZIP"
+  },
+  "resultOpenGuideBody": {
+    "message": "No password is required. Verify it below, then open the downloaded ZIP in Firefox or any archive app and open messages.html. Keep result.json for reusable data."
+  },
+  "resultOpenGuideStepOpen": {
+    "message": "Open the downloaded ZIP in Firefox or any archive app — no password is required."
+  },
+  "resultOpenGuideStepHtml": {
+    "message": "Open messages.html in Firefox."
+  },
+  "resultOpenGuideStepJson": {
+    "message": "Keep result.json for reusable data."
+  },
+  "progressScopeNote": {
+    "message": "Local archive in this browser · older history loads automatically · the receipt records the exact range reached in this Telegram tab."
+  },
+  "resultExtractionCheck": {
+    "message": "Use Verify downloaded ZIP below. After extracting, open messages.html before deleting or replacing originals."
+  },
+  "resultShowDownload": {
+    "message": "Show downloaded ZIP"
+  },
+  "resultShowDownloadFile": {
+    "message": "Shown in its folder: $FILENAME$",
+    "placeholders": {
+      "filename": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultShowDownloadFolder": {
+    "message": "Exact match not found. Opened the Downloads folder — find: $FILENAME$",
+    "placeholders": {
+      "filename": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultShowDownloadError": {
+    "message": "Could not open a folder. In Firefox Downloads, find: $FILENAME$",
+    "placeholders": {
+      "filename": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultVerifyDownload": {
+    "message": "Verify ZIP (recommended)"
+  },
+  "verificationSelectedFile": {
+    "message": "Selected file"
+  },
+  "verificationPasswordLabel": {
+    "message": "Archive password"
+  },
+  "verificationPasswordWarning": {
+    "message": "Local Archive cannot recover a forgotten password. Re-enter it only to verify this local file; the field is cleared immediately after the check."
+  },
+  "verificationRun": {
+    "message": "Verify locally"
+  },
+  "verificationReading": {
+    "message": "Opening and checking this ZIP locally…"
+  },
+  "verificationNeedPassword": {
+    "message": "This AES ZIP needs its password. Re-enter it below; Local Archive clears the field immediately after the check."
+  },
+  "verificationPasswordTooShort": {
+    "message": "Enter the archive password (at least 8 characters)."
+  },
+  "verificationWrongPassword": {
+    "message": "That password did not open this ZIP. Nothing was changed; try again."
+  },
+  "verificationMismatch": {
+    "message": "Selected $SELECTED$, but this receipt belongs to $EXPECTED$. Choose the matching downloaded ZIP.",
+    "placeholders": {
+      "selected": {
+        "content": "$1"
+      },
+      "expected": {
+        "content": "$2"
+      }
+    }
+  },
+  "verificationNotArchive": {
+    "message": "This file is not a readable Local Archive ZIP, or its report and saved outputs do not agree."
+  },
+  "verificationLimit": {
+    "message": "Archive created and downloaded successfully. Built-in verification stopped at the 512 MB readable HTML/JSON limit; extract the ZIP with PeaZip or 7-Zip and inspect the files directly. This does not mean the archive is corrupt."
+  },
+  "verificationError": {
+    "message": "Firefox could not verify this ZIP. The file was not changed; choose it again or extract it with PeaZip or 7-Zip."
+  },
+  "verificationOutputsBoth": {
+    "message": "messages.html + result.json"
+  },
+  "verificationOutputsHtml": {
+    "message": "messages.html"
+  },
+  "verificationOutputsJson": {
+    "message": "result.json"
+  },
+  "verificationSuccess": {
+    "message": "Verified locally: $FILENAME$ · export-summary.json + $OUTPUTS$ · $CHATS$ · $MESSAGES$ · $PROTECTION$. The selected file never left this device.",
+    "placeholders": {
+      "filename": {
+        "content": "$1"
+      },
+      "outputs": {
+        "content": "$2"
+      },
+      "chats": {
+        "content": "$3"
+      },
+      "messages": {
+        "content": "$4"
+      },
+      "protection": {
+        "content": "$5"
+      }
+    }
+  },
+  "resultSummaryChats": {
+    "message": "$COUNT$ chats",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryChat": {
+    "message": "$COUNT$ chat",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryMessages": {
+    "message": "$COUNT$ messages",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryMessage": {
+    "message": "$COUNT$ message",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryMedia": {
+    "message": "$COUNT$ media items included",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryMediaOne": {
+    "message": "$COUNT$ media item included",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummarySkipped": {
+    "message": "$COUNT$ skipped",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryNotSelected": {
+    "message": "$COUNT$ not selected",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryPending": {
+    "message": "$COUNT$ pending",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryReasons": {
+    "message": "Reasons: $REASONS$",
+    "placeholders": {
+      "reasons": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryRange": {
+    "message": "Saved range: $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "oldest": {
+        "content": "$1"
+      },
+      "newest": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultTargetStatusLabel": {
+    "message": "History-date coverage"
+  },
+  "resultTargetStatusReached": {
+    "message": "History goal reached · $DATE$ · $REACHED$/$REQUESTED$ chats",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "reached": {
+        "content": "$2"
+      },
+      "requested": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultTargetStatusMissed": {
+    "message": "History goal not reached · $DATE$ · $REACHED$/$REQUESTED$ chats · load older messages and export again",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "reached": {
+        "content": "$2"
+      },
+      "requested": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultTargetStatusUnknown": {
+    "message": "History goal unknown · $DATE$ · export stopped before every requested chat could be confirmed",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultTargetReached": {
+    "message": "Saved range reaches $DATE$ in $REACHED$/$REQUESTED$ requested chats. This verifies the saved dates, not complete Telegram history.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "reached": {
+        "content": "$2"
+      },
+      "requested": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultTargetMissed": {
+    "message": "Saved range does not reach $DATE$ in: $CHATS$. Load older messages and export again.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "chats": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultTargetUnverified": {
+    "message": "Saved range back to $DATE$ could not be verified for $COUNT$ requested chats because they were skipped.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultTargetStopped": {
+    "message": "The export was stopped, so the saved range back to $DATE$ is not confirmed for every requested chat.",
+    "placeholders": {
+      "date": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultCoverageTitle": {
+    "message": "Saved by chat:"
+  },
+  "resultCoverageRow": {
+    "message": "$NAME$ — $COUNT$ messages · $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "oldest": {
+        "content": "$3"
+      },
+      "newest": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultCoverageRowOne": {
+    "message": "$NAME$ — $COUNT$ message · $OLDEST$ – $NEWEST$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      },
+      "oldest": {
+        "content": "$3"
+      },
+      "newest": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultCoverageRowNoDate": {
+    "message": "$NAME$ — $COUNT$ messages",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultCoverageRowNoDateOne": {
+    "message": "$NAME$ — $COUNT$ message",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "count": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultCoverageMore": {
+    "message": "…and $COUNT$ more chats; see export-summary.json.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultOmissionsTitle": {
+    "message": "Skipped items:"
+  },
+  "resultOmissionSize": {
+    "message": "$NAME$ — $REASON$ ($ACTUAL$ > $LIMIT$)",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "reason": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      },
+      "limit": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultOmissionAtLeast": {
+    "message": "$NAME$ — $REASON$ (at least $ACTUAL$; limit $LIMIT$)",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "reason": {
+        "content": "$2"
+      },
+      "actual": {
+        "content": "$3"
+      },
+      "limit": {
+        "content": "$4"
+      }
+    }
+  },
+  "resultOmissionBasic": {
+    "message": "$NAME$ — $REASON$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "reason": {
+        "content": "$2"
+      }
+    }
+  },
+  "resultOmissionsMore": {
+    "message": "…and $COUNT$ more items; see export-summary.json.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultOmissionsMoreOne": {
+    "message": "…and $COUNT$ more item; see export-summary.json.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "resultSummaryPartial": {
+    "message": "Partial archive: only content collected before stopping was saved."
+  },
+  "resultSummaryRendered": {
+    "message": "This is not a complete Telegram backup. Local Archive saved the messages it could load in this tab; older messages remain outside this ZIP if Telegram did not reach them."
+  },
+  "resultSummaryHistoryReached": {
+    "message": "History scan reached Telegram’s oldest available point in this tab. This is not a complete account backup."
+  },
+  "mediaReasonSize": {
+    "message": "size limit"
+  },
+  "mediaReasonNetwork": {
+    "message": "network or access"
+  },
+  "mediaReasonCancelled": {
+    "message": "stopped by you"
+  },
+  "mediaReasonInvalid": {
+    "message": "invalid item"
+  },
+  "mediaReasonThumbnail": {
+    "message": "thumbnail unavailable"
+  },
+  "mediaReasonUnknown": {
+    "message": "unknown reason"
+  },
+  "validationPasswordLength": {
+    "message": "Use a password with at least 8 characters."
+  },
+  "validationPasswordMismatch": {
+    "message": "The two passwords do not match."
+  },
+  "validationHistoryReady": {
+    "message": "Confirm the pre-export review below before creating the archive."
+  },
+  "validationLiveCheck": {
+    "message": "This Telegram message layout did not pass the live safety check. Export is blocked until Local Archive supports it."
+  },
+  "errorLiveLayoutCheck": {
+    "message": "The open chat no longer passes Local Archive’s live layout check. Refresh Telegram Web or update Local Archive before retrying."
+  },
+  "errorTitle": {
+    "message": "Export stopped"
+  },
+  "statusStarting": {
+    "message": "Preparing the export…"
+  },
+  "statusScrolling": {
+    "message": "Reading messages… $COUNT$ found",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusScanningNewer": {
+    "message": "Checking newer messages… $COUNT$ found",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusScanningOlder": {
+    "message": "Loading older messages automatically… $COUNT$ found",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusSwitchingTopic": {
+    "message": "Opening topic: $TOPIC$",
+    "placeholders": {
+      "topic": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusTopic": {
+    "message": "Reading topic: $TOPIC$",
+    "placeholders": {
+      "topic": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusBuilding": {
+    "message": "Building the archive…"
+  },
+  "statusSaving": {
+    "message": "Saving the ZIP…"
+  },
+  "statusDownloadingMedia": {
+    "message": "Saving media… $DONE$ of $TOTAL$",
+    "placeholders": {
+      "done": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "statusChatProgress": {
+    "message": "Chat $CURRENT$ of $TOTAL$: $NAME$",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      },
+      "name": {
+        "content": "$3"
+      }
+    }
+  },
+  "statusBuildingPartial": {
+    "message": "Finishing the partial archive…"
+  },
+  "statusBuildingFinal": {
+    "message": "Finishing the archive…"
+  },
+  "resultCompleteMessages": {
+    "message": "$COUNT$ messages saved in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultCompleteMessage": {
+    "message": "$COUNT$ message saved in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialMessages": {
+    "message": "Partial archive saved: $COUNT$ messages in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialMessage": {
+    "message": "Partial archive saved: $COUNT$ message in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultCompleteChats": {
+    "message": "$COUNT$ chats saved in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultCompleteChat": {
+    "message": "$COUNT$ chat saved in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialChats": {
+    "message": "Partial archive saved: $COUNT$ chats in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "resultPartialChat": {
+    "message": "Partial archive saved: $COUNT$ chat in $SECONDS$s$SKIPPED$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "seconds": {
+        "content": "$2"
+      },
+      "skipped": {
+        "content": "$3"
+      }
+    }
+  },
+  "mediaSkippedSuffix": {
+    "message": " · $COUNT$ media items skipped",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "mediaSkippedSuffixOne": {
+    "message": " · $COUNT$ media item skipped",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "errorNoMessageList": {
+    "message": "Open a chat before starting the export."
+  },
+  "errorNoMessages": {
+    "message": "No messages were found in the open chat."
+  },
+  "errorNoChats": {
+    "message": "No chats were found for this selection."
+  },
+  "errorNoExportedChats": {
+    "message": "No selected chat produced exportable messages. Keep the Telegram sidebar visible and try again."
+  },
+  "errorTooManyChats": {
+    "message": "$COUNT$ chats were selected; each archive supports up to $LIMIT$. Select the first batch of $LIMIT$, export it, then select the next batch.",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      }
+    }
+  },
+  "errorSelectChat": {
+    "message": "Select at least one chat."
+  },
+  "errorZipUnavailable": {
+    "message": "The archive library did not load. Reload Telegram Web and try again."
+  },
+  "errorArchiveService": {
+    "message": "The local archive process did not start. Reload Telegram Web and try again."
+  },
+  "errorArchiveEntry": {
+    "message": "One item could not be added safely. Try again without media; if it repeats, report the problem."
+  },
+  "errorArchiveEngine": {
+    "message": "Firefox could not finish the ZIP. Try text only or lower media limits, then retry."
+  },
+  "errorExportSafe": {
+    "message": "No ZIP was saved. Your Telegram data was not changed. Retry, or reopen Telegram Web if the problem repeats."
+  },
+  "errorExport": {
+    "message": "The archive could not be created: $DETAIL$",
+    "placeholders": {
+      "detail": {
+        "content": "$1"
+      }
+    }
+  }
+}

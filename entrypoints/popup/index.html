@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Archive</title>
+  </head>
+  <body>
+    <main class="popup" id="popup" aria-busy="true">
+      <header class="topbar">
+        <div class="brand">
+          <img src="/icon-48.png" width="32" height="32" alt="">
+          <div>
+            <span data-i18n="brand"></span>
+            <h1 data-i18n="exportTitle"></h1>
+          </div>
+        </div>
+        <label class="language-control">
+          <span class="sr-only" data-i18n="language"></span>
+          <select id="language" aria-label="Language"></select>
+        </label>
+      </header>
+
+      <section class="view view--loading" id="loading-view" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+      </section>
+
+      <section class="view empty-view" id="unsupported-view" hidden>
+        <div class="empty-icon" aria-hidden="true">↗</div>
+        <h2 data-i18n="unsupportedTitle"></h2>
+        <p data-i18n="unsupportedBody"></p>
+        <button class="button button--primary" type="button" id="open-source" data-i18n="openTelegram"></button>
+      </section>
+
+      <section class="view empty-view" id="no-chat-view" hidden>
+        <div class="empty-icon empty-icon--telegram" aria-hidden="true">T</div>
+        <h2 data-i18n="noChatTitle"></h2>
+        <p data-i18n="noChatBody"></p>
+      </section>
+
+      <section class="view" id="export-view" hidden>
+        <div class="context-card">
+          <div class="source-icon" aria-hidden="true">T</div>
+          <div class="context-copy">
+            <span id="source-name"></span>
+            <strong id="chat-name" data-i18n="currentChat"></strong>
+            <small id="visible-count"></small>
+          </div>
+          <span class="ready-dot" aria-hidden="true"></span>
+        </div>
+
+        <form id="export-form" novalidate>
+          <fieldset class="section">
+            <legend data-i18n="range"></legend>
+            <div class="segmented" id="range-selector">
+              <label><input type="radio" name="range" value="recent" checked><span data-i18n="rangeRecent"></span></label>
+              <label><input type="radio" name="range" value="dates"><span data-i18n="rangeDates"></span></label>
+              <label><input type="radio" name="range" value="all"><span data-i18n="rangeAll"></span></label>
+            </div>
+
+            <div class="range-panel" id="recent-panel">
+              <label class="field field--inline">
+                <span data-i18n="recentCount"></span>
+                <input id="recent-count" type="number" min="1" max="100000" step="1" value="500" inputmode="numeric">
+              </label>
+              <p id="recent-hint" data-i18n="recentHint"></p>
+            </div>
+
+            <div class="range-panel date-grid" id="dates-panel" hidden>
+              <label class="field"><span data-i18n="dateFrom"></span><span class="date-control"><input id="date-from" type="date"><span class="date-display" id="date-from-display" aria-hidden="true"></span></span></label>
+              <label class="field"><span data-i18n="dateTo"></span><span class="date-control"><input id="date-to" type="date"><span class="date-display" id="date-to-display" aria-hidden="true"></span></span></label>
+              <p id="dates-hint" data-i18n="datesHint"></p>
+            </div>
+
+            <p class="range-hint" id="all-panel" data-i18n="allHint" hidden></p>
+          </fieldset>
+
+          <fieldset class="section section--content">
+            <legend data-i18n="content"></legend>
+            <label class="field">
+              <span data-i18n="format"></span>
+              <select id="format">
+                <option value="both" data-i18n="formatBoth"></option>
+                <option value="html" data-i18n="formatHtml"></option>
+                <option value="json" data-i18n="formatJson"></option>
+              </select>
+            </label>
+
+            <label class="media-toggle">
+              <span class="switch"><input id="include-media" type="checkbox" checked><span aria-hidden="true"></span></span>
+              <span><strong data-i18n="attachments"></strong><small id="attachments-hint" data-i18n="attachmentsHint"></small></span>
+            </label>
+          </fieldset>
+
+          <p class="error" id="error" role="alert" hidden></p>
+          <button class="button button--primary button--export" type="submit" id="export-button" data-i18n="exportZip"></button>
+        </form>
+      </section>
+
+      <footer>
+        <button type="button" class="link-button" id="settings" data-i18n="settings"></button>
+        <span id="version"></span>
+      </footer>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
