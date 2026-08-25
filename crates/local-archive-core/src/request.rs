@@ -71,7 +71,11 @@ pub fn normalize_quick_export_request(value: &Value) -> CoreResult<QuickExportRe
     Ok(QuickExportRequest {
         format,
         include_media,
-        locale: if locale.is_empty() { "en".to_owned() } else { locale },
+        locale: if locale.is_empty() {
+            "en".to_owned()
+        } else {
+            locale
+        },
         range,
         labels,
     })

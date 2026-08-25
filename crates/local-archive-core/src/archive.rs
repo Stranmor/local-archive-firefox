@@ -23,7 +23,9 @@ struct ArchivePath(String);
 impl ArchivePath {
     fn parse(value: &str) -> CoreResult<Self> {
         if !is_safe_archive_path(value) {
-            return Err(CoreError::invalid_entry(format!("Unsafe archive path: {value}")));
+            return Err(CoreError::invalid_entry(format!(
+                "Unsafe archive path: {value}"
+            )));
         }
         Ok(Self(value.to_owned()))
     }
@@ -80,7 +82,9 @@ impl ArchiveArtifactReceipt {
                 .bytes()
                 .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
         {
-            return Err(CoreError::invalid_transition("The archive identity is invalid."));
+            return Err(CoreError::invalid_transition(
+                "The archive identity is invalid.",
+            ));
         }
         if self.size == 0
             || self.entry_count == 0
@@ -113,7 +117,9 @@ impl ArchiveBuilderCore {
     ) -> CoreResult<Self> {
         validate_request_id(&request_id)?;
         if compression_level > 9 {
-            return Err(CoreError::invalid_request("Compression level must be between 0 and 9."));
+            return Err(CoreError::invalid_request(
+                "Compression level must be between 0 and 9.",
+            ));
         }
         let password = password
             .filter(|value| !value.is_empty())
@@ -137,7 +143,9 @@ impl ArchiveBuilderCore {
         }
         let path = ArchivePath::parse(name)?;
         if !self.names.insert(path.0.clone()) {
-            return Err(CoreError::invalid_entry("Archive entries must have unique paths."));
+            return Err(CoreError::invalid_entry(
+                "Archive entries must have unique paths.",
+            ));
         }
         self.uncompressed_bytes = self
             .uncompressed_bytes
@@ -146,18 +154,26 @@ impl ArchiveBuilderCore {
             .ok_or_else(|| {
                 CoreError::invalid_request("The archive exceeds the 2 GB in-memory build limit.")
             })?;
-        self.entries.push(ArchiveEntry { path, bytes: bytes.to_vec() });
+        self.entries.push(ArchiveEntry {
+            path,
+            bytes: bytes.to_vec(),
+        });
         Ok(())
     }
 
     pub fn finish(self) -> CoreResult<ArchiveArtifactCore> {
         if self.entries.is_empty() {
-            return Err(CoreError::invalid_request("The archive must contain at least one file."));
+            return Err(CoreError::invalid_request(
+                "The archive must contain at least one file.",
+            ));
         }
 
         let encrypted = self.password.is_some();
-        let expected_names =
-            self.entries.iter().map(|entry| entry.path.0.clone()).collect::<Vec<_>>();
+        let expected_names = self
+            .entries
+            .iter()
+            .map(|entry| entry.path.0.clone())
+            .collect::<Vec<_>>();
         let cursor = Cursor::new(Vec::new());
         let mut writer = ZipWriter::new(cursor);
         for entry in &self.entries {
@@ -179,7 +195,9 @@ impl ArchiveBuilderCore {
             .map_err(|error| CoreError::archive_engine(error.to_string()))?
             .into_inner();
         if bytes.is_empty() || bytes.len() > MAX_ARCHIVE_BYTES {
-            return Err(CoreError::archive_engine("The generated archive size is invalid."));
+            return Err(CoreError::archive_engine(
+                "The generated archive size is invalid.",
+            ));
         }
         let validation = validate_generated_archive(
             &bytes,
@@ -299,7 +317,10 @@ struct OutputFiles {
 impl OutputFiles {
     fn from_inventory(inventory: &ArchiveInventory) -> CoreResult<Self> {
         if !inventory.names.contains("export-summary.json") {
-            return Err(CoreError::new("not-telearchive", "export-summary.json is missing."));
+            return Err(CoreError::new(
+                "not-telearchive",
+                "export-summary.json is missing.",
+            ));
         }
         let html = matching_outputs(&inventory.ordered_names, "messages.html");
         let json = matching_outputs(&inventory.ordered_names, "result.json");
@@ -341,7 +362,9 @@ fn validate_archive_request(
         ));
     }
     if !is_safe_basename(filename) || !is_safe_basename(expected_filename) {
-        return Err(CoreError::invalid_request("The selected ZIP filename is invalid."));
+        return Err(CoreError::invalid_request(
+            "The selected ZIP filename is invalid.",
+        ));
     }
     if !matches_archive_filename(filename, expected_filename) {
         return Err(CoreError::new(
@@ -356,7 +379,10 @@ fn open_archive(bytes: &[u8]) -> CoreResult<ZipArchive<Cursor<Vec<u8>>>> {
     let archive = ZipArchive::new(Cursor::new(bytes.to_vec()))
         .map_err(|_| CoreError::new("not-telearchive", "The ZIP could not be opened."))?;
     if archive.is_empty() || archive.len() > MAX_ENTRY_COUNT {
-        return Err(CoreError::new("not-telearchive", "The ZIP has an invalid file count."));
+        return Err(CoreError::new(
+            "not-telearchive",
+            "The ZIP has an invalid file count.",
+        ));
     }
     Ok(archive)
 }
@@ -392,7 +418,10 @@ fn inspect_archive<R: Read + std::io::Seek>(
             ));
         }
         let encrypted = file.encrypted();
-        if encryption_state.replace(encrypted).is_some_and(|state| state != encrypted) {
+        if encryption_state
+            .replace(encrypted)
+            .is_some_and(|state| state != encrypted)
+        {
             return Err(CoreError::new(
                 "not-telearchive",
                 "The ZIP mixes encrypted and unencrypted files.",
@@ -404,13 +433,19 @@ fn inspect_archive<R: Read + std::io::Seek>(
             .checked_add(file.size())
             .filter(|total| *total <= MAX_ARCHIVE_BYTES as u64)
             .ok_or_else(|| {
-                CoreError::new("not-telearchive", "The ZIP expands beyond the supported limit.")
+                CoreError::new(
+                    "not-telearchive",
+                    "The ZIP expands beyond the supported limit.",
+                )
             })?;
         sizes.insert(name.clone(), file.size());
         ordered_names.push(name);
     }
     if ordered_names.is_empty() {
-        return Err(CoreError::new("not-telearchive", "The ZIP contains no files."));
+        return Err(CoreError::new(
+            "not-telearchive",
+            "The ZIP contains no files.",
+        ));
     }
     let encrypted = encryption_state.unwrap_or(false);
     if encrypted && !all_aes_256 {
@@ -425,7 +460,12 @@ fn inspect_archive<R: Read + std::io::Seek>(
             "Enter the password used for this archive.",
         ));
     }
-    Ok(ArchiveInventory { names, ordered_names, sizes, encrypted })
+    Ok(ArchiveInventory {
+        names,
+        ordered_names,
+        sizes,
+        encrypted,
+    })
 }
 
 fn matching_outputs(names: &[String], basename: &str) -> Vec<String> {
@@ -461,19 +501,31 @@ fn verify_summary<R: Read + std::io::Seek>(
 ) -> CoreResult<VerifiedSummary> {
     let text = read_text_entry(archive, "export-summary.json", password)?;
     let summary: Value = serde_json::from_str(&text).map_err(|_| {
-        CoreError::new("not-telearchive", "export-summary.json is not a JSON object.")
+        CoreError::new(
+            "not-telearchive",
+            "export-summary.json is not a JSON object.",
+        )
     })?;
     let object = summary.as_object().ok_or_else(|| {
-        CoreError::new("not-telearchive", "export-summary.json is not a JSON object.")
+        CoreError::new(
+            "not-telearchive",
+            "export-summary.json is not a JSON object.",
+        )
     })?;
     let media = object
         .get("media")
         .and_then(Value::as_object)
         .ok_or_else(|| CoreError::new("not-telearchive", "The export report is incomplete."))?;
-    if object.get("formatVersion").and_then(Value::as_str).is_none()
+    if object
+        .get("formatVersion")
+        .and_then(Value::as_str)
+        .is_none()
         || !is_supported_history_source(object.get("historySource").and_then(Value::as_str))
         || object.get("contentUploaded").and_then(Value::as_bool) != Some(false)
-        || object.get("completeHistoryNotGuaranteed").and_then(Value::as_bool) != Some(true)
+        || object
+            .get("completeHistoryNotGuaranteed")
+            .and_then(Value::as_bool)
+            != Some(true)
         || object.get("archiveEncrypted").and_then(Value::as_bool) != Some(encrypted)
         || object.get("partial").and_then(Value::as_bool).is_none()
     {
@@ -497,7 +549,10 @@ fn verify_summary<R: Read + std::io::Seek>(
         chats_included,
         messages_included: required_u64(object.get("messagesIncluded"), "messagesIncluded", 0)?,
         media_included: required_u64(media.get("included"), "media.included", 0)?,
-        partial: object.get("partial").and_then(Value::as_bool).unwrap_or(false),
+        partial: object
+            .get("partial")
+            .and_then(Value::as_bool)
+            .unwrap_or(false),
     })
 }
 
@@ -515,19 +570,32 @@ fn verify_html_outputs<R: Read + std::io::Seek>(
             || !lower.contains("<body")
             || !lower.contains("</html>")
         {
-            return Err(CoreError::new("not-telearchive", format!("{name} is not readable HTML.")));
+            return Err(CoreError::new(
+                "not-telearchive",
+                format!("{name} is not readable HTML."),
+            ));
         }
         counts.messages = counts
             .messages
-            .checked_add(required_html_meta(&lower, name, "local-archive-message-count")?)
+            .checked_add(required_html_meta(
+                &lower,
+                name,
+                "local-archive-message-count",
+            )?)
             .ok_or_else(|| {
                 CoreError::new("not-telearchive", "The HTML message count overflowed.")
             })?;
         counts.media = counts
             .media
-            .checked_add(required_html_meta(&lower, name, "local-archive-media-count")?)
+            .checked_add(required_html_meta(
+                &lower,
+                name,
+                "local-archive-media-count",
+            )?)
             .ok_or_else(|| CoreError::new("not-telearchive", "The HTML media count overflowed."))?;
-        counts.media_paths.extend(collect_html_media_paths(&html, name)?);
+        counts
+            .media_paths
+            .extend(collect_html_media_paths(&html, name)?);
     }
     Ok(counts)
 }
@@ -542,9 +610,12 @@ fn verify_json_outputs<R: Read + std::io::Seek>(
     for name in names {
         let text = read_text_entry(archive, name, password)?;
         let current = verify_json_output(&text, name, encrypted)?;
-        counts.messages = counts.messages.checked_add(current.messages).ok_or_else(|| {
-            CoreError::new("not-telearchive", "The JSON message count overflowed.")
-        })?;
+        counts.messages = counts
+            .messages
+            .checked_add(current.messages)
+            .ok_or_else(|| {
+                CoreError::new("not-telearchive", "The JSON message count overflowed.")
+            })?;
         counts.media = counts
             .media
             .checked_add(current.media)
@@ -558,12 +629,21 @@ fn verify_json_output(text: &str, name: &str, encrypted: bool) -> CoreResult<Out
     let result: Value = serde_json::from_str(text)
         .map_err(|_| CoreError::new("not-telearchive", format!("{name} is not readable JSON.")))?;
     let object = result.as_object().ok_or_else(|| {
-        CoreError::new("not-telearchive", format!("{name} is not Local Archive JSON."))
+        CoreError::new(
+            "not-telearchive",
+            format!("{name} is not Local Archive JSON."),
+        )
     })?;
     let message_arrays = json_message_arrays(object, name)?;
-    let marker = object.get("telearchive").and_then(Value::as_object).ok_or_else(|| {
-        CoreError::new("not-telearchive", format!("{name} has no Local Archive marker."))
-    })?;
+    let marker = object
+        .get("telearchive")
+        .and_then(Value::as_object)
+        .ok_or_else(|| {
+            CoreError::new(
+                "not-telearchive",
+                format!("{name} has no Local Archive marker."),
+            )
+        })?;
     let mut counts = OutputCounts::default();
     for messages in message_arrays {
         counts.messages = counts
@@ -583,10 +663,16 @@ fn verify_json_output(text: &str, name: &str, encrypted: bool) -> CoreResult<Out
     }
     if !is_supported_history_source(marker.get("history_source").and_then(Value::as_str))
         || marker.get("content_uploaded").and_then(Value::as_bool) != Some(false)
-        || marker.get("complete_history_not_guaranteed").and_then(Value::as_bool) != Some(true)
+        || marker
+            .get("complete_history_not_guaranteed")
+            .and_then(Value::as_bool)
+            != Some(true)
         || marker.get("archive_encrypted").and_then(Value::as_bool) != Some(encrypted)
-        || required_u64(marker.get("messages_in_this_chat"), "messages_in_this_chat", 0)?
-            != counts.messages
+        || required_u64(
+            marker.get("messages_in_this_chat"),
+            "messages_in_this_chat",
+            0,
+        )? != counts.messages
     {
         return Err(CoreError::new(
             "not-telearchive",
@@ -597,7 +683,10 @@ fn verify_json_output(text: &str, name: &str, encrypted: bool) -> CoreResult<Out
 }
 
 fn is_supported_history_source(value: Option<&str>) -> bool {
-    matches!(value, Some("rendered-telegram-web" | "telegram-web-api" | "rendered-discord-web"))
+    matches!(
+        value,
+        Some("rendered-telegram-web" | "telegram-web-api" | "rendered-discord-web")
+    )
 }
 
 fn json_message_arrays<'a>(
@@ -622,7 +711,10 @@ fn json_message_arrays<'a>(
                 .and_then(|value| value.get("messages"))
                 .and_then(Value::as_array)
                 .ok_or_else(|| {
-                    CoreError::new("not-telearchive", format!("{name} has an invalid chat output."))
+                    CoreError::new(
+                        "not-telearchive",
+                        format!("{name} has an invalid chat output."),
+                    )
                 })
         })
         .collect()
@@ -632,12 +724,18 @@ fn collect_message_media(messages: &[Value], name: &str) -> CoreResult<(u64, Has
     let mut paths = HashSet::new();
     let count = messages.iter().try_fold(0_u64, |count, message| {
         let object = message.as_object().ok_or_else(|| {
-            CoreError::new("not-telearchive", format!("{name} contains an invalid message."))
+            CoreError::new(
+                "not-telearchive",
+                format!("{name} contains an invalid message."),
+            )
         })?;
         let mut current = count;
         if let Some(attachments) = object.get("attachments") {
             let attachments = attachments.as_array().ok_or_else(|| {
-                CoreError::new("not-telearchive", format!("{name} contains invalid attachments."))
+                CoreError::new(
+                    "not-telearchive",
+                    format!("{name} contains invalid attachments."),
+                )
             })?;
             if attachments.is_empty() {
                 current = collect_legacy_message_media(object, name, current, &mut paths)?;
@@ -692,8 +790,10 @@ fn collect_legacy_message_media(
     paths: &mut HashSet<String>,
 ) -> CoreResult<u64> {
     for field in ["photo", "file"] {
-        let Some(path) =
-            object.get(field).and_then(Value::as_str).filter(|value| !value.is_empty())
+        let Some(path) = object
+            .get(field)
+            .and_then(Value::as_str)
+            .filter(|value| !value.is_empty())
         else {
             continue;
         };
@@ -837,9 +937,10 @@ fn verify_output_counts(
     html: &OutputCounts,
     json: &OutputCounts,
 ) -> CoreResult<()> {
-    for (present, counts, label) in
-        [(!outputs.html.is_empty(), html, "HTML"), (!outputs.json.is_empty(), json, "JSON")]
-    {
+    for (present, counts, label) in [
+        (!outputs.html.is_empty(), html, "HTML"),
+        (!outputs.json.is_empty(), json, "JSON"),
+    ] {
         if present
             && (counts.messages != summary.messages_included
                 || counts.media != summary.media_included)
@@ -991,19 +1092,29 @@ fn verify_all_entries<R: Read + std::io::Seek>(
 ) -> CoreResult<()> {
     for name in &inventory.ordered_names {
         let index = archive.index_for_name(name).ok_or_else(|| {
-            CoreError::new("not-telearchive", format!("{name} disappeared from the ZIP directory."))
+            CoreError::new(
+                "not-telearchive",
+                format!("{name} disappeared from the ZIP directory."),
+            )
         })?;
-        let encrypted =
-            archive.by_index_raw(index).map_err(|error| map_zip_read_error(&error))?.encrypted();
+        let encrypted = archive
+            .by_index_raw(index)
+            .map_err(|error| map_zip_read_error(&error))?
+            .encrypted();
         let mut file = if encrypted {
             let password = password.ok_or_else(|| {
-                CoreError::new("password-required", "Enter the password used for this archive.")
+                CoreError::new(
+                    "password-required",
+                    "Enter the password used for this archive.",
+                )
             })?;
             archive
                 .by_index_decrypt(index, password.as_bytes())
                 .map_err(|error| map_zip_read_error(&error))?
         } else {
-            archive.by_index(index).map_err(|error| map_zip_read_error(&error))?
+            archive
+                .by_index(index)
+                .map_err(|error| map_zip_read_error(&error))?
         };
         std::io::copy(&mut file, &mut std::io::sink()).map_err(|_| {
             CoreError::new(
@@ -1021,24 +1132,39 @@ fn read_text_entry<R: Read + std::io::Seek>(
     password: Option<&str>,
 ) -> CoreResult<String> {
     let index = archive.index_for_name(name).ok_or_else(|| {
-        CoreError::new("not-telearchive", format!("{name} is missing from the ZIP."))
+        CoreError::new(
+            "not-telearchive",
+            format!("{name} is missing from the ZIP."),
+        )
     })?;
-    let encrypted =
-        archive.by_index_raw(index).map_err(|error| map_zip_read_error(&error))?.encrypted();
+    let encrypted = archive
+        .by_index_raw(index)
+        .map_err(|error| map_zip_read_error(&error))?
+        .encrypted();
     let mut file = if encrypted {
         let password = password.ok_or_else(|| {
-            CoreError::new("password-required", "Enter the password used for this archive.")
+            CoreError::new(
+                "password-required",
+                "Enter the password used for this archive.",
+            )
         })?;
         archive
             .by_index_decrypt(index, password.as_bytes())
             .map_err(|error| map_zip_read_error(&error))?
     } else {
-        archive.by_index(index).map_err(|error| map_zip_read_error(&error))?
+        archive
+            .by_index(index)
+            .map_err(|error| map_zip_read_error(&error))?
     };
-    let capacity = usize::try_from(file.size()).unwrap_or(0).min(8 * 1_024 * 1_024);
+    let capacity = usize::try_from(file.size())
+        .unwrap_or(0)
+        .min(8 * 1_024 * 1_024);
     let mut text = String::with_capacity(capacity);
     file.read_to_string(&mut text).map_err(|error| {
-        CoreError::new("not-telearchive", format!("{name} is not readable UTF-8 text: {error}"))
+        CoreError::new(
+            "not-telearchive",
+            format!("{name} is not readable UTF-8 text: {error}"),
+        )
     })?;
     Ok(text)
 }
@@ -1047,17 +1173,26 @@ fn map_zip_read_error(error: &ZipError) -> CoreError {
     match error {
         ZipError::InvalidPassword => {
             CoreError::new("wrong-password", "The archive password is incorrect.")
-        },
+        }
         ZipError::UnsupportedArchive(message) if *message == ZipError::PASSWORD_REQUIRED => {
-            CoreError::new("password-required", "Enter the password used for this archive.")
-        },
-        _ => CoreError::new("not-telearchive", "The ZIP contents could not be read safely."),
+            CoreError::new(
+                "password-required",
+                "Enter the password used for this archive.",
+            )
+        }
+        _ => CoreError::new(
+            "not-telearchive",
+            "The ZIP contents could not be read safely.",
+        ),
     }
 }
 
 fn required_u64(value: Option<&Value>, field: &str, minimum: u64) -> CoreResult<u64> {
     let parsed = value.and_then(Value::as_u64).ok_or_else(|| {
-        CoreError::new("not-telearchive", format!("export-summary.json has an invalid {field}."))
+        CoreError::new(
+            "not-telearchive",
+            format!("export-summary.json has an invalid {field}."),
+        )
     })?;
     if parsed < minimum {
         return Err(CoreError::new(
@@ -1104,7 +1239,9 @@ fn is_safe_archive_path(value: &str) -> bool {
     if bytes.first().is_some_and(u8::is_ascii_alphabetic) && bytes.get(1) == Some(&b':') {
         return false;
     }
-    value.split('/').all(|segment| !segment.is_empty() && segment != "." && segment != "..")
+    value
+        .split('/')
+        .all(|segment| !segment.is_empty() && segment != "." && segment != "..")
 }
 
 #[cfg(test)]
@@ -1281,7 +1418,9 @@ mod tests {
         builder
             .add_entry("export-summary.json", &summary(false))
             .expect("summary should be accepted");
-        builder.add_entry("result.json", &result(false)).expect("result should be accepted");
+        builder
+            .add_entry("result.json", &result(false))
+            .expect("result should be accepted");
         let artifact = builder.finish().expect("archive should build");
         let receipt = verify_archive(
             &artifact.bytes,
@@ -1304,7 +1443,9 @@ mod tests {
         builder
             .add_entry("export-summary.json", &summary(true))
             .expect("summary should be accepted");
-        builder.add_entry("result.json", &result(true)).expect("result should be accepted");
+        builder
+            .add_entry("result.json", &result(true))
+            .expect("result should be accepted");
         let artifact = builder.finish().expect("encrypted archive should build");
         assert!(
             verify_archive(
@@ -1359,7 +1500,9 @@ mod tests {
         builder
             .add_entry("result.json", &discord_result(false))
             .expect("discord result should be accepted");
-        builder.add_entry("files/1.txt", b"test").expect("attachment should be accepted");
+        builder
+            .add_entry("files/1.txt", b"test")
+            .expect("attachment should be accepted");
         let artifact = builder.finish().expect("archive should build");
         let receipt = verify_archive(
             &artifact.bytes,
@@ -1437,7 +1580,9 @@ mod tests {
         builder
             .add_entry("export-summary.json", &summary_with_media(false, 1))
             .expect("summary should be accepted");
-        builder.add_entry("messages.html", html).expect("HTML should be accepted");
+        builder
+            .add_entry("messages.html", html)
+            .expect("HTML should be accepted");
         builder
             .add_entry("video_files/video.mp4", b"video")
             .expect("primary video should be accepted");

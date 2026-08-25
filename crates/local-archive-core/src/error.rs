@@ -13,7 +13,10 @@ pub struct CoreError {
 
 impl CoreError {
     pub fn new(code: impl Into<String>, message: impl Into<String>) -> Self {
-        Self { code: code.into(), message: message.into() }
+        Self {
+            code: code.into(),
+            message: message.into(),
+        }
     }
 
     pub fn invalid_request(message: impl Into<String>) -> Self {

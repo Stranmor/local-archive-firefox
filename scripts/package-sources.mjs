@@ -37,6 +37,7 @@ const excludedReleaseSources = new Set([
 const sourceRoots = [
   '.github',
   '.gitignore',
+  '.rustfmt.toml',
   'Cargo.lock',
   'Cargo.toml',
   'CHANGELOG.md',

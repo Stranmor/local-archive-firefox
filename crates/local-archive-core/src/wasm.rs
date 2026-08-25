@@ -22,13 +22,13 @@ fn from_js(value: JsValue, description: &str) -> Result<Value, JsValue> {
 }
 
 fn to_js<T: Serialize>(value: &T) -> Result<JsValue, JsValue> {
-    value.serialize(&serde_wasm_bindgen::Serializer::new().serialize_maps_as_objects(true)).map_err(
-        |error| {
+    value
+        .serialize(&serde_wasm_bindgen::Serializer::new().serialize_maps_as_objects(true))
+        .map_err(|error| {
             to_js_error(CoreError::archive_engine(format!(
                 "Rust could not serialize its result: {error}"
             )))
-        },
-    )
+        })
 }
 
 fn to_js_error(error: CoreError) -> JsValue {
@@ -45,13 +45,17 @@ pub fn core_version() -> String {
 #[wasm_bindgen(js_name = normalizeExportRange)]
 pub fn normalize_export_range_js(value: JsValue) -> Result<JsValue, JsValue> {
     let value = from_js(value, "Export range")?;
-    normalize_export_range(&value).map_err(to_js_error).and_then(|range| to_js(&range))
+    normalize_export_range(&value)
+        .map_err(to_js_error)
+        .and_then(|range| to_js(&range))
 }
 
 #[wasm_bindgen(js_name = normalizeQuickExportRequest)]
 pub fn normalize_quick_export_request_js(value: JsValue) -> Result<JsValue, JsValue> {
     let value = from_js(value, "Export request")?;
-    normalize_quick_export_request(&value).map_err(to_js_error).and_then(|request| to_js(&request))
+    normalize_quick_export_request(&value)
+        .map_err(to_js_error)
+        .and_then(|request| to_js(&request))
 }
 
 #[wasm_bindgen(js_name = normalizePreferences)]
@@ -156,7 +160,10 @@ impl WasmArchiveBuilder {
                 "This archive builder has already been finished.",
             ))
         })?;
-        inner.finish().map(WasmArchiveArtifact::from).map_err(to_js_error)
+        inner
+            .finish()
+            .map(WasmArchiveArtifact::from)
+            .map_err(to_js_error)
     }
 }
 
@@ -231,9 +238,15 @@ pub fn verify_archive_js(
     expected_filename: String,
     password: Option<String>,
 ) -> Result<JsValue, JsValue> {
-    verify_archive(bytes, request_id, filename, &expected_filename, password.as_deref())
-        .map_err(to_js_error)
-        .and_then(|receipt| to_js(&receipt))
+    verify_archive(
+        bytes,
+        request_id,
+        filename,
+        &expected_filename,
+        password.as_deref(),
+    )
+    .map_err(to_js_error)
+    .and_then(|receipt| to_js(&receipt))
 }
 
 #[wasm_bindgen(js_name = ExportSession)]
@@ -247,7 +260,9 @@ impl WasmExportSession {
     pub fn new(request: JsValue) -> Result<Self, JsValue> {
         let value = from_js(request, "Export request")?;
         let request = normalize_quick_export_request(&value).map_err(to_js_error)?;
-        Ok(Self { inner: ExportSessionCore::new(request) })
+        Ok(Self {
+            inner: ExportSessionCore::new(request),
+        })
     }
 
     pub fn request(&self) -> Result<JsValue, JsValue> {

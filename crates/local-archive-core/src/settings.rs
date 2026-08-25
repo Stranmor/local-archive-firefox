@@ -67,7 +67,11 @@ pub struct QuickExportDefaults {
 
 impl Default for QuickExportDefaults {
     fn default() -> Self {
-        Self { format: ExportFormat::Both, include_media: true, recent_count: DEFAULT_RECENT_COUNT }
+        Self {
+            format: ExportFormat::Both,
+            include_media: true,
+            recent_count: DEFAULT_RECENT_COUNT,
+        }
     }
 }
 
@@ -94,8 +98,11 @@ pub fn normalize_preferences(value: &Value) -> ExportPreferences {
         export_photos: boolean(object.get("exportPhotos"), defaults.export_photos.value()).into(),
         export_videos: boolean(object.get("exportVideos"), defaults.export_videos.value()).into(),
         export_voice: boolean(object.get("exportVoice"), defaults.export_voice.value()).into(),
-        export_stickers: boolean(object.get("exportStickers"), defaults.export_stickers.value())
-            .into(),
+        export_stickers: boolean(
+            object.get("exportStickers"),
+            defaults.export_stickers.value(),
+        )
+        .into(),
         export_files: boolean(object.get("exportFiles"), defaults.export_files.value()).into(),
         max_photo_size_mb: bounded_u32(object.get("maxPhotoSizeMb"), 1, 10_000, 10),
         max_video_size_mb: bounded_u32(object.get("maxVideoSizeMb"), 1, 20_000, 100),
@@ -132,7 +139,12 @@ fn bounded_u32(value: Option<&Value>, minimum: u32, maximum: u32, fallback: u32)
     value
         .and_then(number_from_value)
         .filter(|number| number.is_finite())
-        .and_then(|number| number.round().clamp(f64::from(minimum), f64::from(maximum)).to_u32())
+        .and_then(|number| {
+            number
+                .round()
+                .clamp(f64::from(minimum), f64::from(maximum))
+                .to_u32()
+        })
         .unwrap_or(fallback)
 }
 

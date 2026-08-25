@@ -20,7 +20,9 @@ pub enum ExportRange {
 
 impl Default for ExportRange {
     fn default() -> Self {
-        Self::Recent { count: DEFAULT_RECENT_COUNT }
+        Self::Recent {
+            count: DEFAULT_RECENT_COUNT,
+        }
     }
 }
 
@@ -32,27 +34,40 @@ pub fn normalize_export_range(value: &Value) -> CoreResult<ExportRange> {
     match object.get("mode").and_then(Value::as_str) {
         Some("all") => Ok(ExportRange::All),
         Some("dates") => {
-            let from = object.get("from").and_then(Value::as_str).unwrap_or_default();
+            let from = object
+                .get("from")
+                .and_then(Value::as_str)
+                .unwrap_or_default();
             let to = object.get("to").and_then(Value::as_str).unwrap_or_default();
             if !is_calendar_date(from) || !is_calendar_date(to) {
-                return Err(CoreError::invalid_request("A valid start and end date are required."));
+                return Err(CoreError::invalid_request(
+                    "A valid start and end date are required.",
+                ));
             }
             if from > to {
                 return Err(CoreError::invalid_request(
                     "The start date must not be later than the end date.",
                 ));
             }
-            Ok(ExportRange::Dates { from: from.to_owned(), to: to.to_owned() })
-        },
+            Ok(ExportRange::Dates {
+                from: from.to_owned(),
+                to: to.to_owned(),
+            })
+        }
         _ => {
             let count = object
                 .get("count")
                 .and_then(number_from_value)
                 .filter(|value| value.is_finite())
-                .and_then(|value| value.round().clamp(1.0, f64::from(MAX_RECENT_COUNT)).to_u32())
+                .and_then(|value| {
+                    value
+                        .round()
+                        .clamp(1.0, f64::from(MAX_RECENT_COUNT))
+                        .to_u32()
+                })
                 .unwrap_or(DEFAULT_RECENT_COUNT);
             Ok(ExportRange::Recent { count })
-        },
+        }
     }
 }
 
@@ -65,7 +80,7 @@ pub fn filter_messages_for_range(messages: &[Value], range: &ExportRange) -> Vec
             let keep = usize::try_from(*count).unwrap_or(usize::MAX);
             let start = ordered.len().saturating_sub(keep);
             ordered.split_off(start)
-        },
+        }
         ExportRange::Dates { from, to } => ordered
             .into_iter()
             .filter(|message| {
@@ -130,7 +145,9 @@ fn number_from_value(value: &Value) -> Option<f64> {
 fn compare_messages_chronologically(left: &Value, right: &Value) -> Ordering {
     let left_time = message_unix_seconds(left).unwrap_or(0.0);
     let right_time = message_unix_seconds(right).unwrap_or(0.0);
-    left_time.total_cmp(&right_time).then_with(|| message_id(left).cmp(&message_id(right)))
+    left_time
+        .total_cmp(&right_time)
+        .then_with(|| message_id(left).cmp(&message_id(right)))
 }
 
 fn message_unix_seconds(message: &Value) -> Option<f64> {
@@ -158,8 +175,14 @@ fn message_calendar_date(message: &Value) -> Option<String> {
         return Some(prefix.to_owned());
     }
 
-    let seconds = object.get("date_unixtime").and_then(number_from_value)?.floor().to_i64()?;
-    OffsetDateTime::from_unix_timestamp(seconds).ok().map(|date_time| date_time.date().to_string())
+    let seconds = object
+        .get("date_unixtime")
+        .and_then(number_from_value)?
+        .floor()
+        .to_i64()?;
+    OffsetDateTime::from_unix_timestamp(seconds)
+        .ok()
+        .map(|date_time| date_time.date().to_string())
 }
 
 #[cfg(test)]
@@ -199,7 +222,10 @@ mod tests {
         ];
         let filtered = filter_messages_for_range(
             &messages,
-            &ExportRange::Dates { from: "2026-08-02".to_owned(), to: "2026-08-03".to_owned() },
+            &ExportRange::Dates {
+                from: "2026-08-02".to_owned(),
+                to: "2026-08-03".to_owned(),
+            },
         );
         assert_eq!(
             filtered,

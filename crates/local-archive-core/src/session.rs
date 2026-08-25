@@ -135,7 +135,9 @@ impl ExportSessionCore {
     pub fn begin_archive(&mut self, request_id: String) -> CoreResult<()> {
         self.require_phase(ExportPhase::Collected)?;
         if request_id.is_empty() || request_id.len() > 128 {
-            return Err(CoreError::invalid_transition("The archive request identity is invalid."));
+            return Err(CoreError::invalid_transition(
+                "The archive request identity is invalid.",
+            ));
         }
         self.archive_request_id = Some(request_id);
         self.phase = ExportPhase::BuildingArchive;
@@ -290,7 +292,9 @@ mod tests {
     fn owns_the_complete_export_lifecycle() {
         let mut session = ExportSessionCore::new(request());
         session.begin_collection().expect("collection should start");
-        session.request_partial().expect("partial result should be requestable");
+        session
+            .request_partial()
+            .expect("partial result should be requestable");
         let filtered = session
             .finish_collection(&[
                 json!({"id": 1, "date_unixtime": 1}),
@@ -299,7 +303,9 @@ mod tests {
             ])
             .expect("collection should finish");
         assert_eq!(filtered.len(), 2);
-        session.begin_archive("request-1".to_owned()).expect("archive build should start");
+        session
+            .begin_archive("request-1".to_owned())
+            .expect("archive build should start");
         session
             .archive_ready(ArchiveArtifactReceipt {
                 request_id: "request-1".to_owned(),
@@ -313,7 +319,9 @@ mod tests {
                 report_readable: true,
             })
             .expect("archive should become ready");
-        session.begin_save("archive.zip".to_owned()).expect("save should start");
+        session
+            .begin_save("archive.zip".to_owned())
+            .expect("save should start");
         session
             .complete(&DownloadCompleteReceipt {
                 request_id: "request-1".to_owned(),

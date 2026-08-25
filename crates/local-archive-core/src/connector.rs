@@ -64,7 +64,9 @@ pub fn normalize_connector_descriptor(value: &Value) -> CoreResult<ArchiveConnec
     let launch = Url::parse(&descriptor.launch_url)
         .map_err(|_| CoreError::invalid_request("The connector launch URL is invalid."))?;
     if launch.scheme() != "https" || launch.host_str().is_none() {
-        return Err(CoreError::invalid_request("The connector launch URL must use HTTPS."));
+        return Err(CoreError::invalid_request(
+            "The connector launch URL must use HTTPS.",
+        ));
     }
     if descriptor.allowed_origins.is_empty() || descriptor.allowed_origins.len() > 32 {
         return Err(CoreError::invalid_request(
@@ -75,7 +77,11 @@ pub fn normalize_connector_descriptor(value: &Value) -> CoreResult<ArchiveConnec
         validate_origin(origin)?;
     }
     let launch_origin = launch.origin().ascii_serialization();
-    if !descriptor.allowed_origins.iter().any(|origin| origin == &launch_origin) {
+    if !descriptor
+        .allowed_origins
+        .iter()
+        .any(|origin| origin == &launch_origin)
+    {
         return Err(CoreError::invalid_request(
             "The connector launch URL must belong to an allowed origin.",
         ));
@@ -132,7 +138,9 @@ fn validate_text(value: &str, field: &str, maximum: usize) -> CoreResult<()> {
         || value.chars().count() > maximum
         || value.chars().any(char::is_control)
     {
-        return Err(CoreError::invalid_request(format!("The connector {field} is invalid.")));
+        return Err(CoreError::invalid_request(format!(
+            "The connector {field} is invalid."
+        )));
     }
     Ok(())
 }
@@ -189,8 +197,14 @@ mod tests {
             }
         }))
         .expect("connector fixture should be valid");
-        assert!(connector_matches_origin(&connector.allowed_origins, "https://web.telegram.org"));
-        assert!(!connector_matches_origin(&connector.allowed_origins, "https://discord.com"));
+        assert!(connector_matches_origin(
+            &connector.allowed_origins,
+            "https://web.telegram.org"
+        ));
+        assert!(!connector_matches_origin(
+            &connector.allowed_origins,
+            "https://discord.com"
+        ));
     }
 
     #[test]

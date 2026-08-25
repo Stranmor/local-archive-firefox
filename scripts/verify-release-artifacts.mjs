@@ -61,6 +61,7 @@ for (const required of [
   'package.json',
   'package-lock.json',
   'Cargo.lock',
+  '.rustfmt.toml',
   'rust-toolchain.toml',
   'docs/launch-checklist.md',
   'scripts/run-rust.mjs',

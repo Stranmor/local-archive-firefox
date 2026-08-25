@@ -75,14 +75,14 @@ impl RdpConnection {
                                 .get_ref()
                                 .set_read_timeout(Some(Duration::from_secs(5)))?;
                             return Ok((connection, greeting));
-                        },
+                        }
                         Ok(_) => {
                             "RDP greeting did not come from the root actor"
                                 .clone_into(&mut last_error);
-                        },
+                        }
                         Err(error) => last_error = error.to_string(),
                     }
-                },
+                }
                 Err(error) => last_error = error.to_string(),
             }
             thread::sleep(Duration::from_millis(100));
@@ -114,8 +114,10 @@ impl RdpConnection {
                 continue;
             }
             if let Some(error) = response.get("error").and_then(Value::as_str) {
-                let message =
-                    response.get("message").and_then(Value::as_str).unwrap_or("no error detail");
+                let message = response
+                    .get("message")
+                    .and_then(Value::as_str)
+                    .unwrap_or("no error detail");
                 return Err(Box::new(LoaderError(format!(
                     "Firefox rejected {request_type}: {error}: {message}"
                 ))));
@@ -162,7 +164,10 @@ fn parse_args() -> Result<Config, Box<dyn Error>> {
 
     while let Some(argument) = args.next() {
         let value = args.next().ok_or_else(|| {
-            LoaderError(format!("Missing value after {}", argument.to_string_lossy()))
+            LoaderError(format!(
+                "Missing value after {}",
+                argument.to_string_lossy()
+            ))
         })?;
         match argument.to_str() {
             Some("--socket") => socket_path = Some(PathBuf::from(value)),
@@ -178,15 +183,17 @@ fn parse_args() -> Result<Config, Box<dyn Error>> {
                     )));
                 }
                 timeout = Duration::from_secs(seconds);
-            },
+            }
             Some(unknown) => {
-                return Err(Box::new(LoaderError(format!("Unknown argument: {unknown}"))));
-            },
+                return Err(Box::new(LoaderError(format!(
+                    "Unknown argument: {unknown}"
+                ))));
+            }
             None => {
                 return Err(Box::new(LoaderError(
                     "Arguments must be valid UTF-8 option names".to_owned(),
                 )));
-            },
+            }
         }
     }
 
@@ -286,7 +293,10 @@ fn collect_files(
 }
 
 fn object(fields: impl IntoIterator<Item = (&'static str, Value)>) -> Map<String, Value> {
-    fields.into_iter().map(|(key, value)| (key.to_owned(), value)).collect()
+    fields
+        .into_iter()
+        .map(|(key, value)| (key.to_owned(), value))
+        .collect()
 }
 
 fn install(config: &Config, identity: &ManifestIdentity) -> Result<Value, Box<dyn Error>> {
@@ -304,7 +314,10 @@ fn install(config: &Config, identity: &ManifestIdentity) -> Result<Value, Box<dy
         addons_actor,
         "installTemporaryAddon",
         object([
-            ("addonPath", Value::String(addon_path.to_string_lossy().into_owned())),
+            (
+                "addonPath",
+                Value::String(addon_path.to_string_lossy().into_owned()),
+            ),
             ("openDevTools", Value::Bool(false)),
         ]),
     )?;
@@ -377,7 +390,7 @@ fn main() {
         Err(error) => {
             eprintln!("local-archive-firefox-dev-loader: {error}");
             std::process::exit(1);
-        },
+        }
     }
 }
 
@@ -414,27 +427,37 @@ mod tests {
             .duration_since(UNIX_EPOCH)
             .expect("system clock should be after Unix epoch")
             .as_nanos();
-        let socket_path = std::env::temp_dir()
-            .join(format!("local-archive-loader-test-{}-{nonce}.sock", std::process::id()));
+        let socket_path = std::env::temp_dir().join(format!(
+            "local-archive-loader-test-{}-{nonce}.sock",
+            std::process::id()
+        ));
         let listener = UnixListener::bind(&socket_path).expect("test socket should bind");
         let server = thread::spawn(move || {
             let (first, _) = listener.accept().expect("first test client should connect");
             thread::sleep(Duration::from_millis(650));
             drop(first);
-            let (mut second, _) = listener.accept().expect("retrying test client should connect");
+            let (mut second, _) = listener
+                .accept()
+                .expect("retrying test client should connect");
             let greeting = serde_json::to_vec(&json!({
                 "from": "root",
                 "applicationType": "browser"
             }))
             .expect("test greeting should serialize");
             write!(second, "{}:", greeting.len()).expect("test frame length should write");
-            second.write_all(&greeting).expect("test greeting should write");
+            second
+                .write_all(&greeting)
+                .expect("test greeting should write");
         });
-        let deadline =
-            Instant::now().checked_add(Duration::from_secs(3)).expect("test deadline should fit");
+        let deadline = Instant::now()
+            .checked_add(Duration::from_secs(3))
+            .expect("test deadline should fit");
         let (connection, greeting) = RdpConnection::connect_ready(&socket_path, deadline)
             .expect("loader should retry until the RDP greeting is ready");
-        assert_eq!(greeting.get("from").and_then(serde_json::Value::as_str), Some("root"));
+        assert_eq!(
+            greeting.get("from").and_then(serde_json::Value::as_str),
+            Some("root")
+        );
         drop(connection);
         server.join().expect("test RDP server should finish");
         fs::remove_file(socket_path).expect("test socket should be removable");
