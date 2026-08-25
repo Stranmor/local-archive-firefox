@@ -38,6 +38,20 @@ function executableFromPath(name) {
   return null;
 }
 
+function commandFromPath(name) {
+  const pathEntries = String(process.env.PATH || '').split(path.delimiter).filter(Boolean);
+  for (const entry of pathEntries) {
+    const candidate = path.join(entry, name);
+    try {
+      accessSync(candidate, constants.X_OK);
+      return candidate;
+    } catch {
+      // Continue searching PATH.
+    }
+  }
+  return null;
+}
+
 function mirrorDirectories() {
   const temporaryRoots = [path.join(os.tmpdir(), 'local-archive-rust-exec-toolchains'), path.join(os.tmpdir(), 'rust-exec-toolchains')];
   try {
@@ -73,6 +87,12 @@ function executable(name, { mirrorFirst = true } = {}) {
   for (const directory of directories) {
     const candidate = path.join(directory, name);
     if (pathIsRunnable(candidate)) return candidate;
+  }
+  const rustup = commandFromPath('rustup');
+  if (rustup) {
+    const resolved = spawnSync(rustup, ['which', name, '--toolchain', toolchain], { encoding: 'utf8' });
+    const candidate = resolved.status === 0 ? resolved.stdout.trim() : '';
+    if (candidate && pathIsRunnable(candidate)) return candidate;
   }
   const fromPath = executableFromPath(name);
   if (fromPath) return fromPath;
