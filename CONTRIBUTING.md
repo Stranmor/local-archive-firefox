@@ -28,7 +28,7 @@ npm run check
 npm run check:consumer
 ```
 
-The first command validates Rust formatting, Clippy with denied warnings, Rust tests, WebAssembly generation, TypeScript boundaries, generated ZIPs, Firefox Manifest V3 invariants, localization parity, package size, absence of remote executable surfaces, and Mozilla add-on linting. The consumer check installs the packaged add-on in a disposable headless Firefox profile, invokes the browser action, proves the running Rust/WASM engine identity, and verifies the downloaded archive.
+The first command validates Rust formatting, Clippy with denied warnings, Rust tests, WebAssembly generation, TypeScript boundaries, settings persistence, generated ZIPs, Firefox Manifest V3 invariants, localization parity, package size, absence of remote executable surfaces, and Mozilla add-on linting. The consumer check installs the packaged add-on in a disposable headless Firefox profile, invokes the browser action, proves the running Rust/WASM engine identity, and verifies the downloaded archive.
 
 For changes that affect a connector's DOM parsing, archive generation, injection, or saving, add a minimal synthetic fixture and assert the exported consumer artifact, not only an internal helper result. Never automate a contributor's active Firefox profile.
 
