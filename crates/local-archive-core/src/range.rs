@@ -184,3 +184,55 @@ fn message_calendar_date(message: &Value) -> Option<String> {
         .ok()
         .map(|date_time| date_time.date().to_string())
 }
+
+#[cfg(test)]
+mod tests {
+    use pretty_assertions::assert_eq;
+    use serde_json::json;
+
+    use super::{ExportRange, filter_messages_for_range, is_calendar_date, normalize_export_range};
+
+    #[test]
+    fn validates_calendar_dates() {
+        assert!(is_calendar_date("2024-02-29"));
+        assert!(!is_calendar_date("2023-02-29"));
+        assert!(!is_calendar_date("2026-13-01"));
+    }
+
+    #[test]
+    fn normalizes_recent_count() {
+        assert_eq!(
+            normalize_export_range(&json!({"mode": "recent", "count": 0}))
+                .expect("recent range should normalize"),
+            ExportRange::Recent { count: 1 }
+        );
+        assert_eq!(
+            normalize_export_range(&json!({"mode": "recent", "count": 200_000}))
+                .expect("recent range should clamp"),
+            ExportRange::Recent { count: 100_000 }
+        );
+    }
+
+    #[test]
+    fn filters_dates_inclusively_and_sorts() {
+        let messages = vec![
+            json!({"id": 3, "date": "2026-08-03T10:00:00.000Z", "date_unixtime": 3}),
+            json!({"id": 1, "date": "2026-08-01T10:00:00.000Z", "date_unixtime": 1}),
+            json!({"id": 2, "date": "2026-08-02T10:00:00.000Z", "date_unixtime": 2}),
+        ];
+        let filtered = filter_messages_for_range(
+            &messages,
+            &ExportRange::Dates {
+                from: "2026-08-02".to_owned(),
+                to: "2026-08-03".to_owned(),
+            },
+        );
+        assert_eq!(
+            filtered,
+            vec![
+                messages.get(2).expect("third fixture message").clone(),
+                messages.first().expect("first fixture message").clone(),
+            ]
+        );
+    }
+}

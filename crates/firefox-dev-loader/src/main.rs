@@ -393,3 +393,73 @@ fn main() {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{MAX_FRAME_BYTES, RdpConnection, read_frame_from};
+    use serde_json::json;
+    use std::fs;
+    use std::io::{Cursor, Write};
+    use std::os::unix::net::UnixListener;
+    use std::thread;
+    use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn reads_one_length_prefixed_json_frame() {
+        let value = json!({"from":"root","applicationType":"browser"});
+        let bytes = serde_json::to_vec(&value).expect("test value should serialize");
+        let framed = [format!("{}:", bytes.len()).into_bytes(), bytes].concat();
+        assert_eq!(
+            read_frame_from(&mut Cursor::new(framed)).expect("valid test frame should parse"),
+            value
+        );
+    }
+
+    #[test]
+    fn rejects_oversized_frames() {
+        let framed = format!("{}:", MAX_FRAME_BYTES + 1).into_bytes();
+        assert!(read_frame_from(&mut Cursor::new(framed)).is_err());
+    }
+
+    #[test]
+    fn waits_for_a_ready_rdp_greeting_after_the_socket_appears() {
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system clock should be after Unix epoch")
+            .as_nanos();
+        let socket_path = std::env::temp_dir().join(format!(
+            "local-archive-loader-test-{}-{nonce}.sock",
+            std::process::id()
+        ));
+        let listener = UnixListener::bind(&socket_path).expect("test socket should bind");
+        let server = thread::spawn(move || {
+            let (first, _) = listener.accept().expect("first test client should connect");
+            thread::sleep(Duration::from_millis(650));
+            drop(first);
+            let (mut second, _) = listener
+                .accept()
+                .expect("retrying test client should connect");
+            let greeting = serde_json::to_vec(&json!({
+                "from": "root",
+                "applicationType": "browser"
+            }))
+            .expect("test greeting should serialize");
+            write!(second, "{}:", greeting.len()).expect("test frame length should write");
+            second
+                .write_all(&greeting)
+                .expect("test greeting should write");
+        });
+        let deadline = Instant::now()
+            .checked_add(Duration::from_secs(3))
+            .expect("test deadline should fit");
+        let (connection, greeting) = RdpConnection::connect_ready(&socket_path, deadline)
+            .expect("loader should retry until the RDP greeting is ready");
+        assert_eq!(
+            greeting.get("from").and_then(serde_json::Value::as_str),
+            Some("root")
+        );
+        drop(connection);
+        server.join().expect("test RDP server should finish");
+        fs::remove_file(socket_path).expect("test socket should be removable");
+    }
+}
